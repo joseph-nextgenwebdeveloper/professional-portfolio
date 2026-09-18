@@ -1,0 +1,582 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.name|default:"Joseph Kiarie" }} — Full-Stack Developer & Systems Architect{% endblock %}
+
+{% block content %}
+
+<!-- =========================================================================
+     1. HERO SECTION
+     ========================================================================= -->
+<section class="hero-section">
+    <div class="container hero-grid">
+        <!-- Left: Persona & Statement -->
+        <div>
+            <div class="hero-status-strip">
+                <span class="status-dot"></span>
+                <span>{{ profile.availability_status|default:"Available for client projects & technical consulting" }}</span>
+            </div>
+
+            <h1 class="hero-heading">
+                Engineering practical systems for <em>real organizations</em>.
+            </h1>
+
+            <p class="hero-subhead">
+                I am {{ profile.name|default:"Joseph Kiarie" }}, a full-stack software engineer and BBIT student at JKUAT based in Nairobi. I build reliable Django web backends, responsive Flutter mobile applications, and resilient PostgreSQL/Supabase database systems.
+            </p>
+
+            <div class="hero-cta-group">
+                <a href="{% url 'requests:request_project' %}" class="btn btn-forest" id="hero-btn-request">
+                    Request a Project &rarr;
+                </a>
+                <a href="#projects" class="btn btn-outline" id="hero-btn-work">
+                    View Selected Work &darr;
+                </a>
+            </div>
+
+            <div class="hero-credentials-bar">
+                <div class="credential-item">
+                    <span>Degree:</span>
+                    <strong>JKUAT BBIT</strong>
+                </div>
+                <div class="credential-item">
+                    <span>Core Stack:</span>
+                    <strong>Django &bull; Flutter &bull; PostgreSQL</strong>
+                </div>
+                <div class="credential-item">
+                    <span>Location:</span>
+                    <strong>Nairobi, Kenya</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Architectural Engineering Card -->
+        <div>
+            <div class="hero-card-architectural">
+                <div class="hero-card-header">
+                    <span class="card-title-sm">Developer Profile / Spec</span>
+                    <span class="badge-tag badge-forest">Active</span>
+                </div>
+
+                <div class="hero-profile-snippet">
+                    <div class="hero-avatar-box">
+                        {% if profile.photo %}
+                            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" loading="lazy">
+                        {% else %}
+                            <span>JK</span>
+                        {% endif %}
+                    </div>
+                    <div class="hero-profile-meta">
+                        <h3>{{ profile.name|default:"Joseph Kiarie" }}</h3>
+                        <p>{{ profile.headline|default:"Full-Stack Developer & Systems Architect" }}</p>
+                    </div>
+                </div>
+
+                <div class="hero-specs-table">
+                    <div class="spec-row">
+                        <span class="spec-label">Primary Specialism</span>
+                        <span class="spec-val">Management Portals & Mobile Apps</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Academic Base</span>
+                        <span class="spec-val">JKUAT (BBIT, Ongoing)</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Expected Response</span>
+                        <span class="spec-val">{{ profile.response_time_statement|default:"Within 24 business hours" }}</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Production Database</span>
+                        <span class="spec-val">PostgreSQL / Supabase</span>
+                    </div>
+                </div>
+
+                <div class="hero-stack-pills">
+                    <span class="badge-tag">Django REST Framework</span>
+                    <span class="badge-tag">Flutter</span>
+                    <span class="badge-tag">PostgreSQL</span>
+                    <span class="badge-tag">M-Pesa Daraja</span>
+                    <span class="badge-tag">JWT Auth</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     2. RESTRAINED TECHNOLOGY MARQUEE
+     ========================================================================= -->
+<section class="marquee-band" aria-label="Key Technologies Ticker">
+    <div class="marquee-track">
+        <!-- Sequence 1 -->
+        <div class="marquee-group">
+            <span class="marquee-item">Django 6 &amp; Python<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Django REST Framework<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Flutter &amp; Dart<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">PostgreSQL / Supabase<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Safaricom Daraja M-Pesa<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">JWT Authentication<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Linux &amp; Cloud Deployment<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Postman API Collections<span class="marquee-sep">&bull;</span></span>
+        </div>
+        <!-- Sequence 2 (Duplicate for continuous loop) -->
+        <div class="marquee-group" aria-hidden="true">
+            <span class="marquee-item">Django 6 &amp; Python<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Django REST Framework<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Flutter &amp; Dart<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">PostgreSQL / Supabase<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Safaricom Daraja M-Pesa<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">JWT Authentication<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Linux &amp; Cloud Deployment<span class="marquee-sep">&bull;</span></span>
+            <span class="marquee-item">Postman API Collections<span class="marquee-sep">&bull;</span></span>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     3. FEATURED PROJECTS / CASE STUDIES
+     ========================================================================= -->
+<section class="section-spacing" id="projects">
+    <div class="container">
+        <div class="section-header-block">
+            <div class="section-header-split">
+                <div>
+                    <span class="eyebrow-label">01 / Selected Work</span>
+                    <h2 class="section-title">Systems Engineered for Operational Reality</h2>
+                </div>
+                <a href="{% url 'portfolio:project_list' %}" class="btn btn-outline btn-sm">
+                    View All Projects &rarr;
+                </a>
+            </div>
+            <p class="section-desc">
+                Case studies detailing operational problems, architecture decisions, and actual software implementation. No fake testimonials or exaggerated statistics.
+            </p>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <div class="projects-showcase-container">
+            {% for project in featured_projects %}
+                {% if forloop.first %}
+                    <!-- PRIMARY FEATURED CASE STUDY: JoseKiarie Pharmacy -->
+                    <article class="project-card-primary">
+                        <div class="project-card-details">
+                            <div class="project-meta-strip">
+                                <span class="badge-tag badge-forest">Primary Case Study</span>
+                                <span class="badge-tag">{{ project.category.name|default:"Internal Management System" }}</span>
+                                <span class="badge-tag">{{ project.year|default:"2024" }}</span>
+                                <span class="badge-tag badge-amber">{{ project.status }}</span>
+                            </div>
+
+                            <a href="{% url 'portfolio:project_detail' project.slug %}" class="project-title-link">
+                                <h3>{{ project.title }}</h3>
+                            </a>
+
+                            <p class="project-tagline">
+                                {{ project.tagline }}
+                            </p>
+
+                            {% if project.problem_statement %}
+                                <div class="project-brief-section">
+                                    <span class="brief-label">Problem Addressed</span>
+                                    <p class="brief-text">{{ project.problem_statement|truncatewords:40 }}</p>
+                                </div>
+                            {% endif %}
+
+                            {% if project.my_role %}
+                                <div style="margin-bottom: 1.5rem; font-size: 0.88rem; color: var(--ink-800);">
+                                    <strong style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; color: var(--ink-900);">My Role:</strong>
+                                    {{ project.my_role }}
+                                </div>
+                            {% endif %}
+
+                            <div class="project-tech-list">
+                                {% for tech in project.technologies.all %}
+                                    <span class="badge-tag">{{ tech.name }}</span>
+                                {% endfor %}
+                            </div>
+
+                            <div class="project-actions-row">
+                                <a href="{% url 'portfolio:project_detail' project.slug %}" class="btn btn-primary btn-sm">
+                                    Read Full Case Study &rarr;
+                                </a>
+                                {% if project.live_url %}
+                                    <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                                        Live System &nearr;
+                                    </a>
+                                {% endif %}
+                                {% if project.repo_url %}
+                                    <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                                        Repository &nearr;
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'requests:request_project_with_ref' project.slug %}" class="btn btn-forest btn-sm">
+                                    Request Similar System &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Considered Typographic / Geometric Fallback Frame -->
+                        <div class="project-visual-frame">
+                            {% if project.featured_image %}
+                                <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                            {% else %}
+                                <div class="visual-fallback-header">
+                                    <span>SYSTEM ARCHITECTURE</span>
+                                    <span class="visual-system-stamp">STAFF-FACING</span>
+                                </div>
+
+                                <div class="visual-fallback-graphic">
+                                    <div class="graphic-monogram">JKP / 01</div>
+                                    <p class="graphic-spec">DJANGO &bull; FLUTTER &bull; POSTGRESQL</p>
+                                </div>
+
+                                <div class="visual-fallback-footer">
+                                    <span>ROLE-BASED PERMISSIONS</span>
+                                    <span>BATCH FIFO EXPIRY</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </article>
+
+                {% else %}
+                    <!-- SECONDARY FEATURED CASE STUDY: AgriFlow & Others -->
+                    <article class="project-card-primary" style="margin-top: 1rem;">
+                        <div class="project-card-details">
+                            <div class="project-meta-strip">
+                                <span class="badge-tag badge-forest">Mobile &amp; Backend</span>
+                                <span class="badge-tag">{{ project.category.name|default:"Marketplace System" }}</span>
+                                <span class="badge-tag">{{ project.year|default:"2024" }}</span>
+                                <span class="badge-tag badge-amber">{{ project.status }}</span>
+                            </div>
+
+                            <a href="{% url 'portfolio:project_detail' project.slug %}" class="project-title-link">
+                                <h3>{{ project.title }}</h3>
+                            </a>
+
+                            <p class="project-tagline">
+                                {{ project.tagline }}
+                            </p>
+
+                            {% if project.problem_statement %}
+                                <div class="project-brief-section">
+                                    <span class="brief-label">Problem Addressed</span>
+                                    <p class="brief-text">{{ project.problem_statement|truncatewords:35 }}</p>
+                                </div>
+                            {% endif %}
+
+                            <div class="project-tech-list">
+                                {% for tech in project.technologies.all %}
+                                    <span class="badge-tag">{{ tech.name }}</span>
+                                {% endfor %}
+                            </div>
+
+                            <div class="project-actions-row">
+                                <a href="{% url 'portfolio:project_detail' project.slug %}" class="btn btn-primary btn-sm">
+                                    Read Full Case Study &rarr;
+                                </a>
+                                {% if project.live_url %}
+                                    <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                                        Live App &nearr;
+                                    </a>
+                                {% endif %}
+                                {% if project.repo_url %}
+                                    <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                                        Repository &nearr;
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'requests:request_project_with_ref' project.slug %}" class="btn btn-forest btn-sm">
+                                    Request Project Like This &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Typographic Frame 2 -->
+                        <div class="project-visual-frame" style="background-color: #112233;">
+                            {% if project.featured_image %}
+                                <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                            {% else %}
+                                <div class="visual-fallback-header">
+                                    <span>SUPPLY CHAIN &bull; MOBILE</span>
+                                    <span class="visual-system-stamp">M-PESA DARAJA</span>
+                                </div>
+
+                                <div class="visual-fallback-graphic">
+                                    <div class="graphic-monogram">AGF / 02</div>
+                                    <p class="graphic-spec">FLUTTER &bull; DRF &bull; POSTGRESQL</p>
+                                </div>
+
+                                <div class="visual-fallback-footer">
+                                    <span>JWT AUTHENTICATION</span>
+                                    <span>PAY-ON-DELIVERY FLOW</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endif %}
+            {% empty %}
+                <div style="background-color: var(--bg-surface); padding: 2rem; border: 1px solid var(--border-medium); border-radius: var(--radius-sm);">
+                    <p>Projects are currently being populated. Check back shortly.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     4. WHAT I BUILD (SERVICES)
+     ========================================================================= -->
+<section class="section-spacing section-band-alt" id="services">
+    <div class="container">
+        <div class="section-header-block">
+            <span class="eyebrow-label">02 / What I Build</span>
+            <h2 class="section-title">Practical Software for Real Business Workflows</h2>
+            <p class="section-desc">
+                I do not build generic landing page clones. I architect practical systems that replace chaotic spreadsheets, streamline manual approvals, and connect field operations to management.
+            </p>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <div class="services-grid">
+            {% for service in services %}
+                <article class="service-card">
+                    <span class="service-card-num">0{{ forloop.counter }} // CAPABILITY</span>
+                    <h3>{{ service.title }}</h3>
+                    {% if service.tagline %}
+                        <p class="service-tagline">{{ service.tagline }}</p>
+                    {% endif %}
+                    <p class="service-desc">{{ service.description }}</p>
+
+                    {% if service.deliverables %}
+                        <ul class="service-deliverables-list">
+                            {% for item in service.get_deliverables_list %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <p>Services will appear here once configured in Django Admin.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     5. SKILLS & CORE STACK
+     ========================================================================= -->
+<section class="section-spacing" id="stack">
+    <div class="container">
+        <div class="section-header-block">
+            <div class="section-header-split">
+                <div>
+                    <span class="eyebrow-label">03 / Engineering Stack</span>
+                    <h2 class="section-title">Pragmatic, Production-Tested Technologies</h2>
+                </div>
+                <span class="badge-tag badge-forest">Focused &amp; Tested</span>
+            </div>
+            <p class="section-desc">
+                Curated stack selected for operational reliability, robust relational consistency, and predictable performance on mobile bandwidth in Kenya.
+            </p>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <div class="stack-matrix-grid">
+            <!-- Backend & Architecture -->
+            <div class="stack-group-card">
+                <h3 class="stack-group-title">Backend &amp; Systems Architecture</h3>
+                <div class="stack-items-list">
+                    <div class="stack-item-row">
+                        <span class="stack-name">Python &amp; Django</span>
+                        <span class="stack-level badge-tag badge-forest">Core Stack</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">Django REST Framework (DRF)</span>
+                        <span class="stack-level badge-tag badge-forest">Core Stack</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">Role-Based Access Control</span>
+                        <span class="stack-level badge-tag">Production</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">JWT &amp; Token Auth</span>
+                        <span class="stack-level badge-tag">Production</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile & Client Engineering -->
+            <div class="stack-group-card">
+                <h3 class="stack-group-title">Mobile Engineering</h3>
+                <div class="stack-items-list">
+                    <div class="stack-item-row">
+                        <span class="stack-name">Flutter &amp; Dart</span>
+                        <span class="stack-level badge-tag badge-forest">Core Stack</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">Cross-Platform (Android/iOS)</span>
+                        <span class="stack-level badge-tag">Production</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">Responsive Layouts (360px+)</span>
+                        <span class="stack-level badge-tag">Production</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">RESTful Offline Sync Logic</span>
+                        <span class="stack-level badge-tag">Operational</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Database & Cloud Infrastructure -->
+            <div class="stack-group-card">
+                <h3 class="stack-group-title">Databases, APIs &amp; Integrations</h3>
+                <div class="stack-items-list">
+                    <div class="stack-item-row">
+                        <span class="stack-name">PostgreSQL &amp; RDBMS Design</span>
+                        <span class="stack-level badge-tag badge-forest">Core Stack</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">Supabase (Auth &amp; Cloud DB)</span>
+                        <span class="stack-level badge-tag badge-forest">Core Stack</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">M-Pesa Daraja STK Push</span>
+                        <span class="stack-level badge-tag badge-amber">Integrations</span>
+                    </div>
+                    <div class="stack-item-row">
+                        <span class="stack-name">Git, Postman &amp; Linux Deploy</span>
+                        <span class="stack-level badge-tag">DevOps</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     6. ABOUT SNAPSHOT
+     ========================================================================= -->
+<section class="section-spacing section-band-alt" id="about">
+    <div class="container">
+        <div class="section-header-block">
+            <span class="eyebrow-label">04 / About Snapshot</span>
+            <h2 class="section-title">A Working Developer, Not a Template</h2>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <div class="about-snapshot-layout">
+            <div class="narrative-body">
+                <p>
+                    I study Business Information Technology at JKUAT while engineering real software systems. My academic training gives me a double lens: I understand business operations, supply chains, and accounting workflows just as deeply as database normalization, query execution, and API endpoints.
+                </p>
+                <p>
+                    In local Kenyan businesses, software failures rarely happen because the UI wasn't shiny enough. They happen because inventory math didn't account for concurrent orders, staff roles weren't restricted, or offline mobile sync corrupted data. That is why I engineer systems from the database outward.
+                </p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="{% url 'profiles:about' %}" class="btn btn-outline btn-sm">
+                        Read Full Background &amp; Philosophy &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <div class="about-highlight-box">
+                <h4>Core Philosophy</h4>
+                <p style="margin-bottom: 1rem;">
+                    &ldquo;Build for the field, not for a slide deck. A system that works predictably on entry-level Android devices and 3G data is worth ten over-engineered prototypes that crash under load.&rdquo;
+                </p>
+                <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-forest);">
+                    &mdash; Joseph Kiarie, Nairobi
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     7. EXPERIENCE & EDUCATION SNAPSHOT
+     ========================================================================= -->
+<section class="section-spacing" id="experience">
+    <div class="container">
+        <div class="section-header-block">
+            <span class="eyebrow-label">05 / Background</span>
+            <h2 class="section-title">Experience &amp; Academic Training</h2>
+            <p class="section-desc">
+                Engineering attachment experience coupled with formal degree training in Business Information Technology.
+            </p>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <div class="timeline-list">
+            <!-- Experience Item -->
+            {% for exp in experiences %}
+                <article class="timeline-item">
+                    <div class="timeline-item-header">
+                        <div>
+                            <h3 class="timeline-role-title">{{ exp.role }}</h3>
+                            <div class="timeline-org">{{ exp.organisation }} &bull; {{ exp.location|default:"Kenya" }}</div>
+                        </div>
+                        <span class="timeline-period">{{ exp.start_date }} &mdash; {{ exp.end_date|default:"Present" }}</span>
+                    </div>
+
+                    {% if exp.description %}
+                        <p class="timeline-desc">{{ exp.description }}</p>
+                    {% endif %}
+
+                    {% if exp.bullets.all %}
+                        <ul class="timeline-bullets">
+                            {% for b in exp.bullets.all %}
+                                <li>{{ b.text }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </article>
+            {% endfor %}
+
+            <!-- Education Item -->
+            {% for edu in educations %}
+                <article class="timeline-item">
+                    <div class="timeline-item-header">
+                        <div>
+                            <h3 class="timeline-role-title">{{ edu.qualification }}</h3>
+                            <div class="timeline-org">{{ edu.institution }}</div>
+                        </div>
+                        <span class="timeline-period">{{ edu.start_date }} &mdash; {{ edu.end_date|default:"Ongoing" }}</span>
+                    </div>
+
+                    {% if edu.notes %}
+                        <p class="timeline-desc">{{ edu.notes }}</p>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     8. PROJECT CTA BAND
+     ========================================================================= -->
+<section class="cta-band">
+    <div class="container cta-grid">
+        <div>
+            <span class="eyebrow-label" style="color: var(--accent-forest-border);">Let's Build It</span>
+            <h2 class="cta-heading">Have a system or operational problem you need solved?</h2>
+            <p class="cta-subtext">
+                Whether you need to replace manual paper records with a staff management portal, engineer a custom Flutter mobile application, or integrate M-Pesa payments, let's discuss your requirements.
+            </p>
+        </div>
+
+        <div class="cta-action-card">
+            <a href="{% url 'requests:request_project' %}" class="btn btn-forest" style="width: 100%; padding: 0.9rem 1.5rem; font-size: 0.95rem;">
+                Request a Project Proposal &rarr;
+            </a>
+            <a href="{% url 'contact:contact' %}" class="btn btn-outline-white" style="width: 100%;">
+                Send a Direct Message
+            </a>
+            <p>
+                {{ profile.response_time_statement|default:"I typically respond within 24 business hours." }}
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

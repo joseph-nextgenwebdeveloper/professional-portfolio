@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ profile.name|default:"Joseph Kiarie" }} — Full-Stack Developer & Systems Architect{% endblock %}</title>
+    <meta name="description" content="{{ profile.short_bio|default:'Full-Stack Developer from Kenya building dependable web applications, Flutter mobile experiences, and PostgreSQL database architectures.' }}">
+    
+    {% load static %}
+    <!-- Google Fonts: Fraunces (Editorial Heading Serif), Inter (Clean Readable Body), JetBrains Mono (Technical Spec Monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- SITE HEADER & UNIFIED NAVIGATION -->
+    <header class="site-header">
+        <div class="container nav-wrapper">
+            <!-- Brand -->
+            <a href="{% url 'portfolio:home' %}" class="brand-block" aria-label="Joseph Kiarie Home">
+                <div class="brand-monogram">JK</div>
+                <span class="brand-text">{{ profile.name|default:"Joseph Kiarie" }}</span>
+                <span class="brand-role-tag">Full-Stack Dev &bull; Nairobi</span>
+            </a>
+
+            <!-- Nav Links List (Preserved uncrowded) -->
+            <nav>
+                <ul class="nav-menu-desktop" id="desktop-nav">
+                    <li><a href="{% url 'portfolio:home' %}">Home</a></li>
+                    <li><a href="{% url 'profiles:about' %}">About</a></li>
+                    <li><a href="{% url 'portfolio:project_list' %}">Projects</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#services">Services</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#experience">Experience</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#stack">Stack</a></li>
+                    <li><a href="{% url 'contact:contact' %}">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Actions Area (Separate prominent 'Request a Project' button) -->
+            <div class="nav-action-area">
+                <a href="{% url 'requests:request_project' %}" class="nav-btn-request" id="nav-cta-request">
+                    Request a Project &rarr;
+                </a>
+                <button class="nav-mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div class="nav-mobile-drawer" id="mobile-drawer">
+            <ul class="nav-mobile-list">
+                <li><a href="{% url 'portfolio:home' %}">Home</a></li>
+                <li><a href="{% url 'profiles:about' %}">About</a></li>
+                <li><a href="{% url 'portfolio:project_list' %}">Projects</a></li>
+                <li><a href="{% url 'portfolio:home' %}#services">Services</a></li>
+                <li><a href="{% url 'portfolio:home' %}#experience">Experience</a></li>
+                <li><a href="{% url 'portfolio:home' %}#stack">Stack</a></li>
+                <li><a href="{% url 'contact:contact' %}">Contact</a></li>
+                <li style="padding-top: 0.5rem;">
+                    <a href="{% url 'requests:request_project' %}" class="btn btn-forest" style="width: 100%; text-align: center; color: #FFFFFF !important;">
+                        Request a Project &rarr;
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- MAIN PAGE CONTENT -->
+    <main class="main-content">
+        {% if messages %}
+            <div class="container" style="padding-top: 1.5rem;">
+                {% for message in messages %}
+                    <div class="flash-alert flash-alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ARCHITECTURAL FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top-row">
+                <div class="footer-brand-meta">
+                    <div class="brand-block" style="margin-bottom: 0.75rem;">
+                        <div class="brand-monogram">JK</div>
+                        <span class="brand-text">{{ profile.name|default:"Joseph Kiarie" }}</span>
+                    </div>
+                    <p>
+                        Full-Stack Developer & Systems Architect. BBIT student at JKUAT engineering robust web platforms, Flutter mobile apps, and PostgreSQL databases for real operating organizations.
+                    </p>
+                </div>
+
+                <div class="footer-nav-col">
+                    <h5>Navigation</h5>
+                    <ul class="footer-links-list">
+                        <li><a href="{% url 'portfolio:home' %}">Home</a></li>
+                        <li><a href="{% url 'profiles:about' %}">About & Background</a></li>
+                        <li><a href="{% url 'portfolio:project_list' %}">Selected Projects</a></li>
+                        <li><a href="{% url 'portfolio:home' %}#services">Services & What I Build</a></li>
+                        <li><a href="{% url 'contact:contact' %}">Direct Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav-col">
+                    <h5>Inquiries & Work</h5>
+                    <ul class="footer-links-list">
+                        <li><a href="{% url 'requests:request_project' %}">Request a Project</a></li>
+                        {% for link in social_links %}
+                            <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.get_platform_display }} &nearr;</a></li>
+                        {% empty %}
+                            <li><a href="https://github.com/joseph001technology" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom-row">
+                <span>&copy; {% now "Y" %} {{ profile.name|default:"Joseph Kiarie" }}. Built with Django &amp; PostgreSQL.</span>
+                <span>Nairobi, Kenya &bull; {{ profile.availability_status|default:"Available for projects" }}</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Drawer Toggle Script -->
+    <script>
+        (function() {
+            const toggleBtn = document.getElementById('mobile-toggle-btn');
+            const drawer = document.getElementById('mobile-drawer');
+            if (toggleBtn && drawer) {
+                toggleBtn.addEventListener('click', function() {
+                    const isOpen = drawer.classList.toggle('is-open');
+                    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

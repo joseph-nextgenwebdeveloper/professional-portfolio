@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Direct Contact — {{ profile.name|default:"Joseph Kiarie" }}{% endblock %}
+
+{% block content %}
+<section class="section-spacing">
+    <div class="container" style="max-width: 960px;">
+        <!-- Header -->
+        <div class="section-header-block">
+            <span class="eyebrow-label">Direct Communication // Contact</span>
+            <h1 class="section-title">Get in Touch</h1>
+            <p class="section-desc">
+                Have a technical question, consulting inquiry, or looking to discuss an upcoming software system? Send a direct message below.
+            </p>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: start;" class="contact-split-grid">
+            <!-- Left: Direct Info Card -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="hero-card-architectural">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">{{ profile.name|default:"Joseph Kiarie" }}</h3>
+                    <p style="font-size: 0.88rem; color: var(--ink-600); margin-bottom: 1.5rem;">
+                        {{ profile.headline|default:"Full-Stack Developer & Systems Architect" }}
+                    </p>
+
+                    <div class="hero-specs-table">
+                        <div class="spec-row">
+                            <span class="spec-label">Location</span>
+                            <span class="spec-val">{{ profile.location|default:"Nairobi, Kenya" }}</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Response Time</span>
+                            <span class="spec-val">{{ profile.response_time_statement|default:"Within 24 business hours" }}</span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">Availability</span>
+                            <span class="spec-val badge-tag badge-forest">Open for projects</span>
+                        </div>
+                    </div>
+
+                    {% if social_links %}
+                        <div style="padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+                            <div style="font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; color: var(--ink-400); margin-bottom: 0.75rem;">
+                                Channels &amp; Profiles
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                {% for link in social_links %}
+                                    <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.88rem; color: var(--ink-800); display: flex; justify-content: space-between; align-items: center;">
+                                        <span>{{ link.get_platform_display }}</span>
+                                        <span style="color: var(--accent-forest);">&nearr;</span>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Distinction from Request a Project -->
+                <div class="about-highlight-box">
+                    <h4>Need an Official Quote?</h4>
+                    <p style="margin-bottom: 1rem;">
+                        If you have a concrete project with timelines and specifications, use the dedicated project intake form for faster processing.
+                    </p>
+                    <a href="{% url 'requests:request_project' %}" class="btn btn-outline btn-sm">
+                        Go to Project Request Form &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right: Contact Form -->
+            <div class="form-card">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="flash-alert flash-alert-error">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">
+                            Your Full Name <span class="form-required">*</span>
+                        </label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <span class="form-hint" style="color: var(--accent-amber);">{{ form.name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">
+                            Your Email Address <span class="form-required">*</span>
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="form-hint" style="color: var(--accent-amber);">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.subject.id_for_label }}" class="form-label">
+                            Subject <span class="form-required">*</span>
+                        </label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <span class="form-hint" style="color: var(--accent-amber);">{{ form.subject.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.message.id_for_label }}" class="form-label">
+                            Message <span class="form-required">*</span>
+                        </label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <span class="form-hint" style="color: var(--accent-amber);">{{ form.message.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div style="padding-top: 1rem; border-top: 1px solid var(--border-medium);">
+                        <button type="submit" class="btn btn-forest" style="width: 100%; padding: 0.85rem;">
+                            Send Message &rarr;
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+@media (min-width: 768px) {
+    .contact-split-grid {
+        grid-template-columns: 1fr 1.35fr !important;
+    }
+}
+</style>
+{% endblock %}
