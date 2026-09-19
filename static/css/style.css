@@ -41,6 +41,16 @@
     --accent-amber-subtle:  #FDF3EB;
     --accent-amber-border:  #F2CFB7;
 
+    /* Electric Blue Accent (data / tech labels) */
+    --accent-blue:          #1A4E8F;   /* Strong navy-adjacent blue */
+    --accent-blue-subtle:   #E8F0FC;
+    --accent-blue-border:   #A8C4EE;
+
+    /* Crimson / Cardinal Accent (status / warnings) */
+    --accent-crimson:       #8B1A2A;   /* Deep crimson */
+    --accent-crimson-subtle:#FBE8EA;
+    --accent-crimson-border:#F0ADB7;
+
     /* Typography Families */
     --font-heading: 'Fraunces', Georgia, serif;
     --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -560,6 +570,14 @@ button, input, textarea, select {
     border-radius: 50%;
     background-color: #22c55e;
     flex-shrink: 0;
+    animation: pulseDot 2s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+}
+
+@keyframes pulseDot {
+    0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+    60%  { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
 }
 
 .hero-heading {
@@ -587,6 +605,26 @@ button, input, textarea, select {
     font-family: var(--font-heading);
     color: var(--accent-forest);
     font-weight: 400;
+    display: inline-block;
+    position: relative;
+}
+
+.hero-heading em::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--accent-amber);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underlineReveal 0.9s 0.5s ease forwards;
+}
+
+@keyframes underlineReveal {
+    to { transform: scaleX(1); }
 }
 
 .hero-subhead {
@@ -917,6 +955,18 @@ button, input, textarea, select {
     position: relative;
 }
 
+.project-visual-frame:has(img) {
+    padding: 0;
+    overflow: hidden;
+}
+
+.project-visual-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 @media (min-width: 960px) {
     .project-visual-frame {
         border-top: none;
@@ -1044,7 +1094,22 @@ button, input, textarea, select {
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-subtle);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-top-color 0.2s ease;
 }
+
+.service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+}
+
+/* Alternate accent colors on nth service cards */
+.service-card:nth-child(2) { border-top-color: var(--accent-amber); }
+.service-card:nth-child(3) { border-top-color: var(--accent-blue); }
+.service-card:nth-child(4) { border-top-color: var(--accent-crimson); }
+.service-card:nth-child(5) { border-top-color: var(--ink-900); }
+.service-card:nth-child(2) .service-card-num { color: var(--accent-amber); }
+.service-card:nth-child(3) .service-card-num { color: var(--accent-blue); }
+.service-card:nth-child(4) .service-card-num { color: var(--accent-crimson); }
 
 .service-card-num {
     font-family: var(--font-mono);
@@ -1213,8 +1278,19 @@ button, input, textarea, select {
 .timeline-item {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-medium);
+    border-left: 4px solid var(--accent-forest);
     border-radius: var(--radius-sm);
     padding: 2rem;
+    transition: border-left-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.timeline-item:hover {
+    border-left-color: var(--accent-amber);
+    box-shadow: var(--shadow-lift);
+}
+
+.timeline-item:nth-child(even) {
+    border-left-color: var(--accent-blue);
 }
 
 .timeline-item-header {
@@ -1496,7 +1572,184 @@ button, input, textarea, select {
 }
 
 /* --------------------------------------------------------------------------
-   16. RESPONSIVE BREAKPOINT RIGOR (Tested down to 360px)
+   16. BADGE VARIANTS — ADDITIONAL ACCENT COLORS
+   -------------------------------------------------------------------------- */
+.badge-blue {
+    background-color: var(--accent-blue-subtle);
+    color: var(--accent-blue);
+    border-color: var(--accent-blue-border);
+}
+
+.badge-crimson {
+    background-color: var(--accent-crimson-subtle);
+    color: var(--accent-crimson);
+    border-color: var(--accent-crimson-border);
+}
+
+/* --------------------------------------------------------------------------
+   17. SCROLL REVEAL ANIMATIONS
+   -------------------------------------------------------------------------- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.anim-fade-up {
+    animation: fadeInUp 0.6s ease both;
+}
+
+.anim-fade-up-delay-1 { animation: fadeInUp 0.6s 0.1s ease both; }
+.anim-fade-up-delay-2 { animation: fadeInUp 0.6s 0.2s ease both; }
+.anim-fade-up-delay-3 { animation: fadeInUp 0.6s 0.3s ease both; }
+.anim-fade-up-delay-4 { animation: fadeInUp 0.6s 0.4s ease both; }
+
+@media (prefers-reduced-motion: reduce) {
+    .anim-fade-up,
+    .anim-fade-up-delay-1,
+    .anim-fade-up-delay-2,
+    .anim-fade-up-delay-3,
+    .anim-fade-up-delay-4 {
+        animation: none;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   18. STACK CARD — ENHANCED HOVER + ACCENT BORDERS
+   -------------------------------------------------------------------------- */
+.stack-group-card {
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.stack-group-card:hover {
+    border-color: var(--ink-900);
+    transform: translateY(-2px);
+}
+
+.stack-group-card:nth-child(1) { border-top: 3px solid var(--accent-forest); }
+.stack-group-card:nth-child(2) { border-top: 3px solid var(--accent-blue); }
+.stack-group-card:nth-child(3) { border-top: 3px solid var(--accent-amber); }
+
+/* --------------------------------------------------------------------------
+   19. HERO CREDENTIALS BAR — DIVIDER ACCENT
+   -------------------------------------------------------------------------- */
+.credential-item:not(:first-child) {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--border-medium);
+}
+
+/* --------------------------------------------------------------------------
+   20. NAV ENHANCED HOVER STATE
+   -------------------------------------------------------------------------- */
+.nav-menu-desktop a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-amber);
+    transition: width 0.2s ease;
+}
+
+.nav-menu-desktop a:hover::after {
+    width: 100%;
+}
+
+.nav-menu-desktop a.active::after {
+    width: 100%;
+    background-color: var(--accent-forest);
+}
+
+/* --------------------------------------------------------------------------
+   21. PROJECT CARD PRIMARY — STRONGER LEFT ACCENT
+   -------------------------------------------------------------------------- */
+.project-card-primary {
+    border-left: 4px solid var(--accent-forest) !important;
+}
+
+.project-card-primary:hover {
+    border-left-color: var(--accent-amber) !important;
+}
+
+/* --------------------------------------------------------------------------
+   22. ABOUT SNAPSHOT — COLOURED QUOTE BOX
+   -------------------------------------------------------------------------- */
+.about-highlight-box {
+    border-left-color: var(--accent-amber) !important;
+    background-color: var(--accent-amber-subtle);
+    border-color: var(--accent-amber-border);
+}
+
+.about-highlight-box h4 {
+    color: var(--accent-amber);
+}
+
+/* --------------------------------------------------------------------------
+   23. MARQUEE ENHANCED STYLING — AMBER SEPARATORS
+   -------------------------------------------------------------------------- */
+.marquee-item:hover {
+    color: #FFFFFF;
+}
+
+.marquee-sep {
+    color: var(--accent-amber-border) !important;
+    margin: 0 0.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   24. SECTION DIVIDER — ACCENT GRADIENT LINE
+   -------------------------------------------------------------------------- */
+.section-divider-line {
+    height: 2px !important;
+    background: linear-gradient(
+        90deg,
+        var(--accent-forest) 0%,
+        var(--accent-amber) 40%,
+        var(--border-subtle) 80%
+    ) !important;
+    opacity: 0.5;
+}
+
+/* --------------------------------------------------------------------------
+   25. CTA BAND — FOREST LINE ACCENT
+   -------------------------------------------------------------------------- */
+.cta-band {
+    border-top: 4px solid var(--accent-forest) !important;
+}
+
+.cta-heading em {
+    font-style: italic;
+    color: var(--accent-forest-border);
+}
+
+/* --------------------------------------------------------------------------
+   26. FOOTER — BRAND MONOGRAM COLOUR
+   -------------------------------------------------------------------------- */
+.site-footer .brand-monogram {
+    background-color: var(--accent-forest);
+}
+
+/* --------------------------------------------------------------------------
+   27. FORM INPUTS — AMBER FOCUS STATE
+   -------------------------------------------------------------------------- */
+.form-input:focus {
+    border-color: var(--accent-amber) !important;
+    box-shadow: 0 0 0 3px rgba(184, 88, 24, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   28. RESPONSIVE BREAKPOINT RIGOR (Tested down to 360px)
    -------------------------------------------------------------------------- */
 @media (max-width: 420px) {
     .container {

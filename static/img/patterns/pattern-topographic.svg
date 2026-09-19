@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .topo-1 { stroke: #0C1622; stroke-width: 0.9; stroke-opacity: 0.08; fill: none; }
+      .topo-2 { stroke: #185338; stroke-width: 0.9; stroke-opacity: 0.12; fill: none; }
+      .topo-3 { stroke: #B85818; stroke-width: 0.85; stroke-opacity: 0.10; fill: none; }
+    </style>
+  </defs>
+  <!-- Gentle organic topographic curves -->
+  <path class="topo-1" d="M0,40 Q50,20 100,60 T200,40" />
+  <path class="topo-2" d="M0,70 Q60,40 120,80 T200,60" />
+  <path class="topo-1" d="M0,100 Q70,70 140,110 T200,90" />
+  <path class="topo-3" d="M0,130 Q50,110 110,140 T200,120" />
+  <path class="topo-2" d="M0,160 Q80,130 150,170 T200,150" />
+  <path class="topo-1" d="M0,190 Q60,170 120,200 T200,180" />
+  <path class="topo-3" d="M0,10 Q90,-10 160,30 T200,10" />
+</svg>
