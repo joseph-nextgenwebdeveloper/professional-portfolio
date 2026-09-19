@@ -41,6 +41,16 @@
     --accent-amber-subtle:  #FDF3EB;
     --accent-amber-border:  #F2CFB7;
 
+    /* Brand Accent Tokens & Patterns */
+    --accent-terracotta:    #C8856D;   /* Brand logo terracotta tint */
+    --accent-copper:        #B85818;   /* Warm copper */
+    --accent-teal:          #185338;   /* Deep forest teal */
+    --accent-navy:          #0D1B2A;   /* Architectural deep navy */
+
+    --pattern-arc-tint:         var(--accent-copper);
+    --pattern-dot-grid-tint:     var(--ink-800);
+    --pattern-topographic-tint:  var(--accent-copper);
+
     /* Electric Blue Accent (data / tech labels) */
     --accent-blue:          #1A4E8F;   /* Strong navy-adjacent blue */
     --accent-blue-subtle:   #E8F0FC;
@@ -85,6 +95,85 @@
     --accent-forest-border: #1E5037;
     --accent-amber-subtle:  #2B1A10;
     --accent-amber-border:  #5C2E10;
+}
+
+/* --------------------------------------------------------------------------
+   SECTION BACKGROUND TEXTURE PATTERNS (v2 Rebrand)
+   -------------------------------------------------------------------------- */
+.pattern-arc-rings {
+    position: relative;
+}
+.pattern-arc-rings::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: var(--pattern-arc-tint, var(--accent-copper));
+    opacity: 0.08;
+    mask-image: url('../img/patterns/bg-pattern-arc-rings.svg');
+    mask-size: 260px 260px;
+    mask-repeat: repeat;
+    -webkit-mask-image: url('../img/patterns/bg-pattern-arc-rings.svg');
+    -webkit-mask-size: 260px 260px;
+    -webkit-mask-repeat: repeat;
+    z-index: 0;
+}
+
+.pattern-dot-grid {
+    position: relative;
+}
+.pattern-dot-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: var(--pattern-dot-grid-tint, var(--ink-800));
+    opacity: 0.06;
+    mask-image: url('../img/patterns/bg-pattern-dot-grid.svg');
+    mask-size: 24px 24px;
+    mask-repeat: repeat;
+    -webkit-mask-image: url('../img/patterns/bg-pattern-dot-grid.svg');
+    -webkit-mask-size: 24px 24px;
+    -webkit-mask-repeat: repeat;
+    z-index: 0;
+}
+
+.pattern-topographic {
+    position: relative;
+}
+.pattern-topographic::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: var(--pattern-topographic-tint, var(--accent-copper));
+    opacity: 0.07;
+    mask-image: url('../img/patterns/bg-pattern-topographic.svg');
+    mask-size: 320px 320px;
+    mask-repeat: repeat;
+    -webkit-mask-image: url('../img/patterns/bg-pattern-topographic.svg');
+    -webkit-mask-size: 320px 320px;
+    -webkit-mask-repeat: repeat;
+    z-index: 0;
+}
+
+.pattern-arc-rings > *,
+.pattern-dot-grid > *,
+.pattern-topographic > * {
+    position: relative;
+    z-index: 1;
+}
+
+.brand-logo-img {
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.brand-text-group {
+    display: flex;
+    flex-direction: column;
 }
 
 /* --------------------------------------------------------------------------
@@ -460,6 +549,28 @@ button, input, textarea, select {
     border-color: var(--accent-forest-hover);
 }
 
+.btn-copper {
+    background-color: var(--accent-copper);
+    color: #FFFFFF !important;
+    border-color: var(--accent-copper);
+}
+
+.btn-copper:hover {
+    background-color: #9E4A13;
+    border-color: #9E4A13;
+}
+
+.btn-teal {
+    background-color: #1B6A68;
+    color: #FFFFFF !important;
+    border-color: #1B6A68;
+}
+
+.btn-teal:hover {
+    background-color: #134F4D;
+    border-color: #134F4D;
+}
+
 .btn-outline {
     background-color: transparent;
     color: var(--ink-900);
@@ -501,22 +612,32 @@ button, input, textarea, select {
     border: 1px solid var(--border-subtle);
 }
 
-.badge-forest {
+.badge-forest, .badge-teal {
     background-color: var(--accent-forest-subtle);
     color: var(--accent-forest);
     border-color: var(--accent-forest-border);
 }
 
-.badge-amber {
+.badge-amber, .badge-copper {
     background-color: var(--accent-amber-subtle);
     color: var(--accent-amber);
     border-color: var(--accent-amber-border);
+}
+
+.badge-navy {
+    background-color: #E8EEF5;
+    color: var(--accent-blue);
+    border-color: var(--accent-blue-border);
 }
 
 .badge-dark {
     background-color: var(--bg-navy-card);
     color: var(--ink-white);
     border-color: var(--border-navy);
+}
+
+.heading-highlight-copper {
+    color: var(--accent-copper);
 }
 
 /* --------------------------------------------------------------------------

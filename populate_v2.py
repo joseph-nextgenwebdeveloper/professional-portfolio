@@ -56,7 +56,8 @@ def populate():
             "staff roles were not properly restricted, or offline mobile sync silently corrupted data. "
             "I engineer systems from the database outward."
         ),
-        photo="profile/jose.jpg",
+        photo="profile/joseph-portrait.jpg",
+        secondary_photo="profile/joseph-car.jpg",
         location="Nairobi, Kenya",
         email="josephkiarie@kiariejosephdevworks.net",
         availability_status="Available for new client projects & technical consulting",
@@ -308,7 +309,7 @@ def populate():
         category=cat_pharmacy,
         status="In Progress",
         year="2024",
-        featured_image="projects/Agriflow-login.jpeg",
+        featured_image=None,
         is_featured=True,
         is_published=True,
         display_order=1,
@@ -357,7 +358,7 @@ def populate():
         category=cat_agri,
         status="Completed",
         year="2024",
-        featured_image="projects/Agriflow-home.jpeg",
+        featured_image="projects/gallery/agriflow-home.jpg",
         is_featured=True,
         is_published=True,
         display_order=2,
@@ -385,7 +386,7 @@ def populate():
         category=cat_portal,
         status="In Progress",
         year="2025",
-        featured_image="profile/about-pic.jpg",
+        featured_image=None,
         is_featured=False,
         is_published=True,
         display_order=3,
@@ -395,16 +396,17 @@ def populate():
         techs["django"], techs["python"], techs["postgresql"], techs["html-css"], techs["javascript"],
     )
 
+    # AgriFlow Project Gallery Screenshots
     ProjectImage.objects.create(
         project=p2,
-        image="projects/Agriflow-login.jpeg",
-        caption="AgriFlow Mobile Marketplace — Login & STK Push Authentication Screen",
-        display_order=1
+        image="projects/gallery/agriflow-home.jpg",
+        caption="AgriFlow Mobile Marketplace — Farmer Dashboard & Fresh Produce Ordering",
+        display_order=0
     )
     ProjectImage.objects.create(
-        project=p1,
-        image="projects/Agriflow-home.jpeg",
-        caption="JoseKiarie Pharmacy — Inventory & Batch FIFO Dashboard Interface",
+        project=p2,
+        image="projects/gallery/agriflow-login.jpg",
+        caption="AgriFlow Mobile Authentication — Phone Verification (+254)",
         display_order=1
     )
 

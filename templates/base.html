@@ -7,6 +7,10 @@
     <meta name="description" content="{{ profile.short_bio|default:'Full-Stack Developer from Kenya building dependable web applications, Flutter mobile experiences, and PostgreSQL database architectures.' }}">
     
     {% load static %}
+    <!-- Favicon & Brand Mark -->
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/branding/logo-mark.svg' %}">
+    <link rel="shortcut icon" href="{% static 'img/branding/joseph-kiarie-logo.png' %}">
+
     <!-- Google Fonts: Fraunces (Editorial Heading Serif), Inter (Clean Readable Body), JetBrains Mono (Technical Spec Monospace) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,15 +23,17 @@
     <!-- SITE HEADER & UNIFIED NAVIGATION -->
     <header class="site-header">
         <div class="container nav-wrapper">
-            <!-- Brand -->
+            <!-- Brand with Personal Logo Mark -->
             <a href="{% url 'portfolio:home' %}" class="brand-block" aria-label="Joseph Kiarie Home">
-                <div class="brand-monogram">JK</div>
-                <span class="brand-text">{{ profile.name|default:"Joseph Kiarie" }}</span>
-                <span class="brand-role-tag">Full-Stack Dev &bull; Nairobi</span>
+                <img src="{% static 'img/branding/logo-mark.svg' %}" alt="Joseph Kiarie Arc Logo Mark" class="brand-logo-img" width="34" height="34">
+                <div class="brand-text-group">
+                    <span class="brand-text">{{ profile.name|default:"Joseph Kiarie" }}</span>
+                    <span class="brand-role-tag">Full-Stack Dev &bull; Nairobi</span>
+                </div>
             </a>
 
-            <!-- Nav Links List (Preserved uncrowded) -->
-            <nav>
+            <!-- Nav Links List -->
+            <nav aria-label="Main Navigation">
                 <ul class="nav-menu-desktop" id="desktop-nav">
                     <li><a href="{% url 'portfolio:home' %}">Home</a></li>
                     <li><a href="{% url 'profiles:about' %}">About</a></li>
@@ -39,7 +45,7 @@
                 </ul>
             </nav>
 
-            <!-- Actions Area (Separate prominent 'Request a Project' button) -->
+            <!-- Actions Area -->
             <div class="nav-action-area">
                 <a href="{% url 'requests:request_project' %}" class="nav-btn-request" id="nav-cta-request">
                     Request a Project &rarr;
@@ -89,13 +95,16 @@
     </main>
 
     <!-- ARCHITECTURAL FOOTER -->
-    <footer class="site-footer">
+    <footer class="site-footer pattern-arc-rings">
         <div class="container">
             <div class="footer-top-row">
                 <div class="footer-brand-meta">
                     <div class="brand-block" style="margin-bottom: 0.75rem;">
-                        <div class="brand-monogram">JK</div>
-                        <span class="brand-text">{{ profile.name|default:"Joseph Kiarie" }}</span>
+                        <img src="{% static 'img/branding/logo-mark.svg' %}" alt="Joseph Kiarie Arc Logo Mark" class="brand-logo-img" width="32" height="32">
+                        <div class="brand-text-group">
+                            <span class="brand-text" style="color: #FFFFFF;">{{ profile.name|default:"Joseph Kiarie" }}</span>
+                            <span class="brand-role-tag" style="color: var(--accent-amber-border);">Innovative Solutions</span>
+                        </div>
                     </div>
                     <p>
                         Full-Stack Developer & Systems Architect. BBIT student at JKUAT engineering robust web platforms, Flutter mobile apps, and PostgreSQL databases for real operating organizations.

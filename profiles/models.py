@@ -17,6 +17,7 @@ class Profile(models.Model):
         help_text="Detailed professional narrative, engineering principles, and background."
     )
     photo = models.ImageField(upload_to='profile/', blank=True, null=True)
+    secondary_photo = models.ImageField(upload_to='profile/', blank=True, null=True, help_text="Secondary profile photo for About section")
     location = models.CharField(max_length=150, default="Nairobi, Kenya")
     
     email = models.EmailField(blank=True, null=True)

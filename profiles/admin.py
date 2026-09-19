@@ -17,7 +17,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Personal & Branding', {
-            'fields': ('name', 'headline', 'short_bio', 'long_bio', 'photo', 'cv_file')
+            'fields': ('name', 'headline', 'short_bio', 'long_bio', 'photo', 'secondary_photo', 'cv_file')
         }),
         ('Location & Contact', {
             'fields': ('location', 'email', 'phone', 'github_url', 'linkedin_url')
