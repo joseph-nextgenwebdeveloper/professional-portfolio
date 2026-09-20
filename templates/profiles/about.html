@@ -6,28 +6,36 @@
 {% block content %}
 <section class="section-spacing">
     <div class="container">
-        <!-- Header -->
         <div class="section-header-block">
             <span class="eyebrow-label">About // Background</span>
             <h1 class="section-title">Systems Developer with Business Information Insight</h1>
             <p class="section-desc">
-                Engineering practical software platforms rooted in real operational logic, transactional integrity, and field utility.
+                Engineering practical software platforms rooted in real operational logic, transactional integrity, and
+                field utility.
             </p>
             <div class="section-divider-line"></div>
         </div>
 
-        <!-- Narrative & Portrait Row -->
         <div class="about-snapshot-layout" style="align-items: start; margin-bottom: 4.5rem;">
-            <!-- Left: Professional Narrative -->
             <div class="narrative-body">
                 <p>
-                    I am <strong>{{ profile.name|default:"Joseph Kiarie" }}</strong>, a software developer pursuing a <strong>Bachelor of Business Information Technology (BBIT)</strong> at <strong>Jomo Kenyatta University of Agriculture and Technology (JKUAT)</strong> in Nairobi.
+                    I am <strong>{{ profile.name|default:"Joseph Kiarie" }}</strong>, a software developer pursuing a
+                    <strong>Bachelor of Business Information Technology (BBIT)</strong> at <strong>Jomo Kenyatta
+                        University of Agriculture and Technology (JKUAT)</strong> in Nairobi.
                 </p>
                 <p>
-                    My background bridges technical computer science and organizational systems. Unlike purely theoretical developers, my coursework and practical build experience encompass supply chain economics, accounting reconciliation, database modeling, and software engineering. I design systems with an understanding of why businesses buy software: to prevent stock loss, enforce accountability, automate invoicing, and save operational hours.
+                    My background bridges technical computer science and organizational systems. Unlike purely
+                    theoretical developers, my coursework and practical build experience encompass supply chain
+                    economics, accounting reconciliation, database modeling, and software engineering. I design systems
+                    with an understanding of why businesses buy software: to prevent stock loss, enforce accountability,
+                    automate invoicing, and save operational hours.
                 </p>
                 <p>
-                    {{ profile.long_bio|default:"My engineering focus is centered on Django, Flutter, and PostgreSQL. I choose this stack because it offers battle-tested reliability: Django enforces clean data models and bulletproof permissions; PostgreSQL ensures ACID compliance under concurrent load; and Flutter delivers unified, performant mobile client experiences across diverse Android hardware."|linebreaks }}
+                    {{ profile.long_bio|default:"My engineering focus is centered on Django, Flutter, and PostgreSQL. I
+                    choose this stack because it offers battle-tested reliability: Django enforces clean data models and
+                    bulletproof permissions; PostgreSQL ensures ACID compliance under concurrent load; and Flutter
+                    delivers unified, performant mobile client experiences across diverse Android hardware."|linebreaks
+                    }}
                 </p>
 
                 <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem;">
@@ -35,22 +43,21 @@
                         Request a Project &rarr;
                     </a>
                     {% if profile.cv_file %}
-                        <a href="{{ profile.cv_file.url }}" download class="btn btn-outline">
-                            Download Curriculum Vitae &darr;
-                        </a>
+                    <a href="{{ profile.cv_file.url }}" download class="btn btn-outline">
+                        Download Curriculum Vitae &darr;
+                    </a>
                     {% endif %}
                 </div>
             </div>
 
-            <!-- Right: Architectural Profile Box -->
             <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                 <div class="hero-card-architectural">
                     <div class="hero-profile-snippet" style="margin-bottom: 1rem;">
                         <div class="hero-avatar-box" style="width: 72px; height: 72px;">
                             {% if profile.photo %}
-                                <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" loading="lazy">
+                            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" loading="lazy">
                             {% else %}
-                                <span>JK</span>
+                            <span>JK</span>
                             {% endif %}
                         </div>
                         <div class="hero-profile-meta">
@@ -60,52 +67,56 @@
                     </div>
 
                     <div class="hero-specs-table">
-                        <div class="spec-row">
-                            <span class="spec-label">Education</span>
-                            <span class="spec-val">JKUAT (BBIT, Ongoing)</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">Core Backend</span>
-                            <span class="spec-val">Python / Django / DRF</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">Mobile Client</span>
-                            <span class="spec-val">Flutter &amp; Dart</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">Database</span>
-                            <span class="spec-val">PostgreSQL / Supabase</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">Availability</span>
-                            <span class="spec-val badge-tag badge-forest">Open for projects</span>
-                        </div>
+                        <div class="spec-row"><span class="spec-label">Education</span><span class="spec-val">JKUAT
+                                (BBIT, Ongoing)</span></div>
+                        <div class="spec-row"><span class="spec-label">Core Backend</span><span class="spec-val">Python
+                                / Django / DRF</span></div>
+                        <div class="spec-row"><span class="spec-label">Mobile Client</span><span
+                                class="spec-val">Flutter &amp; Dart</span></div>
+                        <div class="spec-row"><span class="spec-label">Database</span><span class="spec-val">PostgreSQL
+                                / Supabase</span></div>
+                        <div class="spec-row"><span class="spec-label">Availability</span><span
+                                class="spec-val badge-tag badge-forest">Open for projects</span></div>
                     </div>
 
                     {% if social_links %}
-                        <div style="padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                            {% for link in social_links %}
-                                <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="badge-tag">
-                                    {{ link.get_platform_display }} &nearr;
-                                </a>
-                            {% endfor %}
-                        </div>
+                    <div
+                        style="padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        {% for link in social_links %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="badge-tag">
+                            {{ link.get_platform_display }} &nearr;
+                        </a>
+                        {% endfor %}
+                    </div>
                     {% endif %}
+                </div>
+
+                <!-- Quick navigation card -->
+                <div class="quick-nav-card" style="position: static;">
+                    <div class="quick-nav-title">Quick Navigation</div>
+                    <ul class="quick-nav-list">
+                        <li><a href="#skills">Skills &amp; Competencies</a></li>
+                        <li><a href="#experience">Practical Experience</a></li>
+                        <li><a href="#education">Degree Education</a></li>
+                    </ul>
                 </div>
 
                 <div class="about-highlight-box">
                     <h4>Pragmatic Engineering Rules</h4>
-                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem; font-size: 0.86rem; color: var(--ink-800);">
-                        <li>&bull; <strong>Database First:</strong> Model constraints and indexes before writing endpoints.</li>
-                        <li>&bull; <strong>Role Boundaries:</strong> Separate staff permissions from admin privileges.</li>
-                        <li>&bull; <strong>Bandwidth Respect:</strong> Optimize payload sizes and support offline caching.</li>
+                    <ul
+                        style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.75rem; font-size: 0.86rem; color: var(--ink-800);">
+                        <li>&bull; <strong>Database First:</strong> Model constraints and indexes before writing
+                            endpoints.</li>
+                        <li>&bull; <strong>Role Boundaries:</strong> Separate staff permissions from admin privileges.
+                        </li>
+                        <li>&bull; <strong>Bandwidth Respect:</strong> Optimize payload sizes and support offline
+                            caching.</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Section: Skills by Category -->
-        <div class="section-header-block" style="margin-top: 4rem;">
+        <div class="section-header-block" id="skills" style="margin-top: 4rem; scroll-margin-top: 6rem;">
             <span class="eyebrow-label">Technical Matrix</span>
             <h2 class="section-title">Skills &amp; Competencies</h2>
             <div class="section-divider-line"></div>
@@ -113,28 +124,27 @@
 
         <div class="stack-matrix-grid" style="margin-bottom: 5rem;">
             {% for category, cat_skills in skills_by_category.items %}
-                <div class="stack-group-card">
-                    <h3 class="stack-group-title">{{ category }}</h3>
-                    <div class="stack-items-list">
-                        {% for skill in cat_skills %}
-                            <div class="stack-item-row">
-                                <span class="stack-name">{{ skill.name }}</span>
-                                <span class="stack-level badge-tag {% if skill.proficiency == 'Core Stack' %}badge-forest{% endif %}">
-                                    {{ skill.proficiency|default:"Production" }}
-                                </span>
-                            </div>
-                        {% endfor %}
+            <div class="stack-group-card">
+                <h3 class="stack-group-title">{{ category }}</h3>
+                <div class="stack-items-list">
+                    {% for skill in cat_skills %}
+                    <div class="stack-item-row">
+                        <span class="stack-name">{{ skill.name }}</span>
+                        <span
+                            class="stack-level badge-tag {% if skill.proficiency == 'Core Stack' %}badge-forest{% endif %}">
+                            {{ skill.proficiency|default:"Production" }}
+                        </span>
                     </div>
+                    {% endfor %}
                 </div>
+            </div>
             {% empty %}
-                <p>Skills matrix configured in Django Admin.</p>
+            <p>Skills matrix configured in Django Admin.</p>
             {% endfor %}
         </div>
 
-        <!-- Section: Experience & Education Timeline -->
         <div style="display: grid; grid-template-columns: 1fr; gap: 4rem;" class="about-timeline-grid">
-            <!-- Left: Experience -->
-            <div>
+            <div id="experience" style="scroll-margin-top: 6rem;">
                 <div class="section-header-block" style="margin-bottom: 2rem;">
                     <span class="eyebrow-label">Work &amp; Practice</span>
                     <h2 style="font-size: 1.85rem;">Practical Experience</h2>
@@ -142,35 +152,36 @@
 
                 <div class="timeline-list">
                     {% for exp in experience %}
-                        <article class="timeline-item">
-                            <div class="timeline-item-header">
-                                <div>
-                                    <h3 class="timeline-role-title">{{ exp.role }}</h3>
-                                    <div class="timeline-org">{{ exp.organisation }}{% if exp.location %} &bull; {{ exp.location }}{% endif %}</div>
-                                </div>
-                                <span class="timeline-period">{{ exp.start_date }} &mdash; {{ exp.end_date|default:"Present" }}</span>
+                    <article class="timeline-item">
+                        <div class="timeline-item-header">
+                            <div>
+                                <h3 class="timeline-role-title">{{ exp.role }}</h3>
+                                <div class="timeline-org">{{ exp.organisation }}{% if exp.location %} &bull; {{
+                                    exp.location }}{% endif %}</div>
                             </div>
+                            <span class="timeline-period">{{ exp.start_date }} &mdash; {{ exp.end_date|default:"Present"
+                                }}</span>
+                        </div>
 
-                            {% if exp.description %}
-                                <p class="timeline-desc">{{ exp.description }}</p>
-                            {% endif %}
+                        {% if exp.description %}
+                        <p class="timeline-desc">{{ exp.description }}</p>
+                        {% endif %}
 
-                            {% if exp.bullets.all %}
-                                <ul class="timeline-bullets">
-                                    {% for bullet in exp.bullets.all %}
-                                        <li>{{ bullet.text }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </article>
+                        {% if exp.bullets.all %}
+                        <ul class="timeline-bullets">
+                            {% for bullet in exp.bullets.all %}
+                            <li>{{ bullet.text }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </article>
                     {% empty %}
-                        <p style="color: var(--ink-600);">Experience history managed in Django Admin.</p>
+                    <p style="color: var(--ink-600);">Experience history managed in Django Admin.</p>
                     {% endfor %}
                 </div>
             </div>
 
-            <!-- Right: Education -->
-            <div>
+            <div id="education" style="scroll-margin-top: 6rem;">
                 <div class="section-header-block" style="margin-bottom: 2rem;">
                     <span class="eyebrow-label">Academic Foundations</span>
                     <h2 style="font-size: 1.85rem;">Degree Education</h2>
@@ -178,36 +189,38 @@
 
                 <div class="timeline-list">
                     {% for edu in education %}
-                        <article class="timeline-item">
-                            <div class="timeline-item-header">
-                                <div>
-                                    <h3 class="timeline-role-title">{{ edu.qualification }}</h3>
-                                    <div class="timeline-org">{{ edu.institution }}</div>
-                                </div>
-                                <span class="timeline-period">{{ edu.start_date }} &mdash; {{ edu.end_date|default:"Ongoing" }}</span>
+                    <article class="timeline-item">
+                        <div class="timeline-item-header">
+                            <div>
+                                <h3 class="timeline-role-title">{{ edu.qualification }}</h3>
+                                <div class="timeline-org">{{ edu.institution }}</div>
                             </div>
-
-                            {% if edu.notes %}
-                                <p class="timeline-desc">{{ edu.notes }}</p>
-                            {% endif %}
-                        </article>
+                            <span class="timeline-period">{{ edu.start_date }} &mdash; {{ edu.end_date|default:"Ongoing"
+                                }}</span>
+                        </div>
+                        {% if edu.notes %}
+                        <p class="timeline-desc">{{ edu.notes }}</p>
+                        {% endif %}
+                    </article>
                     {% empty %}
-                        <p style="color: var(--ink-600);">Education records managed in Django Admin.</p>
+                    <p style="color: var(--ink-600);">Education records managed in Django Admin.</p>
                     {% endfor %}
                 </div>
 
                 {% if certifications %}
-                    <div style="margin-top: 3rem;">
-                        <h3 style="font-size: 1.35rem; margin-bottom: 1rem;">Certifications</h3>
-                        <div class="timeline-list">
-                            {% for cert in certifications %}
-                                <div class="timeline-item" style="padding: 1.25rem;">
-                                    <strong>{{ cert.title }}</strong> &mdash; <span>{{ cert.issuer }}</span>
-                                    {% if cert.date %}<span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-400);"> ({{ cert.date }})</span>{% endif %}
-                                </div>
-                            {% endfor %}
+                <div style="margin-top: 3rem;">
+                    <h3 style="font-size: 1.35rem; margin-bottom: 1rem;">Certifications</h3>
+                    <div class="timeline-list">
+                        {% for cert in certifications %}
+                        <div class="timeline-item" style="padding: 1.25rem;">
+                            <strong>{{ cert.title }}</strong> &mdash; <span>{{ cert.issuer }}</span>
+                            {% if cert.date %}<span
+                                style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-400);"> ({{
+                                cert.date }})</span>{% endif %}
                         </div>
+                        {% endfor %}
                     </div>
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -215,10 +228,10 @@
 </section>
 
 <style>
-@media (min-width: 900px) {
-    .about-timeline-grid {
-        grid-template-columns: 1fr 1fr !important;
+    @media (min-width: 900px) {
+        .about-timeline-grid {
+            grid-template-columns: 1fr 1fr !important;
+        }
     }
-}
 </style>
 {% endblock %}

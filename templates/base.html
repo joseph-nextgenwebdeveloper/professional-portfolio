@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{{ profile.name|default:"Joseph Kiarie" }} — Full-Stack Developer & Systems Architect{% endblock %}</title>
-    <meta name="description" content="{{ profile.short_bio|default:'Full-Stack Developer from Kenya building dependable web applications, Flutter mobile experiences, and PostgreSQL database architectures.' }}">
-    
+    <title>{% block title %}{{ profile.name|default:"Joseph Kiarie" }} — Full-Stack Developer & Systems
+        Architect{%endblock %}</title>
+    <meta name="description"
+        content="{{ profile.short_bio|default:'Full-Stack Developer from Kenya building dependable web applications, Flutter mobile experiences, and PostgreSQL database architectures.' }}">
+
     {% load static %}
-    <!-- Favicon & Brand Mark -->
     <link rel="icon" type="image/svg+xml" href="{% static 'img/branding/logo-mark.svg' %}">
     <link rel="shortcut icon" href="{% static 'img/branding/joseph-kiarie-logo.png' %}">
 
-    <!-- Google Fonts: Fraunces (Editorial Heading Serif), Inter (Clean Readable Body), JetBrains Mono (Technical Spec Monospace) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
-    <!-- SITE HEADER & UNIFIED NAVIGATION -->
+
+    <div class="social-rail" aria-label="Social profiles">
+        {% for link in social_links %}
+        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn"
+            title="{{ link.get_platform_display }}">{{ link.platform|slice:":2"|upper }}</a>
+        {% empty %}
+        <a href="https://github.com/joseph001technology" target="_blank" rel="noopener noreferrer"
+            class="social-icon-btn" title="GitHub">GH</a>
+        {% endfor %}
+    </div>
+
     <header class="site-header">
-        <div class="container nav-wrapper">
-            <!-- Brand with Personal Logo Mark -->
+        <div class="nav-wrapper">
             <a href="{% url 'portfolio:home' %}" class="brand-block" aria-label="Joseph Kiarie Home">
-                <img src="{% static 'img/branding/logo-mark.svg' %}" alt="Joseph Kiarie Arc Logo Mark" class="brand-logo-img" width="34" height="34">
+                <img src="{% static 'img/branding/logo-mark.svg' %}" alt="Joseph Kiarie Arc Logo Mark"
+                    class="brand-logo-img" width="34" height="34">
                 <div class="brand-text-group">
                     <span class="brand-text">{{ profile.name|default:"Joseph Kiarie" }}</span>
-                    <span class="brand-role-tag">Full-Stack Dev &bull; Nairobi</span>
+                    <span class="brand-role-tag">Innovative Solutions</span>
                 </div>
             </a>
 
-            <!-- Nav Links List -->
             <nav aria-label="Main Navigation">
                 <ul class="nav-menu-desktop" id="desktop-nav">
                     <li><a href="{% url 'portfolio:home' %}">Home</a></li>
@@ -45,13 +58,13 @@
                 </ul>
             </nav>
 
-            <!-- Actions Area -->
             <div class="nav-action-area">
-                <a href="{% url 'requests:request_project' %}" class="nav-btn-request" id="nav-cta-request">
-                    Request a Project &rarr;
-                </a>
-                <button class="nav-mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <a href="{% url 'requests:request_project' %}" class="nav-btn-request" id="nav-cta-request">Request a
+                    Project &rarr;</a>
+                <button class="nav-mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle navigation menu"
+                    aria-expanded="false">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -60,7 +73,6 @@
             </div>
         </div>
 
-        <!-- Mobile Drawer Menu -->
         <div class="nav-mobile-drawer" id="mobile-drawer">
             <ul class="nav-mobile-list">
                 <li><a href="{% url 'portfolio:home' %}">Home</a></li>
@@ -71,44 +83,49 @@
                 <li><a href="{% url 'portfolio:home' %}#stack">Stack</a></li>
                 <li><a href="{% url 'contact:contact' %}">Contact</a></li>
                 <li style="padding-top: 0.5rem;">
-                    <a href="{% url 'requests:request_project' %}" class="btn btn-forest" style="width: 100%; text-align: center; color: #FFFFFF !important;">
-                        Request a Project &rarr;
-                    </a>
+                    <a href="{% url 'requests:request_project' %}" class="btn btn-forest"
+                        style="width: 100%; text-align: center; color: #FFFFFF !important;">Request a Project &rarr;</a>
                 </li>
             </ul>
         </div>
     </header>
 
-    <!-- MAIN PAGE CONTENT -->
     <main class="main-content">
         {% if messages %}
-            <div class="container" style="padding-top: 1.5rem;">
-                {% for message in messages %}
-                    <div class="flash-alert flash-alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
+        <div class="container" style="padding-top: 1.5rem;">
+            {% for message in messages %}
+            <div class="flash-alert flash-alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
         {% endif %}
 
         {% block content %}{% endblock %}
     </main>
 
-    <!-- ARCHITECTURAL FOOTER -->
     <footer class="site-footer pattern-arc-rings">
         <div class="container">
             <div class="footer-top-row">
                 <div class="footer-brand-meta">
                     <div class="brand-block" style="margin-bottom: 0.75rem;">
-                        <img src="{% static 'img/branding/logo-mark.svg' %}" alt="Joseph Kiarie Arc Logo Mark" class="brand-logo-img" width="32" height="32">
+                        <img src="{% static 'img/branding/logo-mark.svg' %}" alt="Joseph Kiarie Arc Logo Mark"
+                            class="brand-logo-img" width="32" height="32">
                         <div class="brand-text-group">
-                            <span class="brand-text" style="color: #FFFFFF;">{{ profile.name|default:"Joseph Kiarie" }}</span>
-                            <span class="brand-role-tag" style="color: var(--accent-amber-border);">Innovative Solutions</span>
+                            <span class="brand-text">{{ profile.name|default:"Joseph Kiarie" }}</span>
+                            <span class="brand-role-tag"
+                                style="display:inline-block; color: var(--accent-copper);">Innovative Solutions</span>
                         </div>
                     </div>
-                    <p>
-                        Full-Stack Developer & Systems Architect. BBIT student at JKUAT engineering robust web platforms, Flutter mobile apps, and PostgreSQL databases for real operating organizations.
-                    </p>
+                    <p>Full-Stack Developer & Systems Architect. BBIT student at JKUAT engineering robust web platforms,
+                        Flutter mobile apps, and PostgreSQL databases for real operating organizations.</p>
+                    <div class="footer-social-row">
+                        {% for link in social_links %}
+                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn"
+                            title="{{ link.get_platform_display }}">{{ link.platform|slice:":2"|upper }}</a>
+                        {% empty %}
+                        <a href="https://github.com/joseph001technology" target="_blank" rel="noopener noreferrer"
+                            class="social-icon-btn" title="GitHub">GH</a>
+                        {% endfor %}
+                    </div>
                 </div>
 
                 <div class="footer-nav-col">
@@ -126,35 +143,50 @@
                     <h5>Inquiries & Work</h5>
                     <ul class="footer-links-list">
                         <li><a href="{% url 'requests:request_project' %}">Request a Project</a></li>
-                        {% for link in social_links %}
-                            <li><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.get_platform_display }} &nearr;</a></li>
-                        {% empty %}
-                            <li><a href="https://github.com/joseph001technology" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a></li>
-                        {% endfor %}
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom-row">
-                <span>&copy; {% now "Y" %} {{ profile.name|default:"Joseph Kiarie" }}. Built with Django &amp; PostgreSQL.</span>
+                <span>&copy; {% now "Y" %} {{ profile.name|default:"Joseph Kiarie" }}. Built with Django &amp;
+                    PostgreSQL.</span>
                 <span>Nairobi, Kenya &bull; {{ profile.availability_status|default:"Available for projects" }}</span>
             </div>
         </div>
     </footer>
 
-    <!-- Mobile Drawer Toggle Script -->
     <script>
-        (function() {
+        (function () {
             const toggleBtn = document.getElementById('mobile-toggle-btn');
             const drawer = document.getElementById('mobile-drawer');
             if (toggleBtn && drawer) {
-                toggleBtn.addEventListener('click', function() {
+                toggleBtn.addEventListener('click', function () {
                     const isOpen = drawer.classList.toggle('is-open');
                     toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 });
+            }
+
+            const navLinks = document.querySelectorAll('.quick-nav-list a[href^="#"]');
+            if (navLinks.length) {
+                const targets = Array.from(navLinks)
+                    .map(a => document.querySelector(a.getAttribute('href')))
+                    .filter(Boolean);
+
+                const setActive = (id) => {
+                    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) setActive(entry.target.id);
+                    });
+                }, { rootMargin: '-30% 0px -60% 0px' });
+
+                targets.forEach(t => observer.observe(t));
             }
         })();
     </script>
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>

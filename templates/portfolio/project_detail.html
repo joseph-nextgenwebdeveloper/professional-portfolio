@@ -6,14 +6,13 @@
 {% block content %}
 <article class="section-spacing">
     <div class="container">
-        <!-- Breadcrumb / Back Link -->
         <div style="margin-bottom: 2rem;">
-            <a href="{% url 'portfolio:project_list' %}" style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-forest); display: inline-flex; align-items: center; gap: 0.35rem;">
+            <a href="{% url 'portfolio:project_list' %}"
+                style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-forest); display: inline-flex; align-items: center; gap: 0.35rem;">
                 &larr; Back to All Case Studies
             </a>
         </div>
 
-        <!-- Case Study Header -->
         <header class="section-header-block" style="margin-bottom: 2.5rem;">
             <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
                 <span class="badge-tag badge-forest">{{ project.category.name|default:"Software System" }}</span>
@@ -28,173 +27,186 @@
             <div class="section-divider-line"></div>
         </header>
 
-        <!-- Main Case Study Layout (2 Columns) -->
-        <div style="display: grid; grid-template-columns: 1fr; gap: 3.5rem; align-items: start;" class="case-study-grid">
-            <!-- Left / Main: Detailed Case Study Narrative -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 3.5rem; align-items: start;"
+            class="case-study-grid">
             <div>
-                <!-- Visual Banner / Architectural Frame -->
                 {% if project.featured_image %}
-                    <div style="border: 1px solid var(--border-medium); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 3rem;">
-                        <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" style="width: 100%; max-height: 480px; object-fit: cover;" loading="lazy">
-                    </div>
+                <div
+                    style="border: 1px solid var(--border-medium); border-radius: 10px; overflow: hidden; margin-bottom: 3rem;">
+                    <img src="{{ project.featured_image.url }}" alt="{{ project.title }}"
+                        style="width: 100%; max-height: 480px; object-fit: cover;" loading="lazy">
+                </div>
                 {% else %}
-                    <div class="project-visual-frame" style="min-height: 240px; margin-bottom: 3rem; border-radius: var(--radius-sm);">
-                        <div class="visual-fallback-header">
-                            <span>TECHNICAL CASE STUDY // ARCHITECTURE SPEC</span>
-                            <span class="visual-system-stamp">{{ project.status|upper }}</span>
-                        </div>
-                        <div class="visual-fallback-graphic">
-                            <div class="graphic-monogram">{{ project.title|slice:":26" }}</div>
-                            <p class="graphic-spec">
-                                {% for tech in project.technologies.all|slice:":4" %}{{ tech.name }}{% if not forloop.last %} &bull; {% endif %}{% endfor %}
-                            </p>
-                        </div>
-                        <div class="visual-fallback-footer">
-                            <span>ENGINEERED BY JOSEPH KIARIE</span>
-                            <span>NAIROBI, KENYA</span>
-                        </div>
+                <div class="project-visual-frame" style="min-height: 240px; margin-bottom: 3rem; border-radius: 10px;">
+                    <div class="visual-fallback-header">
+                        <span>TECHNICAL CASE STUDY // ARCHITECTURE SPEC</span>
+                        <span class="visual-system-stamp">{{ project.status|upper }}</span>
                     </div>
-                {% endif %}
-
-                <!-- Section: Problem Statement -->
-                {% if project.problem_statement %}
-                    <section style="margin-bottom: 3rem;">
-                        <span class="eyebrow-label">01 // Problem Addressed</span>
-                        <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">The Operational Bottleneck</h2>
-                        <div class="narrative-body">
-                            <p>{{ project.problem_statement|linebreaks }}</p>
-                        </div>
-                    </section>
-                {% endif %}
-
-                <!-- Section: Solution & Implementation -->
-                {% if project.solution %}
-                    <section style="margin-bottom: 3rem;">
-                        <span class="eyebrow-label">02 // Technical Solution</span>
-                        <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Engineered Implementation</h2>
-                        <div class="narrative-body">
-                            <p>{{ project.solution|linebreaks }}</p>
-                        </div>
-                    </section>
-                {% endif %}
-
-                <!-- Section: System Architecture & Data Design -->
-                {% if project.architecture_notes %}
-                    <section style="margin-bottom: 3rem;">
-                        <span class="eyebrow-label">03 // System Architecture</span>
-                        <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Architecture, API &amp; Database Design</h2>
-                        <div class="narrative-body" style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); border-left: 3px solid var(--ink-900); padding: 1.75rem; border-radius: var(--radius-sm);">
-                            <p>{{ project.architecture_notes|linebreaks }}</p>
-                        </div>
-                    </section>
-                {% endif %}
-
-                <!-- Section: Challenges & Technical Resolutions -->
-                {% if project.challenges %}
-                    <section style="margin-bottom: 3rem;">
-                        <span class="eyebrow-label">04 // Engineering Challenges</span>
-                        <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Technical Hurdles &amp; Solutions</h2>
-                        <div class="narrative-body">
-                            <p>{{ project.challenges|linebreaks }}</p>
-                        </div>
-                    </section>
-                {% endif %}
-
-                <!-- Section: Outcomes (Only if documented) -->
-                {% if project.outcomes %}
-                    <section style="margin-bottom: 3rem;">
-                        <span class="eyebrow-label">05 // Real Outcomes</span>
-                        <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Measurable Impact</h2>
-                        <div class="narrative-body">
-                            <p>{{ project.outcomes|linebreaks }}</p>
-                        </div>
-                    </section>
-                {% endif %}
-
-                <!-- Image Gallery (if any) -->
-                {% if project.images.all %}
-                    <section style="margin-bottom: 3rem;">
-                        <span class="eyebrow-label">06 // System Gallery</span>
-                        <h2 style="font-size: 1.6rem; margin-bottom: 1.5rem;">Interface &amp; Schema Views</h2>
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
-                            {% for img in project.images.all %}
-                                <div style="border: 1px solid var(--border-medium); border-radius: var(--radius-sm); overflow: hidden;">
-                                    <img src="{{ img.image.url }}" alt="{{ img.caption|default:project.title }}" style="width: 100%; display: block;" loading="lazy">
-                                    {% if img.caption %}
-                                        <div style="padding: 0.75rem 1rem; background-color: var(--bg-surface-alt); font-size: 0.82rem; font-family: var(--font-mono); color: var(--ink-600);">
-                                            {{ img.caption }}
-                                        </div>
-                                    {% endif %}
-                                </div>
+                    <div class="visual-fallback-graphic">
+                        <div class="graphic-monogram">{{ project.title|slice:":26" }}</div>
+                        <p class="graphic-spec">
+                            {% for tech in project.technologies.all|slice:":4" %}
+                            {{ tech.name }}{% if not forloop.last %} &bull; {% endif %}
                             {% endfor %}
+                        </p>
+                    </div>
+                    <div class="visual-fallback-footer">
+                        <span>ENGINEERED BY JOSEPH KIARIE</span>
+                        <span>NAIROBI, KENYA</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if project.problem_statement %}
+                <section id="problem" style="margin-bottom: 3rem; scroll-margin-top: 6rem;">
+                    <span class="eyebrow-label">01 // Problem Addressed</span>
+                    <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">The Operational Bottleneck</h2>
+                    <div class="narrative-body">
+                        <p>{{ project.problem_statement|linebreaks }}</p>
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if project.solution %}
+                <section id="solution" style="margin-bottom: 3rem; scroll-margin-top: 6rem;">
+                    <span class="eyebrow-label">02 // Technical Solution</span>
+                    <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Engineered Implementation</h2>
+                    <div class="narrative-body">
+                        <p>{{ project.solution|linebreaks }}</p>
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if project.architecture_notes %}
+                <section id="architecture" style="margin-bottom: 3rem; scroll-margin-top: 6rem;">
+                    <span class="eyebrow-label">03 // System Architecture</span>
+                    <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Architecture, API &amp; Database Design</h2>
+                    <div class="narrative-body"
+                        style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); border-left: 3px solid var(--ink-900); padding: 1.75rem; border-radius: 10px;">
+                        <p>{{ project.architecture_notes|linebreaks }}</p>
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if project.challenges %}
+                <section id="challenges" style="margin-bottom: 3rem; scroll-margin-top: 6rem;">
+                    <span class="eyebrow-label">04 // Engineering Challenges</span>
+                    <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Technical Hurdles &amp; Solutions</h2>
+                    <div class="narrative-body">
+                        <p>{{ project.challenges|linebreaks }}</p>
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if project.outcomes %}
+                <section id="outcomes" style="margin-bottom: 3rem; scroll-margin-top: 6rem;">
+                    <span class="eyebrow-label">05 // Real Outcomes</span>
+                    <h2 style="font-size: 1.6rem; margin-bottom: 1rem;">Measurable Impact</h2>
+                    <div class="narrative-body">
+                        <p>{{ project.outcomes|linebreaks }}</p>
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if project.images.all %}
+                <section id="gallery" style="margin-bottom: 3rem; scroll-margin-top: 6rem;">
+                    <span class="eyebrow-label">06 // System Gallery</span>
+                    <h2 style="font-size: 1.6rem; margin-bottom: 1.5rem;">Interface &amp; Schema Views</h2>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+                        {% for img in project.images.all %}
+                        <div style="border: 1px solid var(--border-medium); border-radius: 10px; overflow: hidden;">
+                            <img src="{{ img.image.url }}" alt="{{ img.caption|default:project.title }}"
+                                style="width: 100%; display: block;" loading="lazy">
+                            {% if img.caption %}
+                            <div
+                                style="padding: 0.75rem 1rem; background-color: var(--bg-surface-alt); font-size: 0.82rem; font-family: var(--font-mono); color: var(--ink-600);">
+                                {{ img.caption }}
+                            </div>
+                            {% endif %}
                         </div>
-                    </section>
+                        {% endfor %}
+                    </div>
+                </section>
                 {% endif %}
             </div>
 
-            <!-- Right / Sidebar: Metadata, Tech, Links, CTA -->
             <aside style="display: flex; flex-direction: column; gap: 1.75rem;">
-                <!-- Role Card -->
+                <!-- On This Page -->
+                <div class="quick-nav-card" style="position: static;">
+                    <div class="quick-nav-title">On This Page</div>
+                    <ul class="quick-nav-list">
+                        {% if project.problem_statement %}<li><a href="#problem">Problem Addressed</a></li>{% endif %}
+                        {% if project.solution %}<li><a href="#solution">Technical Solution</a></li>{% endif %}
+                        {% if project.architecture_notes %}
+                        <li><a href="#architecture">System Architecture</a></li>
+                        {% endif %}
+                        {% if project.challenges %}<li><a href="#challenges">Engineering Challenges</a></li>{% endif %}
+                        {% if project.outcomes %}<li><a href="#outcomes">Real Outcomes</a></li>{% endif %}
+                        {% if project.images.all %}<li><a href="#gallery">System Gallery</a></li>{% endif %}
+                    </ul>
+                </div>
+
                 {% if project.my_role %}
-                    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); border-top: 3px solid var(--accent-forest); padding: 1.75rem; border-radius: var(--radius-sm);">
-                        <h4 style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-900); margin-bottom: 0.75rem;">
-                            My Role &amp; Responsibilities
-                        </h4>
-                        <p style="font-size: 0.9rem; color: var(--ink-800); line-height: 1.6;">
-                            {{ project.my_role }}
-                        </p>
-                    </div>
+                <div
+                    style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); border-top: 3px solid var(--accent-forest); padding: 1.75rem; border-radius: 10px;">
+                    <h4
+                        style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-900); margin-bottom: 0.75rem;">
+                        My Role &amp; Responsibilities
+                    </h4>
+                    <p style="font-size: 0.9rem; color: var(--ink-800); line-height: 1.6;">{{ project.my_role }}</p>
+                </div>
                 {% endif %}
 
-                <!-- Technology Stack Card -->
-                <div style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); padding: 1.75rem; border-radius: var(--radius-sm);">
-                    <h4 style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-900); margin-bottom: 1rem;">
+                <div
+                    style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); padding: 1.75rem; border-radius: 10px;">
+                    <h4
+                        style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-900); margin-bottom: 1rem;">
                         Technologies Used
                     </h4>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
                         {% for tech in project.technologies.all %}
-                            <span class="badge-tag">{{ tech.name }}</span>
+                        <span class="badge-tag">{{ tech.name }}</span>
                         {% empty %}
-                            <span style="font-size: 0.84rem; color: var(--ink-400);">See architecture notes</span>
+                        <span style="font-size: 0.84rem; color: var(--ink-400);">See architecture notes</span>
                         {% endfor %}
                     </div>
                 </div>
 
-                <!-- Verified External Links (NEVER render Live Demo for blank live_url!) -->
                 {% if project.live_url or project.repo_url or project.documentation_url %}
-                    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); padding: 1.75rem; border-radius: var(--radius-sm);">
-                        <h4 style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-900); margin-bottom: 1rem;">
-                            Project Links
-                        </h4>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            {% if project.live_url %}
-                                <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-forest btn-sm" style="width: 100%;">
-                                    Open Live System &nearr;
-                                </a>
-                            {% endif %}
-                            {% if project.repo_url %}
-                                <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="width: 100%;">
-                                    View Source Code &nearr;
-                                </a>
-                            {% endif %}
-                            {% if project.documentation_url %}
-                                <a href="{{ project.documentation_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="width: 100%;">
-                                    Read Documentation &nearr;
-                                </a>
-                            {% endif %}
-                        </div>
+                <div
+                    style="background-color: var(--bg-surface); border: 1px solid var(--border-medium); padding: 1.75rem; border-radius: 10px;">
+                    <h4
+                        style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-900); margin-bottom: 1rem;">
+                        Project Links
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-forest btn-sm" style="width: 100%;">Open Live System &nearr;</a>
+                        {% endif %}
+                        {% if project.repo_url %}
+                        <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-outline btn-sm" style="width: 100%;">View Source Code &nearr;</a>
+                        {% endif %}
+                        {% if project.documentation_url %}
+                        <a href="{{ project.documentation_url }}" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-outline btn-sm" style="width: 100%;">Read Documentation &nearr;</a>
+                        {% endif %}
                     </div>
+                </div>
                 {% endif %}
 
-                <!-- Commission Similar System CTA -->
-                <div style="background-color: var(--bg-navy-band); color: var(--ink-white); border: 1px solid var(--border-dark); padding: 2rem; border-radius: var(--radius-sm);">
-                    <h4 style="font-size: 1.2rem; color: var(--ink-white); margin-bottom: 0.65rem;">
-                        Need a similar system?
-                    </h4>
-                    <p style="font-size: 0.86rem; color: var(--ink-white-muted); margin-bottom: 1.5rem; line-height: 1.55;">
-                        I build custom platforms like {{ project.title }} tailored to your specific organizational workflows, staff permissions, and reporting needs.
+                <div
+                    style="background-color: var(--bg-navy-band); color: var(--ink-white); border: 1px solid var(--border-dark); padding: 2rem; border-radius: 10px;">
+                    <h4 style="font-size: 1.2rem; color: var(--ink-white); margin-bottom: 0.65rem;">Need a similar
+                        system?</h4>
+                    <p
+                        style="font-size: 0.86rem; color: var(--ink-white-muted); margin-bottom: 1.5rem; line-height: 1.55;">
+                        I build custom platforms like {{ project.title }} tailored to your specific organizational
+                        workflows, staff permissions, and reporting needs.
                     </p>
-                    <a href="{% url 'requests:request_project_with_ref' project.slug %}" class="btn btn-forest btn-sm" style="width: 100%; color: #FFFFFF !important;">
+                    <a href="{% url 'requests:request_project_with_ref' project.slug %}" class="btn btn-forest btn-sm"
+                        style="width: 100%; color: #FFFFFF !important;">
                         Request Similar Project &rarr;
                     </a>
                 </div>
@@ -204,10 +216,10 @@
 </article>
 
 <style>
-@media (min-width: 900px) {
-    .case-study-grid {
-        grid-template-columns: 1.7fr 1fr !important;
+    @media (min-width: 900px) {
+        .case-study-grid {
+            grid-template-columns: 1.7fr 1fr !important;
+        }
     }
-}
 </style>
 {% endblock %}
