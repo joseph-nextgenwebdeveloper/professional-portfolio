@@ -24,22 +24,20 @@
         </div>
 
         <!-- Filter Controls -->
-        <div style="margin-bottom: 2.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
-            <span style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-400); text-transform: uppercase; margin-right: 0.5rem;">Filter:</span>
-            
-            <a href="{% url 'portfolio:project_list' %}" class="badge-tag {% if not selected_category and not selected_tech %}badge-forest{% endif %}" style="padding: 0.35rem 0.8rem;">
+        <div class="filter-pill-row">
+            <a href="{% url 'portfolio:project_list' %}" class="filter-pill {% if not selected_category and not selected_tech %}is-active{% endif %}">
                 All ({{ projects.count }})
             </a>
 
             {% for cat in categories %}
-                <a href="{% url 'portfolio:project_list' %}?category={{ cat.slug }}" class="badge-tag {% if selected_category == cat %}badge-forest{% endif %}" style="padding: 0.35rem 0.8rem;">
+                <a href="{% url 'portfolio:project_list' %}?category={{ cat.slug }}" class="filter-pill {% if selected_category == cat %}is-active{% endif %}">
                     {{ cat.name }}
                 </a>
             {% endfor %}
 
             {% for tech in technologies %}
                 {% if tech.projects.exists %}
-                    <a href="{% url 'portfolio:project_list' %}?tech={{ tech.slug }}" class="badge-tag {% if selected_tech == tech %}badge-forest{% endif %}" style="padding: 0.35rem 0.8rem;">
+                    <a href="{% url 'portfolio:project_list' %}?tech={{ tech.slug }}" class="filter-pill {% if selected_tech == tech %}is-active{% endif %}">
                         {{ tech.name }}
                     </a>
                 {% endif %}
@@ -48,64 +46,37 @@
 
         <!-- Projects Grid -->
         {% if projects %}
-            <div class="projects-secondary-grid">
+            <div class="bento-grid">
                 {% for project in projects %}
-                    <article class="project-card-standard">
-                        <!-- Typographic Visual Fallback or Uploaded Image -->
-                        <div class="project-visual-frame" style="min-height: 180px; padding: 1.5rem;">
+                    <a href="{% url 'portfolio:project_detail' project.slug %}" class="bento-card {% if forloop.counter0|divisibleby:5 %}is-large{% endif %}">
+                        <div class="bento-card-art art-{{ forloop.counter0|add:1 }}">
                             {% if project.featured_image %}
-                                <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
-                            {% else %}
-                                <div class="visual-fallback-header">
-                                    <span>{{ project.category.name|default:"SYSTEM"|upper }}</span>
-                                    <span class="visual-system-stamp">{{ project.year|default:"2024" }}</span>
-                                </div>
-                                <div class="visual-fallback-graphic" style="padding: 0.5rem 0;">
-                                    <div class="graphic-monogram" style="font-size: 1.6rem;">{{ project.title|slice:":18" }}...</div>
-                                    <p class="graphic-spec">{{ project.status|upper }}</p>
-                                </div>
+                                <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" loading="lazy">
                             {% endif %}
                         </div>
-
-                        <div class="card-body">
-                            <div class="project-meta-strip">
+                        <div class="bento-card-overlay">
+                            <div class="bento-meta-row">
                                 <span class="badge-tag badge-forest">{{ project.status }}</span>
                                 <span class="badge-tag">{{ project.year|default:"2024" }}</span>
                             </div>
-
-                            <a href="{% url 'portfolio:project_detail' project.slug %}" class="project-title-link">
-                                <h3>{{ project.title }}</h3>
-                            </a>
-
-                            <p>{{ project.tagline }}</p>
-
-                            <div class="project-tech-list">
-                                {% for tech in project.technologies.all %}
+                            <h3>{{ project.title }}</h3>
+                            <p class="bento-tagline">{{ project.tagline }}</p>
+                            <div class="bento-tags">
+                                {% for tech in project.technologies.all|slice:":4" %}
                                     <span class="badge-tag">{{ tech.name }}</span>
                                 {% endfor %}
                             </div>
-
-                            <div class="project-actions-row">
-                                <a href="{% url 'portfolio:project_detail' project.slug %}" class="btn btn-primary btn-sm">
-                                    Case Study &rarr;
-                                </a>
-                                {% if project.live_url %}
-                                    <a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
-                                        Live App &nearr;
-                                    </a>
-                                {% endif %}
-                                {% if project.repo_url %}
-                                    <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
-                                        Repo &nearr;
-                                    </a>
-                                {% endif %}
-                            </div>
+                            <span class="bento-link">
+                                View Details &rarr;
+                                {% if project.live_url %}<span style="opacity:.6; margin-left:.5rem;">&bull; Live App</span>{% endif %}
+                                {% if project.repo_url %}<span style="opacity:.6; margin-left:.5rem;">&bull; Repo</span>{% endif %}
+                            </span>
                         </div>
-                    </article>
+                    </a>
                 {% endfor %}
             </div>
         {% else %}
-            <div style="background-color: var(--bg-surface); padding: 4rem 2rem; text-align: center; border: 1px solid var(--border-medium); border-radius: var(--radius-sm);">
+            <div class="form-card" style="text-align: center; padding: 3.5rem 2rem;">
                 <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">No projects found</h3>
                 <p style="color: var(--ink-600); margin-bottom: 1.5rem;">No projects match the selected filter criteria.</p>
                 <a href="{% url 'portfolio:project_list' %}" class="btn btn-outline btn-sm">Clear Filters</a>

@@ -16,7 +16,15 @@
             <div class="section-divider-line"></div>
         </div>
 
-        <div class="about-snapshot-layout" style="align-items: start; margin-bottom: 4.5rem;">
+        <!-- "Who I Am" photo + narrative -->
+        <div class="about-photo-narrative">
+            <div class="about-photo-frame">
+                {% if profile.photo %}
+                    <img src="{{ profile.photo.url }}" alt="{{ profile.name|default:'Joseph Kiarie' }}" loading="lazy">
+                {% endif %}
+                <span class="status-dot-mark" aria-hidden="true"></span>
+            </div>
+
             <div class="narrative-body">
                 <p>
                     I am <strong>{{ profile.name|default:"Joseph Kiarie" }}</strong>, a software developer pursuing a
@@ -49,23 +57,21 @@
                     {% endif %}
                 </div>
             </div>
+        </div>
 
+        <div class="about-snapshot-layout" style="align-items: start; margin-bottom: 4.5rem;">
             <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                <div class="hero-card-architectural">
-                    <div class="hero-profile-snippet" style="margin-bottom: 1rem;">
-                        <div class="hero-avatar-box" style="width: 72px; height: 72px;">
-                            {% if profile.photo %}
-                            <img src="{{ profile.photo.url }}" alt="{{ profile.name }}" loading="lazy">
-                            {% else %}
-                            <span>JK</span>
-                            {% endif %}
-                        </div>
-                        <div class="hero-profile-meta">
-                            <h3>{{ profile.name|default:"Joseph Kiarie" }}</h3>
-                            <p>{{ profile.location|default:"Nairobi, Kenya" }}</p>
-                        </div>
-                    </div>
+                <!-- Quick navigation card -->
+                <div class="quick-nav-card" style="position: static;">
+                    <div class="quick-nav-title">Quick Navigation</div>
+                    <ul class="quick-nav-list">
+                        <li><a href="#skills">Skills &amp; Competencies</a></li>
+                        <li><a href="#experience">Practical Experience</a></li>
+                        <li><a href="#education">Degree Education</a></li>
+                    </ul>
+                </div>
 
+                <div class="hero-card-architectural">
                     <div class="hero-specs-table">
                         <div class="spec-row"><span class="spec-label">Education</span><span class="spec-val">JKUAT
                                 (BBIT, Ongoing)</span></div>
@@ -91,16 +97,6 @@
                     {% endif %}
                 </div>
 
-                <!-- Quick navigation card -->
-                <div class="quick-nav-card" style="position: static;">
-                    <div class="quick-nav-title">Quick Navigation</div>
-                    <ul class="quick-nav-list">
-                        <li><a href="#skills">Skills &amp; Competencies</a></li>
-                        <li><a href="#experience">Practical Experience</a></li>
-                        <li><a href="#education">Degree Education</a></li>
-                    </ul>
-                </div>
-
                 <div class="about-highlight-box">
                     <h4>Pragmatic Engineering Rules</h4>
                     <ul
@@ -114,33 +110,35 @@
                     </ul>
                 </div>
             </div>
-        </div>
 
-        <div class="section-header-block" id="skills" style="margin-top: 4rem; scroll-margin-top: 6rem;">
-            <span class="eyebrow-label">Technical Matrix</span>
-            <h2 class="section-title">Skills &amp; Competencies</h2>
-            <div class="section-divider-line"></div>
-        </div>
+            <div>
+                <div class="section-header-block" id="skills" style="margin-top: 0; scroll-margin-top: 6rem;">
+                    <span class="eyebrow-label">Technical Matrix</span>
+                    <h2 class="section-title">Skills &amp; Competencies</h2>
+                    <div class="section-divider-line"></div>
+                </div>
 
-        <div class="stack-matrix-grid" style="margin-bottom: 5rem;">
-            {% for category, cat_skills in skills_by_category.items %}
-            <div class="stack-group-card">
-                <h3 class="stack-group-title">{{ category }}</h3>
-                <div class="stack-items-list">
-                    {% for skill in cat_skills %}
-                    <div class="stack-item-row">
-                        <span class="stack-name">{{ skill.name }}</span>
-                        <span
-                            class="stack-level badge-tag {% if skill.proficiency == 'Core Stack' %}badge-forest{% endif %}">
-                            {{ skill.proficiency|default:"Production" }}
-                        </span>
+                <div class="stack-matrix-grid" style="grid-template-columns: 1fr;">
+                    {% for category, cat_skills in skills_by_category.items %}
+                    <div class="stack-group-card">
+                        <h3 class="stack-group-title">{{ category }}</h3>
+                        <div class="stack-items-list">
+                            {% for skill in cat_skills %}
+                            <div class="stack-item-row">
+                                <span class="stack-name">{{ skill.name }}</span>
+                                <span
+                                    class="stack-level badge-tag {% if skill.proficiency == 'Core Stack' %}badge-forest{% endif %}">
+                                    {{ skill.proficiency|default:"Production" }}
+                                </span>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
+                    {% empty %}
+                    <p>Skills matrix configured in Django Admin.</p>
                     {% endfor %}
                 </div>
             </div>
-            {% empty %}
-            <p>Skills matrix configured in Django Admin.</p>
-            {% endfor %}
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr; gap: 4rem;" class="about-timeline-grid">
@@ -212,7 +210,7 @@
                     <h3 style="font-size: 1.35rem; margin-bottom: 1rem;">Certifications</h3>
                     <div class="timeline-list">
                         {% for cert in certifications %}
-                        <div class="timeline-item" style="padding: 1.25rem;">
+                        <div class="timeline-item" style="padding: 1.25rem; margin-left: 0;">
                             <strong>{{ cert.title }}</strong> &mdash; <span>{{ cert.issuer }}</span>
                             {% if cert.date %}<span
                                 style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-400);"> ({{
@@ -231,6 +229,9 @@
     @media (min-width: 900px) {
         .about-timeline-grid {
             grid-template-columns: 1fr 1fr !important;
+        }
+        .about-snapshot-layout {
+            grid-template-columns: 1fr 2fr !important;
         }
     }
 </style>
