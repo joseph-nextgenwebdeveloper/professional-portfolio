@@ -44,10 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # Third-party apps
     'storages',
-    
+    'cloudinary_storage',
+    'cloudinary',
+
     # Local apps
     'portfolio.apps.PortfolioConfig',
     'requests.apps.RequestsConfig',
@@ -140,8 +142,28 @@ STATIC_ROOT = BASE_DIR / 'static_root'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# --------------------------------------------------------------------------
+# Cloudinary — used for MEDIA (user-uploaded photos/CV), not static files.
+# Render's filesystem is not persistent, so anything saved via Django admin
+# (profile photo, secondary photo, CV, project images) needs to live on
+# Cloudinary instead of local disk in production.
+#
+# Required env vars (set these in Render's dashboard → Environment tab,
+# and in your local .env if you want local uploads to also go to Cloudinary):
+#   CLOUDINARY_CLOUD_NAME
+#   CLOUDINARY_API_KEY
+#   CLOUDINARY_API_SECRET
+# --------------------------------------------------------------------------
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+}
+
 # Pluggable storage configuration (Django 4.2+ / 5.x / 6.x STORAGES)
-# Can be configured via DEFAULT_FILE_STORAGE env var in production (e.g. storages.backends.s3boto3.S3Boto3Storage)
+# DEFAULT_FILE_STORAGE env var controls where uploaded media is written:
+#   - locally (no env var set): falls back to local disk, fine for dev
+#   - in Render: set DEFAULT_FILE_STORAGE=cloudinary_storage.storage.MediaCloudinaryStorage
 STORAGES = {
     "default": {
         "BACKEND": os.environ.get(

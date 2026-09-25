@@ -1,0 +1,949 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$YqdB9BbPrBtiLBUiQi4MUL$kXP4pAQpHn8lB404KuFUce/EfSsSCSXPt7ggXVhmr/s=",
+    "last_login": "2026-09-19T11:27:31.862Z",
+    "is_superuser": true,
+    "username": "jose",
+    "first_name": "",
+    "last_name": "",
+    "email": "jose@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-09-19T11:27:15.203Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "36ggv9i4a0yulfftm20n2giyc4ne89wq",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQRO9CHSG-BlKm9xnQsgvBSYQlY1dR7h5bcpFounlv5s0ibGuNW89LnIhdmWSX3y4BPnM7AD2g3WeOc1uXKfFD4SftfJwpv26n-3dQodd9bRy5YL30TrgkMOhBp-yzJGVRebQew540CBJFSQMFIWlTrKWAAFKzzxfQFjgF:1x7tEB:AHjXiOVWwJtyr-THQg0s60RpvpkhsHcN3ab14vwpmZ0",
+    "expire_date": "2026-10-03T11:27:31.887Z"
+  }
+},
+{
+  "model": "portfolio.projectcategory",
+  "pk": 14,
+  "fields": {
+    "name": "Pharmacy & Healthcare Systems",
+    "slug": "pharmacy-healthcare",
+    "description": null,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.projectcategory",
+  "pk": 15,
+  "fields": {
+    "name": "Agriculture & Marketplace",
+    "slug": "agriculture-marketplace",
+    "description": null,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.projectcategory",
+  "pk": 16,
+  "fields": {
+    "name": "Management Portals",
+    "slug": "management-portals",
+    "description": null,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 53,
+  "fields": {
+    "name": "Django 5/6",
+    "slug": "django",
+    "category": "Backend",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 0,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 54,
+  "fields": {
+    "name": "Django REST Framework",
+    "slug": "django-rest-framework",
+    "category": "Backend",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 1,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 55,
+  "fields": {
+    "name": "Python",
+    "slug": "python",
+    "category": "Backend",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 2,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 56,
+  "fields": {
+    "name": "PostgreSQL",
+    "slug": "postgresql",
+    "category": "Database",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 3,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 57,
+  "fields": {
+    "name": "Supabase",
+    "slug": "supabase",
+    "category": "Database",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 4,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 58,
+  "fields": {
+    "name": "Flutter",
+    "slug": "flutter",
+    "category": "Mobile",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 5,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 59,
+  "fields": {
+    "name": "Dart",
+    "slug": "dart",
+    "category": "Mobile",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 6,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 60,
+  "fields": {
+    "name": "JWT Authentication",
+    "slug": "jwt-auth",
+    "category": "Architecture",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 7,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 61,
+  "fields": {
+    "name": "M-Pesa Daraja",
+    "slug": "mpesa-daraja",
+    "category": "Integrations",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 8,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 62,
+  "fields": {
+    "name": "Role-Based Access Control",
+    "slug": "rbac",
+    "category": "Architecture",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 9,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 63,
+  "fields": {
+    "name": "Nginx",
+    "slug": "nginx",
+    "category": "Cloud & DevOps",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 10,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 64,
+  "fields": {
+    "name": "Gunicorn",
+    "slug": "gunicorn",
+    "category": "Cloud & DevOps",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 11,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 65,
+  "fields": {
+    "name": "Git & GitHub",
+    "slug": "git-github",
+    "category": "Tools",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 12,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 66,
+  "fields": {
+    "name": "Postman",
+    "slug": "postman",
+    "category": "Tools",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 13,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 67,
+  "fields": {
+    "name": "Linux VPS",
+    "slug": "linux-vps",
+    "category": "Cloud & DevOps",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 14,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 68,
+  "fields": {
+    "name": "HTML5 & CSS3",
+    "slug": "html-css",
+    "category": "Frontend",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 15,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 69,
+  "fields": {
+    "name": "JavaScript",
+    "slug": "javascript",
+    "category": "Frontend",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 16,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.technology",
+  "pk": 70,
+  "fields": {
+    "name": "Batch/FIFO Inventory Logic",
+    "slug": "batch-fifo",
+    "category": "Architecture",
+    "icon_name": null,
+    "logo": "",
+    "display_order": 17,
+    "active": true
+  }
+},
+{
+  "model": "portfolio.service",
+  "pk": 15,
+  "fields": {
+    "title": "Management Portal & Admin System Development",
+    "tagline": "Replace spreadsheets with a structured, role-restricted web portal",
+    "description": "I design and build custom Django management portals for businesses — inventory, staff roles, purchase orders, approvals, and reporting dashboards with proper RBAC.",
+    "icon": "server",
+    "deliverables": "Django backend with Admin panel\nRole-Based Access Control (RBAC)\nDatabase design & normalised schema\nCRUD operations for inventory or records\nReporting dashboard with analytics\nPostman API documentation",
+    "display_order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "portfolio.service",
+  "pk": 16,
+  "fields": {
+    "title": "Flutter Mobile Application Development",
+    "tagline": "Cross-platform Android and iOS apps for field staff",
+    "description": "Flutter mobile apps designed for reliable operation on 3G networks and entry-level Android devices — POS terminals, ordering apps, or field data collection.",
+    "icon": "mobile",
+    "deliverables": "Flutter mobile app for Android (and iOS)\nJWT token authentication\nREST API integration\nOffline-tolerant data handling\nResponsive UI tested on 360px devices\nAPK build for distribution",
+    "display_order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "portfolio.service",
+  "pk": 17,
+  "fields": {
+    "title": "REST API Backend Design & Integration",
+    "tagline": "Clean, documented, secure APIs for mobile or third-party consumption",
+    "description": "Django REST Framework APIs with consistent endpoint design, JWT authentication, per-role protection, and Postman documentation for easy handover.",
+    "icon": "api",
+    "deliverables": "Django REST Framework API\nJWT authentication with refresh tokens\nPer-role permission classes\nPostman collection\nError handling & consistent JSON structure\nRate limiting and security headers",
+    "display_order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "portfolio.service",
+  "pk": 18,
+  "fields": {
+    "title": "M-Pesa Daraja Payment Integration",
+    "tagline": "STK Push and C2B payment flows for Safaricom M-Pesa",
+    "description": "M-Pesa Daraja STK Push and C2B callback integration into Django backends — transaction verification, payment status webhooks, and receipt logging.",
+    "icon": "shield",
+    "deliverables": "Safaricom Daraja STK Push integration\nC2B payment callback handling\nTransaction logging\nSandbox-to-production configuration\nError handling for failed transactions",
+    "display_order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "portfolio.service",
+  "pk": 19,
+  "fields": {
+    "title": "Database Architecture & PostgreSQL Design",
+    "tagline": "Normalised schemas designed for correctness and concurrency",
+    "description": "PostgreSQL schemas from requirements upward — entities, relationships, constraints, indices, concurrent reservation logic, and audit tables.",
+    "icon": "database",
+    "deliverables": "ER diagram and schema design\nNormalised schema (3NF minimum)\nDjango ORM model implementation\nMigrations and seed data scripts\nIndex strategy for performance\nSupabase or self-hosted configuration",
+    "display_order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "portfolio.project",
+  "pk": 11,
+  "fields": {
+    "title": "JoseKiarie Pharmacy Management System",
+    "slug": "josekiarie-pharmacy-management-system",
+    "tagline": "Full-stack inventory, POS, and staff-management system for a Nairobi pharmacy — Django DRF backend with Flutter mobile client.",
+    "short_description": "Pharmacy management portal with JWT RBAC, batch/FIFO stock tracking, POS, supplier management, and a Flutter mobile client.",
+    "problem_statement": "The pharmacy was managing stock levels, supplier invoices, batch expiry dates, and daily sales entirely on paper and disconnected Excel workbooks. No audit trail for stock movements, no early warning for expiring batches, no real-time sales visibility for management. Staff had unrestricted access, creating accountability gaps and accidental overwrites.",
+    "solution": "Multi-component management system:\n\nBackend: Django DRF REST API handling inventory, batch tracking, sales, supplier orders, staff authentication, and reporting.\n\nAuth & Permissions: JWT with two role tiers — Administrator and Pharmacist. Admins manage staff and adjust stock; pharmacists process sales only.\n\nInventory & Batch System: Products tracked at batch level with expiry dates. Sales deduct from earliest batch (FIFO) to reduce waste.\n\nFlutter POS Client: Product search, cart management, quantity input, receipt generation, authenticated against the Django backend.\n\nDashboard: Low-stock alerts, batches expiring within 30 days, daily sales totals.",
+    "my_role": "Sole engineer. Requirements gathering, PostgreSQL schema, Django models, DRF serialisers, JWT authentication, Flutter app architecture, API integration, Postman documentation, Linux VPS deployment.",
+    "architecture_notes": "Stack: Django 5, DRF, PostgreSQL via Supabase, Flutter, Nginx + Gunicorn.\nKey tables: Product, Batch, StockMovement, Sale, SaleItem, Supplier, PurchaseOrder, CustomUser.\nFIFO batch deduction: queryset ordered expiry_date ASC iterated inside atomic transaction with SELECT FOR UPDATE.\nAuth: SimpleJWT — 15-min access tokens, 7-day refresh tokens. Custom IsAdministrator / IsPharmacist permission classes.",
+    "challenges": "Concurrent stock deduction: Solved with database-level row locking (SELECT FOR UPDATE) in atomic transactions.\nBatch FIFO accuracy: Daily background task marks batches where expiry_date < today as exhausted.\nFlutter JWT refresh: Transparent token refresh via Dio interceptor with retry logic on 401 responses.",
+    "outcomes": "Backend fully operational with all API endpoints tested and documented via Postman. Flutter POS client functional on Android. Core inventory, batch tracking, and sales recording working in staging. Pending final client review before production deployment.",
+    "category": 14,
+    "status": "In Progress",
+    "year": "2024",
+    "featured_image": "",
+    "live_url": null,
+    "repo_url": "https://github.com/joseph001technology/JoseKiarie-Pharmacy",
+    "documentation_url": null,
+    "is_featured": true,
+    "is_published": true,
+    "display_order": 1,
+    "created_at": "2026-09-19T10:47:32.342Z",
+    "updated_at": "2026-09-19T10:47:32.342Z",
+    "technologies": [
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      62,
+      63,
+      64,
+      66,
+      70
+    ]
+  }
+},
+{
+  "model": "portfolio.project",
+  "pk": 12,
+  "fields": {
+    "title": "AgriFlow — Farm-to-Buyer Marketplace",
+    "slug": "agriflow-farm-to-buyer-marketplace",
+    "tagline": "Flutter mobile marketplace connecting Kenyan smallholder farmers to local buyers with M-Pesa STK Push payment integration.",
+    "short_description": "Mobile-first agri-commerce platform with farmer dashboards, product listing, order management, and M-Pesa Daraja integration.",
+    "problem_statement": "Smallholder farmers sell produce at below-market prices because they have no direct channel to buyers beyond their immediate locality. No accessible, mobile-first platform let a farmer list produce and receive direct M-Pesa payment from a buyer.",
+    "solution": "Two-sided marketplace with separate dashboards for Farmers and Buyers.\n\nFarmer: Register farm, list produce with category, quantity, price, and photo. View and manage orders.\n\nBuyer: Browse by category, search by location, add to cart, checkout via M-Pesa STK Push.\n\nBackend: Django DRF handling user registration, product CRUD, order lifecycle, and M-Pesa Daraja callbacks.",
+    "my_role": "Sole engineer. Requirements, PostgreSQL schema, Django DRF API, M-Pesa Daraja integration, Flutter app architecture, farmer and buyer UI screens, API integration layer.",
+    "architecture_notes": "Stack: Django DRF, PostgreSQL, Flutter.\nKey models: Farm, Product, ProductCategory, Order, OrderItem, MpesaTransaction, CustomUser (user_type: farmer/buyer).\nM-Pesa flow: POST /api/payments/initiate/ → Daraja STK Push → Safaricom callback → update Order.status = paid.",
+    "challenges": "M-Pesa callback: Required publicly accessible endpoint; used ngrok for local testing.\nTwo-role Flutter navigation: Conditional routing based on JWT payload user_type field.",
+    "outcomes": "Complete MVP: product listing, order flow, and M-Pesa STK Push in Safaricom sandbox. Flutter app running on Android. Pending production Daraja credentials.",
+    "category": 15,
+    "status": "Completed",
+    "year": "2024",
+    "featured_image": "projects/gallery/agriflow-home.jpg",
+    "live_url": null,
+    "repo_url": null,
+    "documentation_url": null,
+    "is_featured": true,
+    "is_published": true,
+    "display_order": 2,
+    "created_at": "2026-09-19T10:47:32.363Z",
+    "updated_at": "2026-09-19T10:47:32.363Z",
+    "technologies": [
+      53,
+      54,
+      55,
+      56,
+      58,
+      59,
+      60,
+      61
+    ]
+  }
+},
+{
+  "model": "portfolio.project",
+  "pk": 13,
+  "fields": {
+    "title": "This Portfolio — Database-Driven Django Site",
+    "slug": "joseph-kiarie-portfolio-site",
+    "tagline": "Fully database-driven portfolio built with Django, server-rendered templates, and PostgreSQL — every section editable from Django Admin.",
+    "short_description": "Professional portfolio built with Django, fully editable from Admin, no SPA framework.",
+    "problem_statement": "Generic portfolio builders produce identical-looking sites and demonstrate no real engineering ability.",
+    "solution": "Server-rendered Django site where every content block — profile, projects, services, experience, skills, social links — is stored relationally and editable from the Django Admin panel without touching code.",
+    "my_role": "Sole engineer. Full design system, backend architecture, template development, and data population.",
+    "architecture_notes": "Framework: Django 6, server-rendered templates. CSS: Vanilla with custom properties, editorial light-first design.\nTypography: Fraunces + Inter + JetBrains Mono.",
+    "challenges": null,
+    "outcomes": null,
+    "category": 16,
+    "status": "In Progress",
+    "year": "2025",
+    "featured_image": "",
+    "live_url": "https://kiariejosephdevworks.net",
+    "repo_url": null,
+    "documentation_url": null,
+    "is_featured": false,
+    "is_published": true,
+    "display_order": 3,
+    "created_at": "2026-09-19T10:47:32.382Z",
+    "updated_at": "2026-09-19T10:47:32.382Z",
+    "technologies": [
+      53,
+      55,
+      56,
+      68,
+      69
+    ]
+  }
+},
+{
+  "model": "portfolio.projectimage",
+  "pk": 5,
+  "fields": {
+    "project": 12,
+    "image": "projects/gallery/agriflow-home.jpg",
+    "caption": "AgriFlow Mobile Marketplace — Farmer Dashboard & Fresh Produce Ordering",
+    "display_order": 0
+  }
+},
+{
+  "model": "portfolio.projectimage",
+  "pk": 6,
+  "fields": {
+    "project": 12,
+    "image": "projects/gallery/agriflow-login.jpg",
+    "caption": "AgriFlow Mobile Authentication — Phone Verification (+254)",
+    "display_order": 1
+  }
+},
+{
+  "model": "requests.clientprojectrequest",
+  "pk": 1,
+  "fields": {
+    "name": "Farm Enterprise Kenya",
+    "email": "procurement@farmenterprise.co.ke",
+    "phone": "+254712345678",
+    "organisation": "Farm Enterprise Ltd",
+    "project_type": "web_system",
+    "requested_project": null,
+    "project_title": "Cold Chain Inventory Hub",
+    "details": "Need an internal dispatch and temperature record system for perishables.",
+    "budget_range": "",
+    "deadline": "Within 2 months",
+    "contact_method": "WhatsApp",
+    "status": "New",
+    "internal_notes": null,
+    "submitted_at": "2026-09-18T23:23:00.766Z",
+    "updated_at": "2026-09-18T23:23:00.766Z"
+  }
+},
+{
+  "model": "contact.contactmessage",
+  "pk": 1,
+  "fields": {
+    "name": "Test Client Nairobi",
+    "email": "client@example.com",
+    "subject": "Warehouse System Inquiry",
+    "message": "Testing database save first and email notification.",
+    "is_read": false,
+    "status": "New",
+    "submitted_at": "2026-09-18T23:23:00.723Z"
+  }
+},
+{
+  "model": "profiles.profile",
+  "pk": 6,
+  "fields": {
+    "name": "Joseph Ngigi Kiarie",
+    "headline": "Full-Stack Developer & Systems Architect",
+    "short_bio": "I build dependable Django web backends, Flutter mobile applications, and PostgreSQL/Supabase database architectures for real Kenyan organisations — replacing paper records and spreadsheet chaos with systems that actually work in the field.",
+    "long_bio": "I am a BBIT student at Jomo Kenyatta University of Agriculture and Technology (JKUAT) and a practicing full-stack software engineer based in Nairobi, Kenya.\n\nMy academic training gives me a double lens: I understand business operations, supply chains, and accounting workflows just as deeply as database normalisation, query execution plans, and REST API design.\n\nIn local Kenyan organisations, software failures rarely happen because the UI was not shiny enough. They happen because inventory math did not account for concurrent orders, staff roles were not properly restricted, or offline mobile sync silently corrupted data. I engineer systems from the database outward.",
+    "photo": "profile/joseph-portrait.jpg",
+    "secondary_photo": "profile/joseph-car.jpg",
+    "location": "Nairobi, Kenya",
+    "email": "josephkiarie@kiariejosephdevworks.net",
+    "phone": null,
+    "availability_status": "Available for new client projects & technical consulting",
+    "response_time_statement": "I typically respond within 24 business hours.",
+    "cv_file": "",
+    "github_url": "https://github.com/joseph001technology",
+    "linkedin_url": "https://linkedin.com/in/josephkiarie"
+  }
+},
+{
+  "model": "profiles.sociallink",
+  "pk": 13,
+  "fields": {
+    "platform": "github",
+    "label": "GitHub — @joseph001technology",
+    "url": "https://github.com/joseph001technology",
+    "icon": "github",
+    "display_order": 0,
+    "is_public": true
+  }
+},
+{
+  "model": "profiles.sociallink",
+  "pk": 14,
+  "fields": {
+    "platform": "linkedin",
+    "label": "LinkedIn — Joseph Kiarie",
+    "url": "https://linkedin.com/in/josephkiarie",
+    "icon": "linkedin",
+    "display_order": 1,
+    "is_public": true
+  }
+},
+{
+  "model": "profiles.sociallink",
+  "pk": 15,
+  "fields": {
+    "platform": "whatsapp",
+    "label": "WhatsApp — Direct Message",
+    "url": "https://wa.me/254700000000",
+    "icon": "whatsapp",
+    "display_order": 2,
+    "is_public": true
+  }
+},
+{
+  "model": "profiles.sociallink",
+  "pk": 16,
+  "fields": {
+    "platform": "email",
+    "label": "josephkiarie@kiariejosephdevworks.net",
+    "url": "mailto:josephkiarie@kiariejosephdevworks.net",
+    "icon": "mail",
+    "display_order": 3,
+    "is_public": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 66,
+  "fields": {
+    "name": "Python & Django",
+    "category": "Backend & Systems",
+    "proficiency": "Core Stack",
+    "display_order": 0,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 67,
+  "fields": {
+    "name": "Django REST Framework (DRF)",
+    "category": "Backend & Systems",
+    "proficiency": "Core Stack",
+    "display_order": 1,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 68,
+  "fields": {
+    "name": "JWT Authentication & RBAC",
+    "category": "Backend & Systems",
+    "proficiency": "Production",
+    "display_order": 2,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 69,
+  "fields": {
+    "name": "M-Pesa Daraja Integration",
+    "category": "Backend & Systems",
+    "proficiency": "Production",
+    "display_order": 3,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 70,
+  "fields": {
+    "name": "Flutter & Dart",
+    "category": "Mobile Development",
+    "proficiency": "Core Stack",
+    "display_order": 4,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 71,
+  "fields": {
+    "name": "Cross-Platform Android/iOS",
+    "category": "Mobile Development",
+    "proficiency": "Production",
+    "display_order": 5,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 72,
+  "fields": {
+    "name": "Offline Sync Logic",
+    "category": "Mobile Development",
+    "proficiency": "Production",
+    "display_order": 6,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 73,
+  "fields": {
+    "name": "Responsive UI (360px+)",
+    "category": "Mobile Development",
+    "proficiency": "Operational",
+    "display_order": 7,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 74,
+  "fields": {
+    "name": "PostgreSQL & RDBMS Design",
+    "category": "Databases & Storage",
+    "proficiency": "Core Stack",
+    "display_order": 8,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 75,
+  "fields": {
+    "name": "Supabase (Cloud DB & Auth)",
+    "category": "Databases & Storage",
+    "proficiency": "Core Stack",
+    "display_order": 9,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 76,
+  "fields": {
+    "name": "SQL Query Optimisation",
+    "category": "Databases & Storage",
+    "proficiency": "Intermediate",
+    "display_order": 10,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 77,
+  "fields": {
+    "name": "Git & GitHub",
+    "category": "Tools & DevOps",
+    "proficiency": "Daily Driver",
+    "display_order": 11,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 78,
+  "fields": {
+    "name": "Postman API Testing",
+    "category": "Tools & DevOps",
+    "proficiency": "Daily Driver",
+    "display_order": 12,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 79,
+  "fields": {
+    "name": "Linux Server Deployment",
+    "category": "Tools & DevOps",
+    "proficiency": "Operational",
+    "display_order": 13,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 80,
+  "fields": {
+    "name": "Business Analysis & Scoping",
+    "category": "Soft Skills & Business",
+    "proficiency": "Strong",
+    "display_order": 14,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 81,
+  "fields": {
+    "name": "Systems Thinking",
+    "category": "Soft Skills & Business",
+    "proficiency": "Strong",
+    "display_order": 15,
+    "active": true
+  }
+},
+{
+  "model": "profiles.skill",
+  "pk": 82,
+  "fields": {
+    "name": "Technical Documentation",
+    "category": "Soft Skills & Business",
+    "proficiency": "Practised",
+    "display_order": 16,
+    "active": true
+  }
+},
+{
+  "model": "profiles.experience",
+  "pk": 8,
+  "fields": {
+    "organisation": "Self-Employed / Freelance",
+    "role": "Full-Stack Developer",
+    "location": "Nairobi, Kenya",
+    "start_date": "Jan 2023",
+    "end_date": null,
+    "current": true,
+    "description": "Designing, building, and deploying end-to-end software systems for Kenyan businesses. Specialising in inventory management portals, Flutter mobile applications, and REST API backends with M-Pesa payment integration.",
+    "display_order": 0
+  }
+},
+{
+  "model": "profiles.experience",
+  "pk": 9,
+  "fields": {
+    "organisation": "JKUAT — Academic Projects",
+    "role": "Software Engineering Student & Project Lead",
+    "location": "Thika, Kenya",
+    "start_date": "2021",
+    "end_date": "Present",
+    "current": true,
+    "description": "Applying degree coursework in software engineering and database design to hands-on capstone and independent projects.",
+    "display_order": 1
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 19,
+  "fields": {
+    "experience": 8,
+    "text": "Architected the JoseKiarie Pharmacy Management System: Django DRF backend with JWT RBAC, Flutter mobile POS client, and PostgreSQL database with batch/FIFO expiry tracking.",
+    "display_order": 0
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 20,
+  "fields": {
+    "experience": 8,
+    "text": "Built AgriFlow, a farm-to-buyer marketplace with M-Pesa Daraja STK Push payment integration and a Flutter mobile app.",
+    "display_order": 1
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 21,
+  "fields": {
+    "experience": 8,
+    "text": "Designed normalised PostgreSQL schemas with concurrent stock reservation logic using SELECT FOR UPDATE inside atomic transactions.",
+    "display_order": 2
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 22,
+  "fields": {
+    "experience": 8,
+    "text": "Set up Postman collections documenting every API endpoint for client handover and developer onboarding.",
+    "display_order": 3
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 23,
+  "fields": {
+    "experience": 8,
+    "text": "Deployed Django applications on Linux VPS with Nginx and Gunicorn.",
+    "display_order": 4
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 24,
+  "fields": {
+    "experience": 9,
+    "text": "Led design and implementation of a multi-role pharmacy management system as an independent project demonstrating full-stack competency.",
+    "display_order": 0
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 25,
+  "fields": {
+    "experience": 9,
+    "text": "Applied database normalisation theory (3NF) and RDBMS design principles directly to production PostgreSQL schemas.",
+    "display_order": 1
+  }
+},
+{
+  "model": "profiles.experiencebullet",
+  "pk": 26,
+  "fields": {
+    "experience": 9,
+    "text": "Practised business process mapping and requirements gathering before writing any code.",
+    "display_order": 2
+  }
+},
+{
+  "model": "profiles.education",
+  "pk": 6,
+  "fields": {
+    "institution": "Jomo Kenyatta University of Agriculture and Technology (JKUAT)",
+    "qualification": "Bachelor of Business Information Technology (BBIT)",
+    "field": "Business Information Technology",
+    "start_date": "2021",
+    "end_date": "Present",
+    "notes": "Core coursework: Software Engineering, Database Management Systems, Distributed Systems, Business Communication, Financial Accounting, Operations Research, and Information Systems Management.",
+    "display_order": 0
+  }
+},
+{
+  "model": "profiles.certification",
+  "pk": 11,
+  "fields": {
+    "title": "Python for Everybody Specialisation",
+    "issuer": "Coursera / University of Michigan",
+    "date": "2023",
+    "url": null,
+    "display_order": 0
+  }
+},
+{
+  "model": "profiles.certification",
+  "pk": 12,
+  "fields": {
+    "title": "REST APIs with Django REST Framework",
+    "issuer": "Udemy",
+    "date": "2023",
+    "url": null,
+    "display_order": 1
+  }
+},
+{
+  "model": "profiles.certification",
+  "pk": 13,
+  "fields": {
+    "title": "Flutter & Dart — The Complete Guide",
+    "issuer": "Udemy",
+    "date": "2024",
+    "url": null,
+    "display_order": 2
+  }
+},
+{
+  "model": "profiles.certification",
+  "pk": 14,
+  "fields": {
+    "title": "PostgreSQL for Beginners to Advanced",
+    "issuer": "Udemy",
+    "date": "2024",
+    "url": null,
+    "display_order": 3
+  }
+},
+{
+  "model": "profiles.certification",
+  "pk": 15,
+  "fields": {
+    "title": "Git & GitHub Complete Masterclass",
+    "issuer": "Udemy",
+    "date": "2023",
+    "url": null,
+    "display_order": 4
+  }
+}
+]
