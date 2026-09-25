@@ -19,7 +19,9 @@
         <!-- "Who I Am" photo + narrative -->
         <div class="about-photo-narrative">
             <div class="about-photo-frame">
-                {% if profile.photo %}
+                {% if profile.secondary_photo %}
+                    <img src="{{ profile.secondary_photo.url }}" alt="{{ profile.name|default:'Joseph Kiarie' }}" loading="lazy">
+                {% elif profile.photo %}
                     <img src="{{ profile.photo.url }}" alt="{{ profile.name|default:'Joseph Kiarie' }}" loading="lazy">
                 {% endif %}
                 <span class="status-dot-mark" aria-hidden="true"></span>
@@ -87,10 +89,12 @@
 
                     {% if social_links %}
                     <div
-                        style="padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        style="padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 0.55rem;">
                         {% for link in social_links %}
-                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="badge-tag">
-                            {{ link.get_platform_display }} &nearr;
+                        <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-link-row">
+                            <span class="social-link-icon">{% include 'partials/social_icon.html' with platform=link.platform %}</span>
+                            <span>{{ link.get_platform_display }}</span>
+                            <span class="social-link-arrow">&nearr;</span>
                         </a>
                         {% endfor %}
                     </div>
@@ -118,22 +122,11 @@
                     <div class="section-divider-line"></div>
                 </div>
 
-                <div class="stack-matrix-grid" style="grid-template-columns: 1fr;">
+                <div class="tech-shelf-grid" style="grid-template-columns: repeat(2, 1fr);">
                     {% for category, cat_skills in skills_by_category.items %}
-                    <div class="stack-group-card">
-                        <h3 class="stack-group-title">{{ category }}</h3>
-                        <div class="stack-items-list">
-                            {% for skill in cat_skills %}
-                            <div class="stack-item-row">
-                                <span class="stack-name">{{ skill.name }}</span>
-                                <span
-                                    class="stack-level badge-tag {% if skill.proficiency == 'Core Stack' %}badge-forest{% endif %}">
-                                    {{ skill.proficiency|default:"Production" }}
-                                </span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                        {% for skill in cat_skills %}
+                            {% include 'partials/tech_shelf_card.html' with name=skill.name category=category level=skill.proficiency|default:"Production" %}
+                        {% endfor %}
                     {% empty %}
                     <p>Skills matrix configured in Django Admin.</p>
                     {% endfor %}

@@ -45,11 +45,12 @@
                             <div style="font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; color: var(--ink-400); margin-bottom: 0.75rem;">
                                 Channels &amp; Profiles
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div style="display: flex; flex-direction: column; gap: 0.6rem;">
                                 {% for link in social_links %}
-                                    <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.88rem; color: var(--ink-800); display: flex; justify-content: space-between; align-items: center;">
+                                    <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-link-row">
+                                        <span class="social-link-icon">{% include 'partials/social_icon.html' with platform=link.platform %}</span>
                                         <span>{{ link.get_platform_display }}</span>
-                                        <span style="color: var(--accent-forest);">&nearr;</span>
+                                        <span class="social-link-arrow">&nearr;</span>
                                     </a>
                                 {% endfor %}
                             </div>

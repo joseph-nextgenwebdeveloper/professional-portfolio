@@ -34,7 +34,8 @@
                 <div
                     style="border: 1px solid var(--border-medium); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 3rem;">
                     <img src="{{ project.featured_image.url }}" alt="{{ project.title }}"
-                        style="width: 100%; max-height: 480px; object-fit: cover;" loading="lazy">
+                        class="js-lightbox-trigger" data-full="{{ project.featured_image.url }}"
+                        style="width: 100%; height: 420px; object-fit: cover; cursor: zoom-in;" loading="lazy">
                 </div>
                 {% else %}
                 <div class="project-visual-frame" style="min-height: 240px; margin-bottom: 3rem;">
@@ -111,17 +112,15 @@
                 {% if project.images.all %}
                 <section id="gallery" style="margin-bottom: 3rem; scroll-margin-top: 6rem;">
                     <span class="eyebrow-label">06 // System Gallery</span>
-                    <h2 style="font-size: 1.6rem; margin-bottom: 1.5rem;">Interface &amp; Schema Views</h2>
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+                    <h2 style="font-size: 1.6rem; margin-bottom: .5rem;">Interface &amp; Schema Views</h2>
+                    <p style="font-size: .85rem; color: var(--ink-400); margin-bottom: 1.5rem;">Click any image to view it full size.</p>
+                    <div class="gallery-grid">
                         {% for img in project.images.all %}
-                        <div style="border: 1px solid var(--border-medium); border-radius: var(--radius-lg); overflow: hidden;">
+                        <div class="gallery-thumb-wrap">
                             <img src="{{ img.image.url }}" alt="{{ img.caption|default:project.title }}"
-                                style="width: 100%; display: block;" loading="lazy">
+                                class="gallery-thumb js-lightbox-trigger" data-full="{{ img.image.url }}" loading="lazy">
                             {% if img.caption %}
-                            <div
-                                style="padding: 0.75rem 1rem; background-color: var(--bg-surface-alt); font-size: 0.82rem; font-family: var(--font-mono); color: var(--ink-600);">
-                                {{ img.caption }}
-                            </div>
+                            <div class="gallery-caption">{{ img.caption }}</div>
                             {% endif %}
                         </div>
                         {% endfor %}
@@ -215,6 +214,12 @@
     </div>
 </article>
 
+<!-- Lightbox overlay (shared by hero image + gallery thumbs) -->
+<div class="lightbox-overlay" id="lightbox-overlay">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+    <img src="" alt="" id="lightbox-image">
+</div>
+
 <style>
     @media (min-width: 900px) {
         .case-study-grid {
@@ -222,4 +227,41 @@
         }
     }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        const overlay = document.getElementById('lightbox-overlay');
+        const overlayImg = document.getElementById('lightbox-image');
+        const closeBtn = document.getElementById('lightbox-close');
+        if (!overlay || !overlayImg) return;
+
+        function openLightbox(src, alt) {
+            overlayImg.src = src;
+            overlayImg.alt = alt || '';
+            overlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            overlay.classList.remove('is-open');
+            overlayImg.src = '';
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.js-lightbox-trigger').forEach(function (el) {
+            el.addEventListener('click', function () {
+                openLightbox(el.getAttribute('data-full') || el.src, el.alt);
+            });
+        });
+
+        closeBtn.addEventListener('click', closeLightbox);
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeLightbox();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    })();
+</script>
 {% endblock %}

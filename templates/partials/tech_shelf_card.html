@@ -1,0 +1,13 @@
+{% comment %}
+Usage: {% include 'partials/tech_shelf_card.html' with name="Flutter & Dart" category="Mobile" level="Core Stack" %}
+{% endcomment %}
+<div class="tech-shelf-card">
+    <div class="tech-shelf-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+    </div>
+    <div class="tech-shelf-meta">
+        <span class="badge-tag">{{ category }}</span>
+        <span class="badge-tag {% if level == 'Core Stack' %}badge-forest{% elif level == 'Integrations' %}badge-amber{% endif %}">{{ level }}</span>
+    </div>
+    <span class="tech-shelf-name">{{ name }}</span>
+</div>

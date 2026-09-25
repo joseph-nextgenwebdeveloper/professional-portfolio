@@ -10,8 +10,8 @@
         content="{{ profile.short_bio|default:'Full-Stack Developer from Kenya building dependable web applications, Flutter mobile experiences, and PostgreSQL database architectures.' }}">
 
     {% load static %}
-    <link rel="icon" type="image/svg+xml" href="{% static 'img/branding/logo-mark.svg' %}">
-    <link rel="shortcut icon" href="{% static 'img/branding/joseph-kiarie-logo.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/branding/logo-mark.png' %}">
+    <link rel="shortcut icon" href="{% static 'img/branding/logo-mark.png' %}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,10 +53,10 @@
     <div class="social-rail" aria-label="Social profiles">
         {% for link in social_links %}
         <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn"
-            title="{{ link.get_platform_display }}">{{ link.platform|slice:":2"|upper }}</a>
+            title="{{ link.get_platform_display }}">{% include 'partials/social_icon.html' with platform=link.platform %}</a>
         {% empty %}
         <a href="https://github.com/joseph001technology" target="_blank" rel="noopener noreferrer"
-            class="social-icon-btn" title="GitHub">GH</a>
+            class="social-icon-btn" title="GitHub">{% include 'partials/social_icon.html' with platform='github' %}</a>
         {% endfor %}
     </div>
 
@@ -125,7 +125,7 @@
             <div class="footer-top-row">
                 <div class="footer-brand-meta">
                     <div class="brand-block" style="margin-bottom: 0.75rem; display:flex; align-items:center; gap:.6rem;">
-                        <img src="{% static 'img/branding/logo-mark.svg' %}" alt="Joseph Kiarie Arc Logo Mark"
+                        <img src="{% static 'img/branding/logo-mark.png' %}" alt="Josek Technologies Logo"
                             class="brand-logo-img" width="32" height="32">
                         <div class="brand-text-group">
                             <span class="brand-text" style="font-family: var(--font-heading); font-weight:600; color: var(--ink-900);">{{ profile.name|default:"Joseph Kiarie" }}</span>
@@ -137,10 +137,10 @@
                     <div class="footer-social-row">
                         {% for link in social_links %}
                         <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-icon-btn"
-                            title="{{ link.get_platform_display }}">{{ link.platform|slice:":2"|upper }}</a>
+                            title="{{ link.get_platform_display }}">{% include 'partials/social_icon.html' with platform=link.platform %}</a>
                         {% empty %}
                         <a href="https://github.com/joseph001technology" target="_blank" rel="noopener noreferrer"
-                            class="social-icon-btn" title="GitHub">GH</a>
+                            class="social-icon-btn" title="GitHub">{% include 'partials/social_icon.html' with platform='github' %}</a>
                         {% endfor %}
                     </div>
                 </div>
