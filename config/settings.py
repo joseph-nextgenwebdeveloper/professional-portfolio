@@ -180,6 +180,13 @@ STORAGES = {
     },
 }
 
+# Safety net: if a template ever references a {% static %} file that wasn't
+# present at collectstatic time, don't hard-crash the whole site with a 500 —
+# fall back to serving the unhashed path (which will just 404 as a broken
+# image/link) instead. This is what let one missing logo file take down
+# every page in production.
+WHITENOISE_MANIFEST_STRICT = False
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/6.1/ref/settings/#default-auto-field
 
