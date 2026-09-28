@@ -293,7 +293,7 @@
 </section>
 
 <!-- =========================================================================
-     5. WHAT I BUILD (SERVICES)
+     5. WHAT I BUILD (SERVICES) — compact card + image, full detail in a popup
      ========================================================================= -->
 <section class="section-spacing" id="services">
     <div class="container">
@@ -306,20 +306,26 @@
             <div class="section-divider-line"></div>
         </div>
 
-        <div class="services-grid">
+        <div class="services-grid" id="services-grid">
             {% for service in services %}
-                <article class="service-card anim-fade-up-delay-{{ forloop.counter }}">
-                    <div class="service-icon-box">
-                        {% if forloop.counter == 1 %}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-                        {% elif forloop.counter == 2 %}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-                        {% elif forloop.counter == 3 %}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-                        {% elif forloop.counter == 4 %}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                <article class="service-card-compact anim-fade-up-delay-{{ forloop.counter }}">
+                    <div class="service-compact-img">
+                        {% if service.image %}
+                            <img src="{{ service.image.url }}" alt="{{ service.title }}" loading="lazy">
                         {% else %}
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <div class="service-icon-box">
+                                {% if forloop.counter == 1 %}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                                {% elif forloop.counter == 2 %}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                                {% elif forloop.counter == 3 %}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                                {% elif forloop.counter == 4 %}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                                {% else %}
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                {% endif %}
+                            </div>
                         {% endif %}
                     </div>
                     <span class="service-card-num">0{{ forloop.counter }} // CAPABILITY</span>
@@ -327,15 +333,9 @@
                     {% if service.tagline %}
                         <p class="service-tagline">{{ service.tagline }}</p>
                     {% endif %}
-                    <p class="service-desc">{{ service.description }}</p>
-
-                    {% if service.deliverables %}
-                        <ul class="service-deliverables-list">
-                            {% for item in service.get_deliverables_list %}
-                                <li>{{ item }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                    <button type="button" class="btn btn-outline btn-sm service-view-btn" data-target="service-modal-{{ forloop.counter }}">
+                        View Details &rarr;
+                    </button>
                 </article>
             {% empty %}
                 <p>Services will appear here once configured in Django Admin.</p>
@@ -343,6 +343,24 @@
         </div>
     </div>
 </section>
+
+<!-- Service detail popups (one per service, hidden until opened) -->
+{% for service in services %}
+<div class="service-modal-overlay" id="service-modal-{{ forloop.counter }}">
+    <div class="service-modal-card">
+        <button type="button" class="lightbox-close service-modal-close" aria-label="Close">&times;</button>
+        <span class="service-card-num">0{{ forloop.counter }} // CAPABILITY</span>
+        <h3>{{ service.title }}</h3>
+        {% if service.tagline %}<p class="service-tagline">{{ service.tagline }}</p>{% endif %}
+        <p class="service-desc">{{ service.description }}</p>
+        {% if service.deliverables %}
+        <ul class="service-deliverables-list">
+            {% for item in service.get_deliverables_list %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
 
 <!-- =========================================================================
      6. SKILLS & CORE STACK
@@ -363,19 +381,12 @@
             <div class="section-divider-line"></div>
         </div>
 
-        <div class="tech-shelf-grid">
-            {% include 'partials/tech_shelf_card.html' with name="Python & Django" category="Backend" level="Core Stack" %}
-            {% include 'partials/tech_shelf_card.html' with name="Django REST Framework" category="Backend" level="Core Stack" %}
-            {% include 'partials/tech_shelf_card.html' with name="Role-Based Access Control" category="Backend" level="Production" %}
-            {% include 'partials/tech_shelf_card.html' with name="JWT & Token Auth" category="Backend" level="Production" %}
-            {% include 'partials/tech_shelf_card.html' with name="Flutter & Dart" category="Mobile" level="Core Stack" %}
-            {% include 'partials/tech_shelf_card.html' with name="Cross-Platform Android/iOS" category="Mobile" level="Production" %}
-            {% include 'partials/tech_shelf_card.html' with name="Responsive Layouts 360px+" category="Mobile" level="Production" %}
-            {% include 'partials/tech_shelf_card.html' with name="RESTful Offline Sync" category="Mobile" level="Operational" %}
-            {% include 'partials/tech_shelf_card.html' with name="PostgreSQL & RDBMS" category="Data" level="Core Stack" %}
-            {% include 'partials/tech_shelf_card.html' with name="Supabase Auth & Cloud DB" category="Data" level="Core Stack" %}
-            {% include 'partials/tech_shelf_card.html' with name="M-Pesa Daraja STK Push" category="Data" level="Integrations" %}
-            {% include 'partials/tech_shelf_card.html' with name="Git, Postman & Linux" category="Data" level="DevOps" %}
+        <div class="tech-shelf-grid" id="stack-grid">
+            {% for tech in technologies %}
+                {% include 'partials/tech_shelf_card.html' with tech=tech %}
+            {% empty %}
+                <p>Stack configured in Django Admin.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -457,4 +468,36 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    function closeModal(overlay) {
+        overlay.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.service-view-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var overlay = document.getElementById(btn.dataset.target);
+            if (overlay) {
+                overlay.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+    document.querySelectorAll('.service-modal-overlay').forEach(function (overlay) {
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeModal(overlay);
+        });
+        var closeBtn = overlay.querySelector('.service-modal-close');
+        if (closeBtn) closeBtn.addEventListener('click', function () { closeModal(overlay); });
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.service-modal-overlay.is-open').forEach(closeModal);
+        }
+    });
+})();
+</script>
 {% endblock %}

@@ -69,6 +69,24 @@ class Profile(models.Model):
         return self.photo
 
 
+class ProfileImage(models.Model):
+    """
+    Extra gallery images for the site owner's Profile (up to ~5, enforced via
+    admin inline max_num). Use these anywhere you want more than the two
+    existing photo/secondary_photo fields — e.g. an "about" gallery strip.
+    """
+    profile = models.ForeignKey(Profile, related_name='gallery', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='profile/gallery/')
+    caption = models.CharField(max_length=120, blank=True)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order', 'id']
+
+    def __str__(self):
+        return self.caption or f"Profile image {self.pk}"
+
+
 class SocialLink(models.Model):
     PLATFORM_CHOICES = (
         ('github', 'GitHub'),

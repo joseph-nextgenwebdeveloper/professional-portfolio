@@ -63,6 +63,12 @@ class Service(models.Model):
         null=True,
         help_text="Icon identifier (e.g. server, mobile, database, layers, api, shield)"
     )
+    image = models.ImageField(
+        upload_to='services/',
+        blank=True,
+        null=True,
+        help_text="Small illustrative image shown on the compact service card. Falls back to the icon if left blank."
+    )
     deliverables = models.TextField(
         blank=True,
         null=True,

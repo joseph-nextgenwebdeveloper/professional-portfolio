@@ -40,13 +40,17 @@
                     with an understanding of why businesses buy software: to prevent stock loss, enforce accountability,
                     automate invoicing, and save operational hours.
                 </p>
-                <p>
-                    {{ profile.long_bio|default:"My engineering focus is centered on Django, Flutter, and PostgreSQL. I
-                    choose this stack because it offers battle-tested reliability: Django enforces clean data models and
-                    bulletproof permissions; PostgreSQL ensures ACID compliance under concurrent load; and Flutter
-                    delivers unified, performant mobile client experiences across diverse Android hardware."|linebreaks
-                    }}
-                </p>
+                {% if profile.long_bio %}
+                    {{ profile.long_bio|linebreaks }}
+                {% else %}
+                    <p>
+                        My engineering focus is centered on Django, Flutter, and PostgreSQL. I choose this stack
+                        because it offers battle-tested reliability: Django enforces clean data models and
+                        bulletproof permissions; PostgreSQL ensures ACID compliance under concurrent load; and
+                        Flutter delivers unified, performant mobile client experiences across diverse Android
+                        hardware.
+                    </p>
+                {% endif %}
 
                 <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem;">
                     <a href="{% url 'requests:request_project' %}" class="btn btn-forest">
@@ -122,15 +126,21 @@
                     <div class="section-divider-line"></div>
                 </div>
 
-                <div class="tech-shelf-grid" style="grid-template-columns: repeat(2, 1fr);">
-                    {% for category, cat_skills in skills_by_category.items %}
-                        {% for skill in cat_skills %}
-                            {% include 'partials/tech_shelf_card.html' with name=skill.name category=category level=skill.proficiency|default:"Production" %}
-                        {% endfor %}
+                <div class="tech-shelf-grid skills-grid" id="skills-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+                    {% for skill in skills %}
+                    <div class="skill-slot{% if forloop.counter > 6 %} is-extra{% endif %}">
+                        {% include 'partials/tech_shelf_card.html' with name=skill.name category=skill.category|default:"General Stack" level=skill.proficiency|default:"Production" %}
+                    </div>
                     {% empty %}
                     <p>Skills matrix configured in Django Admin.</p>
                     {% endfor %}
                 </div>
+
+                {% if skills|length > 6 %}
+                <button type="button" class="btn btn-outline" id="skills-toggle" aria-expanded="false" aria-controls="skills-grid" style="margin-top: 1.5rem;">
+                    View all {{ skills|length }} skills
+                </button>
+                {% endif %}
             </div>
         </div>
 
@@ -147,11 +157,9 @@
                         <div class="timeline-item-header">
                             <div>
                                 <h3 class="timeline-role-title">{{ exp.role }}</h3>
-                                <div class="timeline-org">{{ exp.organisation }}{% if exp.location %} &bull; {{
-                                    exp.location }}{% endif %}</div>
+                                <div class="timeline-org">{{ exp.organisation }}{% if exp.location %} &bull; {{ exp.location }}{% endif %}</div>
                             </div>
-                            <span class="timeline-period">{{ exp.start_date }} &mdash; {{ exp.end_date|default:"Present"
-                                }}</span>
+                            <span class="timeline-period">{{ exp.start_date }} &mdash; {{ exp.end_date|default:"Present" }}</span>
                         </div>
 
                         {% if exp.description %}
@@ -186,8 +194,7 @@
                                 <h3 class="timeline-role-title">{{ edu.qualification }}</h3>
                                 <div class="timeline-org">{{ edu.institution }}</div>
                             </div>
-                            <span class="timeline-period">{{ edu.start_date }} &mdash; {{ edu.end_date|default:"Ongoing"
-                                }}</span>
+                            <span class="timeline-period">{{ edu.start_date }} &mdash; {{ edu.end_date|default:"Ongoing" }}</span>
                         </div>
                         {% if edu.notes %}
                         <p class="timeline-desc">{{ edu.notes }}</p>
@@ -227,5 +234,27 @@
             grid-template-columns: 1fr 2fr !important;
         }
     }
+    .skills-grid .skill-slot > * { height: 100%; }
+    .skills-grid .is-extra { display: none; }
+    .skills-grid.show-all .is-extra { display: block; }
+    @media (max-width: 640px) {
+        .skills-grid { grid-template-columns: 1fr !important; }
+    }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var toggle = document.getElementById('skills-toggle');
+    var grid = document.getElementById('skills-grid');
+    if (!toggle || !grid) return;
+    var defaultLabel = toggle.textContent.trim();
+    toggle.addEventListener('click', function () {
+        var open = grid.classList.toggle('show-all');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.textContent = open ? 'Show fewer' : defaultLabel;
+    });
+})();
+</script>
 {% endblock %}

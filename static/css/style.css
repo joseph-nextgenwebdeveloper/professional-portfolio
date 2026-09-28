@@ -671,15 +671,15 @@ section[id] { scroll-margin-top: 6.5rem; }
 /* --------------------------------------------------------------------------
    8. BENTO PROJECT GRID (home featured + project list)
    -------------------------------------------------------------------------- */
-.bento-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-@media (min-width: 760px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1080px) { .bento-grid { grid-template-columns: repeat(3, 1fr); } }
+.bento-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+@media (min-width: 760px) { .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1080px) { .bento-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .bento-grid .bento-card.is-large { grid-column: span 1; }
 @media (min-width: 760px) { .bento-grid .bento-card.is-large { grid-column: span 2; } }
 
 .bento-card {
     position: relative; border-radius: var(--radius-lg); overflow: hidden;
-    border: 1px solid var(--border-medium); min-height: 300px;
+    border: 1px solid var(--border-medium); min-height: 300px; min-width: 0;
     display: flex; flex-direction: column; justify-content: flex-end;
     text-decoration: none; color: var(--ink-white);
     box-shadow: var(--shadow-subtle); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
@@ -692,7 +692,7 @@ section[id] { scroll-margin-top: 6.5rem; }
 .bento-card-art.art-2 { background: radial-gradient(circle at 25% 30%, rgba(224,138,60,.22), transparent 40%), linear-gradient(135deg, #1e1712, #090b10); }
 .bento-card-art.art-3 { background: radial-gradient(circle at 75% 70%, rgba(108,140,255,.2), transparent 40%), linear-gradient(135deg, #14182a, #090b10); }
 .bento-card-art.art-4 { background: radial-gradient(circle at 45% 40%, rgba(143,139,255,.2), transparent 40%), linear-gradient(135deg, #1a1526, #090b10); }
-.bento-card-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.bento-card-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 .bento-card-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 20%, rgba(5,7,10,.92) 92%); }
 
 .bento-card-overlay { position: relative; z-index: 1; padding: 1.5rem; display: flex; flex-direction: column; gap: .6rem; }
@@ -738,7 +738,7 @@ section[id] { scroll-margin-top: 6.5rem; }
 
 .project-visual-frame { background-color: var(--bg-navy-band); color: var(--ink-white); display: flex; flex-direction: column; justify-content: space-between; padding: 2rem; min-height: 220px; position: relative; border-radius: var(--radius-lg); }
 .project-visual-frame:has(img) { padding: 0; overflow: hidden; }
-.project-visual-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.project-visual-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
 .visual-fallback-header { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: .72rem; color: var(--ink-white-muted); }
 .visual-system-stamp { font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; padding: .2rem .5rem; border: 1px solid var(--accent-copper); color: var(--accent-amber-border); border-radius: var(--radius-pill); }
 .visual-fallback-graphic { margin: auto 0; padding: 1.25rem 0; }
@@ -769,15 +769,15 @@ section[id] { scroll-margin-top: 6.5rem; }
 
 .projects-showcase-container { display: flex; flex-direction: column; gap: 2rem; }
 .projects-secondary-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-@media (min-width: 800px) { .projects-secondary-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1080px) { .projects-secondary-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 800px) { .projects-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1080px) { .projects-secondary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 
 /* --------------------------------------------------------------------------
    9. SERVICES
    -------------------------------------------------------------------------- */
-.services-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-@media (min-width: 700px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+.services-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+@media (min-width: 700px) { .services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .services-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .service-card {
     background-color: var(--bg-surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--border-medium); border-top: 3px solid var(--accent-forest);
@@ -810,11 +810,50 @@ section[id] { scroll-margin-top: 6.5rem; }
 .service-deliverables-list li { font-size: .84rem; color: var(--ink-800); display: flex; align-items: baseline; gap: .6rem; }
 .service-deliverables-list li::before { content: '—'; color: var(--accent-forest); font-weight: bold; }
 
+/* 9b. Compact service card + popup (replaces the dense .service-card on the home page) */
+.service-card-compact {
+    background-color: var(--bg-surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-medium); border-top: 3px solid var(--accent-forest);
+    padding: 1.5rem; border-radius: var(--radius-lg); min-width: 0;
+    display: flex; flex-direction: column; gap: .65rem;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.service-card-compact:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.service-card-compact:nth-child(2) { border-top-color: var(--accent-amber); }
+.service-card-compact:nth-child(3) { border-top-color: var(--accent-blue); }
+.service-card-compact:nth-child(4) { border-top-color: var(--accent-crimson); }
+.service-card-compact:nth-child(5) { border-top-color: var(--accent-violet); }
+.service-compact-img {
+    width: 100%; aspect-ratio: 16 / 10; border-radius: var(--radius-md); overflow: hidden;
+    background-color: var(--accent-forest-subtle); display: flex; align-items: center; justify-content: center;
+}
+.service-compact-img img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.service-compact-img .service-icon-box { width: 100%; height: 100%; border-radius: 0; margin-bottom: 0; }
+.service-card-compact h3 { font-size: 1.1rem; line-height: 1.3; }
+.service-card-compact .service-tagline {
+    font-size: .84rem; margin-bottom: 0; color: var(--ink-600); font-weight: 500;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.service-card-compact .btn { margin-top: auto; align-self: flex-start; }
+
+.service-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 2000;
+    background-color: rgba(4, 5, 7, .88); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center; padding: 2rem;
+}
+.service-modal-overlay.is-open { display: flex; }
+.service-modal-card {
+    position: relative; max-width: 560px; width: 100%; max-height: 84vh; overflow-y: auto;
+    background-color: var(--bg-canvas); border: 1px solid var(--border-medium);
+    border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-lift);
+}
+.service-modal-close { position: absolute; top: 1rem; right: 1rem; }
+
 /* --------------------------------------------------------------------------
    10. SKILLS & CORE STACK
    -------------------------------------------------------------------------- */
 .stack-matrix-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-@media (min-width: 768px) { .stack-matrix-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .stack-matrix-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .stack-group-card {
     background-color: var(--bg-surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--border-medium); border-radius: var(--radius-lg); padding: 1.75rem 1.5rem;
@@ -830,14 +869,18 @@ section[id] { scroll-margin-top: 6.5rem; }
 .stack-name { font-weight: 500; color: var(--ink-900); }
 .stack-level { font-family: var(--font-mono); font-size: .72rem; color: var(--ink-600); }
 
-/* Tech "shelf" grid — canva-style icon-box tiles, replaces dense list rows */
-.tech-shelf-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
-@media (min-width: 640px) { .tech-shelf-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 1000px) { .tech-shelf-grid { grid-template-columns: repeat(4, 1fr); } }
+/* Tech "shelf" grid — canva-style icon-box tiles, replaces dense list rows.
+   minmax(0, 1fr) tracks + min-width: 0 on the card stop a long tech name
+   or an unwrapped badge from forcing the grid wider than its container
+   (the cause of the mobile horizontal overflow / right-hand gap). */
+.tech-shelf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem; }
+@media (min-width: 640px) { .tech-shelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .tech-shelf-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .tech-shelf-grid { grid-template-columns: minmax(0, 1fr); } }
 .tech-shelf-card {
     background-color: var(--bg-surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     border: 1px solid var(--border-medium); border-radius: var(--radius-lg); padding: 1.5rem 1.35rem;
-    display: flex; flex-direction: column; gap: .9rem;
+    display: flex; flex-direction: column; gap: .9rem; min-width: 0;
     transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 .tech-shelf-card:hover { transform: translateY(-3px); border-color: var(--accent-forest-border); box-shadow: var(--shadow-lift); }
@@ -845,12 +888,21 @@ section[id] { scroll-margin-top: 6.5rem; }
     width: 42px; height: 42px; border-radius: var(--radius-sm);
     display: flex; align-items: center; justify-content: center;
     background-color: var(--accent-forest-subtle); color: var(--accent-forest);
+    overflow: hidden;
 }
 .tech-shelf-icon svg { width: 22px; height: 22px; }
+.tech-shelf-icon img { width: 100%; height: 100%; object-fit: contain; }
 .tech-shelf-card:nth-child(3n+2) .tech-shelf-icon { background-color: var(--accent-blue-subtle); color: var(--accent-blue); }
 .tech-shelf-card:nth-child(3n+3) .tech-shelf-icon { background-color: var(--accent-amber-subtle); color: var(--accent-amber); }
-.tech-shelf-name { font-size: 1.02rem; font-weight: 600; color: var(--ink-900); }
-.tech-shelf-meta { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.tech-shelf-name { font-size: 1.02rem; font-weight: 600; color: var(--ink-900); overflow-wrap: anywhere; }
+.tech-shelf-meta { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }
+.tech-shelf-meta .badge-tag { overflow-wrap: anywhere; }
+
+/* Skills grid on about.html reuses .tech-shelf-grid + this modifier for the
+   "limit to 6, View all" toggle (#7) */
+.skills-grid .skill-slot > * { height: 100%; }
+.skills-grid .is-extra { display: none; }
+.skills-grid.show-all .is-extra { display: block; }
 
 /* --------------------------------------------------------------------------
    11. ABOUT & "WHO I AM" SNAPSHOT
@@ -865,7 +917,7 @@ section[id] { scroll-margin-top: 6.5rem; }
     border: 1px solid var(--border-medium); box-shadow: var(--shadow-subtle);
     aspect-ratio: 4 / 5; background: linear-gradient(160deg, var(--bg-surface-alt), var(--bg-navy-band));
 }
-.about-photo-frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.15) contrast(1.05); }
+.about-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; filter: grayscale(.15) contrast(1.05); }
 .about-photo-frame .status-dot-mark { position: absolute; top: 1.1rem; right: 1.1rem; width: 10px; height: 10px; border-radius: 50%; background: var(--accent-forest); box-shadow: 0 0 0 4px rgba(34,199,153,.2); }
 
 .narrative-body { font-size: 1.02rem; line-height: 1.7; color: var(--ink-800); }
@@ -982,14 +1034,14 @@ section[id] { scroll-margin-top: 6.5rem; }
 /* --------------------------------------------------------------------------
    15b. GALLERY + LIGHTBOX (project detail image gallery)
    -------------------------------------------------------------------------- */
-.gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-@media (max-width: 480px) { .gallery-grid { grid-template-columns: 1fr; } }
+.gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 480px) { .gallery-grid { grid-template-columns: minmax(0, 1fr); } }
 .gallery-thumb-wrap {
     border: 1px solid var(--border-medium); border-radius: var(--radius-lg); overflow: hidden;
     background-color: var(--bg-surface);
 }
 .gallery-thumb {
-    width: 100%; height: 220px; object-fit: cover; display: block; cursor: zoom-in;
+    width: 100%; height: 220px; object-fit: cover; object-position: top center; display: block; cursor: zoom-in;
     transition: transform .3s ease, filter .3s ease;
 }
 .gallery-thumb:hover { transform: scale(1.03); filter: brightness(1.05); }
