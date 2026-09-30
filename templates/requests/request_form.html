@@ -4,167 +4,73 @@
 {% block title %}Request a Project — {{ profile.name|default:"Joseph Kiarie" }}{% endblock %}
 
 {% block content %}
-<section class="section-spacing">
-    <div class="container" style="max-width: 820px;">
-        <!-- Header -->
-        <div class="section-header-block">
-            <span class="eyebrow-label">Project Inquiries // Scope</span>
-            <h1 class="section-title">Request a Project Proposal</h1>
-            <p class="section-desc">
-                {% if requested_project %}
-                    Inquiry regarding a system similar to <strong>{{ requested_project.title }}</strong>. Provide your organizational context below.
-                {% else %}
-                    Have an operational challenge, internal tool, or custom mobile application you need engineered? Share your requirements below.
-                {% endif %}
-            </p>
-            <div class="section-divider-line"></div>
-        </div>
+<section class="section-spacing talk-page">
+    <div class="container talk-wrap">
+        <header class="talk-head">
+            <span class="eyebrow-label">Request a project</span>
+            <h1 class="talk-title">What should we <em>build</em>?</h1>
+            {% if requested_project %}
+                <p class="talk-sub">Something like <strong>{{ requested_project.title }}</strong>? Tell me what you need.</p>
+            {% else %}
+                <p class="talk-sub">A few lines is enough. I&rsquo;ll reply with questions or a rough plan.</p>
+            {% endif %}
+        </header>
 
-        <div class="form-card">
-            <form method="post" novalidate>
-                {% csrf_token %}
+        <form method="post" novalidate class="talk-form">
+            {% csrf_token %}
+            {{ form.requested_project }}
+            {% if form.non_field_errors %}<div class="flash-alert flash-alert-error">{{ form.non_field_errors }}</div>{% endif %}
 
-                {% if form.non_field_errors %}
-                    <div class="flash-alert flash-alert-error" style="margin-bottom: 1.5rem;">
-                        {{ form.non_field_errors }}
-                    </div>
-                {% endif %}
-
-                <!-- Section: Client Identity -->
-                <div style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--accent-forest); margin-bottom: 1rem;">
-                    01 // Contact &amp; Organization
+            <div class="talk-row">
+                <div class="talk-field">
+                    <label for="{{ form.name.id_for_label }}">Name</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}<span class="talk-err">{{ form.name.errors.0 }}</span>{% endif %}
                 </div>
-
-                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="form-two-col">
-                    <div class="form-group">
-                        <label for="{{ form.name.id_for_label }}" class="form-label">
-                            Full Name <span class="form-required">*</span>
-                        </label>
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                            <span class="form-hint" style="color: var(--accent-amber);">{{ form.name.errors.0 }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="form-group">
-                        <label for="{{ form.email.id_for_label }}" class="form-label">
-                            Business / Direct Email <span class="form-required">*</span>
-                        </label>
-                        {{ form.email }}
-                        {% if form.email.errors %}
-                            <span class="form-hint" style="color: var(--accent-amber);">{{ form.email.errors.0 }}</span>
-                        {% endif %}
-                    </div>
+                <div class="talk-field">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}<span class="talk-err">{{ form.email.errors.0 }}</span>{% endif %}
                 </div>
+            </div>
 
-                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2rem;" class="form-two-col">
-                    <div class="form-group">
-                        <label for="{{ form.phone.id_for_label }}" class="form-label">
-                            Phone / WhatsApp
-                        </label>
-                        {{ form.phone }}
-                        <span class="form-hint">For quick scoping consultation if preferred.</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="{{ form.organisation.id_for_label }}" class="form-label">
-                            Company or Organization
-                        </label>
-                        {{ form.organisation }}
-                    </div>
+            <div class="talk-field">
+                <span class="talk-label">What do you need?</span>
+                <div class="pill-group" role="radiogroup" aria-label="What do you need?">
+                    {% for radio in form.project_type %}
+                    <label class="pill-radio">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
+                    {% endfor %}
                 </div>
+            </div>
 
-                <!-- Section: Project Scope -->
-                <div style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--accent-forest); margin-bottom: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-medium);">
-                    02 // Project Scope &amp; Architecture
-                </div>
+            <div class="talk-field">
+                <label for="{{ form.details.id_for_label }}">Tell me about it</label>
+                {{ form.details }}
+                {% if form.details.errors %}<span class="talk-err">{{ form.details.errors.0 }}</span>{% endif %}
+            </div>
 
-                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="form-two-col">
-                    <div class="form-group">
-                        <label for="{{ form.project_type.id_for_label }}" class="form-label">
-                            Project Type
-                        </label>
-                        {{ form.project_type }}
-                    </div>
-
-                    <div class="form-group">
-                        <label for="{{ form.project_title.id_for_label }}" class="form-label">
-                            Working Initiative Title
-                        </label>
-                        {{ form.project_title }}
-                    </div>
-                </div>
-
-                {% if not requested_project %}
-                    <div class="form-group" style="margin-bottom: 1.5rem;">
-                        <label for="{{ form.requested_project.id_for_label }}" class="form-label">
-                            Reference Case Study (Optional)
-                        </label>
-                        {{ form.requested_project }}
-                        <span class="form-hint">If your project resembles one of my existing case studies (e.g. Pharmacy Stock System or AgriFlow).</span>
-                    </div>
-                {% else %}
-                    <input type="hidden" name="requested_project" value="{{ requested_project.id }}">
-                    <div style="background-color: var(--bg-surface-alt); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; font-size: 0.86rem;">
-                        Referenced project: <strong>{{ requested_project.title }}</strong>
-                    </div>
-                {% endif %}
-
-                <div class="form-group" style="margin-bottom: 1.5rem;">
-                    <label for="{{ form.details.id_for_label }}" class="form-label">
-                        Project Scope &amp; Workflow Requirements <span class="form-required">*</span>
-                    </label>
-                    {{ form.details }}
-                    {% if form.details.errors %}
-                        <span class="form-hint" style="color: var(--accent-amber);">{{ form.details.errors.0 }}</span>
-                    {% else %}
-                        <span class="form-hint">Describe current manual pain points, core staff user roles, and primary outcomes needed.</span>
-                    {% endif %}
-                </div>
-
-                <!-- Section: Budget & Timeline (Budget is explicitly optional!) -->
-                <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="form-two-col">
-                    <div class="form-group">
-                        <label for="{{ form.budget_range.id_for_label }}" class="form-label">
-                            Budget Range <span style="font-weight: 400; color: var(--ink-400);">(Optional)</span>
-                        </label>
+            <details class="talk-more">
+                <summary>Add budget, timeline or phone <small>(optional)</small></summary>
+                <div class="talk-more-body">
+                    <div class="talk-field">
+                        <label for="{{ form.budget_range.id_for_label }}">Budget</label>
                         {{ form.budget_range }}
-                        <span class="form-hint">Optional. You are never required to disclose a budget upfront.</span>
                     </div>
-
-                    <div class="form-group">
-                        <label for="{{ form.deadline.id_for_label }}" class="form-label">
-                            Target Launch Timeline
-                        </label>
-                        {{ form.deadline }}
+                    <div class="talk-row">
+                        <div class="talk-field">
+                            <label for="{{ form.deadline.id_for_label }}">Timeline</label>
+                            {{ form.deadline }}
+                        </div>
+                        <div class="talk-field">
+                            <label for="{{ form.phone.id_for_label }}">Phone / WhatsApp</label>
+                            {{ form.phone }}
+                        </div>
                     </div>
                 </div>
+            </details>
 
-                <div class="form-group" style="margin-bottom: 2rem;">
-                    <label for="{{ form.contact_method.id_for_label }}" class="form-label">
-                        Preferred Discussion Channel
-                    </label>
-                    {{ form.contact_method }}
-                </div>
-
-                <div style="padding-top: 1.5rem; border-top: 1px solid var(--border-medium); display: flex; flex-direction: column; gap: 1rem;">
-                    <button type="submit" class="btn btn-forest" style="padding: 0.85rem 1.75rem; font-size: 0.95rem;">
-                        Submit Project Request &rarr;
-                    </button>
-                    <p style="font-size: 0.82rem; color: var(--ink-400); font-family: var(--font-mono);">
-                        {{ profile.response_time_statement|default:"I typically respond within 24 business hours." }} Submissions are stored securely in database.
-                    </p>
-                </div>
-            </form>
-        </div>
+            <button type="submit" class="btn btn-forest talk-submit">Send request &rarr;</button>
+        </form>
     </div>
 </section>
-
-<style>
-@media (min-width: 640px) {
-    .form-two-col {
-        grid-template-columns: 1fr 1fr !important;
-    }
-}
-</style>
 {% endblock %}

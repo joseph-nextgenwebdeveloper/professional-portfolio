@@ -30,72 +30,32 @@ class ClientProjectRequestForm(forms.ModelForm):
             kwargs['data'] = data
         super().__init__(*args, **kwargs)
 
+    # Friendly labels; the stored keys are unchanged so old data and admin still work.
+    project_type = forms.ChoiceField(
+        required=False,
+        label="What do you need?",
+        choices=(
+            ('web_system', 'Website or web app'),
+            ('mobile_app', 'Mobile app'),
+            ('api_backend', 'Backend / API'),
+            ('full_stack', 'Web + mobile system'),
+            ('consulting', 'Review or advice'),
+            ('other', 'Something else'),
+        ),
+        widget=forms.RadioSelect,
+    )
+
     class Meta:
         model = ClientProjectRequest
-        fields = [
-            'name',
-            'email',
-            'phone',
-            'organisation',
-            'project_type',
-            'requested_project',
-            'project_title',
-            'details',
-            'budget_range',
-            'deadline',
-            'contact_method',
-        ]
+        # Kept short on purpose. Organisation, working title and preferred
+        # channel were dropped from the form (the columns still exist).
+        fields = ['name', 'email', 'project_type', 'requested_project', 'details', 'phone', 'budget_range', 'deadline']
         widgets = {
-            'name': forms.TextInput(attrs={
-                'class': 'form-input',
-                'placeholder': 'Your full name or title',
-                'required': True,
-                'id': 'id_name'
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'form-input',
-                'placeholder': 'work.email@company.com',
-                'required': True,
-                'id': 'id_email'
-            }),
-            'phone': forms.TextInput(attrs={
-                'class': 'form-input',
-                'placeholder': '+254 7XX XXX XXX (for quick consultation)',
-                'id': 'id_phone'
-            }),
-            'organisation': forms.TextInput(attrs={
-                'class': 'form-input',
-                'placeholder': 'Company, NGO, enterprise, or startup',
-                'id': 'id_organisation'
-            }),
-            'project_type': forms.Select(attrs={
-                'class': 'form-input form-select',
-                'id': 'id_project_type'
-            }),
-            'requested_project': forms.Select(attrs={
-                'class': 'form-input form-select',
-                'id': 'id_requested_project'
-            }),
-            'project_title': forms.TextInput(attrs={
-                'class': 'form-input',
-                'placeholder': 'e.g. Cooperative Logistics System or Mobile Inventory Portal',
-                'id': 'id_project_title'
-            }),
-            'details': forms.Textarea(attrs={
-                'class': 'form-input form-textarea',
-                'rows': 5,
-                'placeholder': 'Describe what you are looking to build: existing bottlenecks, core user workflows, expected platform (Web/Mobile), or integration requirements.',
-                'required': True,
-                'id': 'id_details'
-            }),
-            'deadline': forms.TextInput(attrs={
-                'class': 'form-input',
-                'placeholder': 'e.g. Within 1 month, Q3 rollout, or Flexible',
-                'id': 'id_deadline'
-            }),
-            'contact_method': forms.TextInput(attrs={
-                'class': 'form-input',
-                'placeholder': 'e.g. WhatsApp, Email, or Google Meet',
-                'id': 'id_contact_method'
-            }),
+            'name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Your name', 'required': True, 'id': 'id_name', 'autocomplete': 'name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-input', 'placeholder': 'you@example.com', 'required': True, 'id': 'id_email', 'autocomplete': 'email'}),
+            'requested_project': forms.HiddenInput(),
+            'details': forms.Textarea(attrs={'class': 'form-input form-textarea', 'rows': 5, 'required': True, 'id': 'id_details',
+                        'placeholder': 'What problem are you trying to solve? A few lines is plenty.'}),
+            'phone': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Phone / WhatsApp', 'id': 'id_phone'}),
+            'deadline': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'e.g. within 2 months', 'id': 'id_deadline'}),
         }

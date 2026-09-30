@@ -228,7 +228,7 @@
         </div>
 
         {% if featured_projects %}
-        <div class="work-grid work-grid--n{{ featured_projects|length }}">
+        <div class="work-grid work-grid--bento work-grid--sz-{{ grid_size }}">
             {% for project in featured_projects %}
                 {% include 'partials/project_card.html' with project=project %}
             {% endfor %}
@@ -295,6 +295,9 @@
 <div class="modal-overlay" id="service-modal-{{ forloop.counter }}" role="dialog" aria-modal="true" aria-label="{{ service.title }}">
     <div class="modal-card">
         <button type="button" class="modal-close" aria-label="Close">&times;</button>
+        {% if service.image %}
+        <div class="modal-media"><img src="{{ service.image.url }}" alt="{{ service.title }}" decoding="async"></div>
+        {% endif %}
         <span class="service-card-num">0{{ forloop.counter }} // CAPABILITY</span>
         <h3>{{ service.title }}</h3>
         {% if service.tagline %}<p class="service-tagline">{{ service.tagline }}</p>{% endif %}

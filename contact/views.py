@@ -2,7 +2,7 @@ import logging
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ContactMessageForm
-from profiles.models import Profile, SocialLink
+from profiles.models import Profile
 from requests.utils import notify_async
 
 logger = logging.getLogger(__name__)
@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 def contact(request):
     profile = Profile.objects.first()
-    social_links = SocialLink.objects.filter(is_public=True)
     
     if request.method == 'POST':
         form = ContactMessageForm(request.POST)
@@ -26,6 +25,7 @@ def contact(request):
                     f"Subject: {contact_msg.subject}\n\nMessage:\n{contact_msg.message}\n\n"
                     f"Submitted at: {contact_msg.submitted_at}"
                 ),
+                reply_to=contact_msg.email,
             )
 
             messages.success(request, 'Your message has been received! I will get back to you shortly.')
@@ -36,6 +36,5 @@ def contact(request):
     context = {
         'form': form,
         'profile': profile,
-        'social_links': social_links,
     }
     return render(request, 'contact/contact_form.html', context)

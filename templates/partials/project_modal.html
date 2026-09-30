@@ -1,14 +1,31 @@
 {% comment %}
 Usage: {% include 'partials/project_modal.html' with project=project %}
-The popup: short, on purpose. Category/status/year, description, up to 6
-technologies (+N more), up to 3 small screenshots, links.
+Popup: main image shown whole (never cropped), extra images as small
+uncropped thumbnails (click one to view it in the main area), short
+description, techs, links.
 {% endcomment %}
+{% with shots=project.images.all %}
+{% with extra=shots|length %}
 <div class="modal-overlay" id="project-{{ project.slug }}" role="dialog" aria-modal="true" aria-labelledby="pm-title-{{ project.pk }}">
     <div class="modal-card project-modal">
         <button type="button" class="modal-close" aria-label="Close">&times;</button>
-        {% if project.featured_image %}
-        <div class="pm-hero"><img src="{{ project.featured_image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async"></div>
+
+        {% if project.featured_image or extra %}
+        <div class="pm-stage">
+            <img class="pm-main" data-pm-main src="{% if project.featured_image %}{{ project.featured_image.url }}{% else %}{{ shots.0.image.url }}{% endif %}" alt="{{ project.title }}" decoding="async">
+        </div>
+        {% if project.featured_image and extra or extra > 1 %}
+        <div class="pm-thumbs{% if extra > 9 %} pm-thumbs--xs{% elif extra > 5 %} pm-thumbs--s{% endif %}" data-pm-thumbs>
+            {% if project.featured_image %}
+            <button type="button" class="pm-thumb is-active" data-full="{{ project.featured_image.url }}" aria-label="Show main image"><img src="{{ project.featured_image.url }}" alt="" loading="lazy" decoding="async"></button>
+            {% endif %}
+            {% for shot in shots %}
+            <button type="button" class="pm-thumb{% if not project.featured_image and forloop.first %} is-active{% endif %}" data-full="{{ shot.image.url }}" aria-label="Show image {{ forloop.counter }}"><img src="{{ shot.image.url }}" alt="{{ shot.caption|default:'' }}" loading="lazy" decoding="async"></button>
+            {% endfor %}
+        </div>
         {% endif %}
+        {% endif %}
+
         <div class="pm-body">
             <div class="pm-meta">
                 {% if project.category %}<span class="badge-tag badge-forest">{{ project.category.name }}</span>{% endif %}
@@ -28,14 +45,6 @@ technologies (+N more), up to 3 small screenshots, links.
             {% endif %}
             {% endwith %}
 
-            {% with shots=project.images.all %}
-            {% if shots %}
-            <div class="pm-shots">
-                {% for shot in shots|slice:":3" %}<img src="{{ shot.image.url }}" alt="{{ shot.caption|default:project.title }}" loading="lazy" decoding="async">{% endfor %}
-            </div>
-            {% endif %}
-            {% endwith %}
-
             <div class="pm-actions">
                 {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Live &nearr;</a>{% endif %}
                 {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Code &nearr;</a>{% endif %}
@@ -44,3 +53,5 @@ technologies (+N more), up to 3 small screenshots, links.
         </div>
     </div>
 </div>
+{% endwith %}
+{% endwith %}

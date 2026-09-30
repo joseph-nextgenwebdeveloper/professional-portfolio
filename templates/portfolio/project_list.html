@@ -27,7 +27,7 @@
         {% endif %}
 
         {% if projects %}
-            <div class="work-grid work-grid--all">
+            <div class="work-grid work-grid--bento work-grid--sz-{{ grid_size }}">
                 {% for project in projects %}
                     {% include 'partials/project_card.html' with project=project %}
                 {% endfor %}

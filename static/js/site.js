@@ -44,6 +44,17 @@
         if (e.key === 'Escape') closeModal();
     });
 
+    /* project popup: click a small image to view it in the main area */
+    document.addEventListener('click', function (e) {
+        var thumb = e.target.closest('.pm-thumb');
+        if (!thumb) return;
+        var card = thumb.closest('.project-modal');
+        var main = card && card.querySelector('[data-pm-main]');
+        if (!main) return;
+        main.src = thumb.getAttribute('data-full');
+        card.querySelectorAll('.pm-thumb').forEach(function (t) { t.classList.toggle('is-active', t === thumb); });
+    });
+
     /* /projects/<slug>/ redirects to /projects/#project-<slug> -> open that popup */
     function openFromHash() {
         var h = location.hash;

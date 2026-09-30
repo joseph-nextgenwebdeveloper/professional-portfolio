@@ -98,7 +98,10 @@
 }
 
 /* ---------- projects: image cards, fade, floating title ---------- */
-.work-grid { display: grid; gap: 1.1rem; grid-template-columns: minmax(0, 1fr); }
+.work-grid { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); --row: 230px; }
+.work-grid--sz-m { --row: 200px; }
+.work-grid--sz-s { --row: 175px; }
+.work-grid--sz-xs { --row: 160px; }
 .work-card {
     position: relative; display: block; min-height: 290px; overflow: hidden; isolation: isolate;
     border-radius: var(--radius-lg); border: 1px solid var(--border-medium); background: #0B0F14; color: #fff;
@@ -132,23 +135,50 @@
 .work-card-cta span { transition: transform .25s ease; }
 .work-card:hover .work-card-cta span { transform: translateX(5px); }
 
+/* Bento layout: 12 columns, a repeating pattern of 6 cards, so some boxes are
+   big and some small. Leftover cards at the end stretch to fill the row.
+   Row height shrinks as more projects are added (--row above). */
 @media (min-width: 860px) {
-    .work-grid--n1 .work-card { min-height: 430px; }
-    .work-grid--n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .work-grid--n2 .work-card { min-height: 400px; }
-    .work-grid--n3, .work-grid--n4 { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
-    .work-grid--n3 { grid-auto-rows: 270px; }
-    .work-grid--n4 { grid-auto-rows: 215px; }
-    .work-grid--n3 .work-card, .work-grid--n4 .work-card { min-height: 0; }
-    .work-grid--n3 .work-card:first-child { grid-row: span 2; }
-    .work-grid--n4 .work-card:first-child { grid-row: span 3; }
-    .work-grid--n3 .work-card:first-child .work-card-title,
-    .work-grid--n4 .work-card:first-child .work-card-title { font-size: 2.05rem; }
-    .work-grid--all { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .work-grid--all .work-card { min-height: 320px; }
+    .work-grid--bento { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: var(--row); grid-auto-flow: dense; }
+    .work-grid--bento > .work-card { min-height: 0; grid-column: span 4; grid-row: span 2; }
+
+    /* cards 1-3: one big + two small stacked */
+    .work-grid--bento > .work-card:nth-child(6n+1) { grid-column: span 7; grid-row: span 2; }
+    .work-grid--bento > .work-card:nth-child(6n+2),
+    .work-grid--bento > .work-card:nth-child(6n+3) { grid-column: span 5; grid-row: span 1; }
+    /* cards 4-6: three equal tall boxes */
+    .work-grid--bento > .work-card:nth-child(6n+4),
+    .work-grid--bento > .work-card:nth-child(6n+5),
+    .work-grid--bento > .work-card:nth-child(6n+6) { grid-column: span 4; grid-row: span 2; }
+    /* mirror the big one to the right on every second block */
+    .work-grid--bento > .work-card:nth-child(12n+7) { grid-column: 6 / span 7; }
+
+    /* leftovers */
+    .work-grid--bento > .work-card:nth-child(6n+1):last-child { grid-column: span 12; }
+    .work-grid--bento > .work-card:nth-child(6n+2):last-child { grid-column: span 5; grid-row: span 2; }
+    .work-grid--bento > .work-card:nth-child(6n+4):last-child { grid-column: span 12; grid-row: span 1; }   /* lone last card = slim banner */
+    .work-grid--bento > .work-card:nth-child(6n+4):nth-last-child(2),
+    .work-grid--bento > .work-card:nth-child(6n+5):last-child { grid-column: span 6; }
+
+    /* the big card gets a bigger title */
+    .work-grid--bento > .work-card:nth-child(6n+1) .work-card-title { font-size: 2rem; }
+    /* the small stacked cards are compact */
+    .work-grid--bento > .work-card:nth-child(6n+2) .work-card-body,
+    .work-grid--bento > .work-card:nth-child(6n+3) .work-card-body { padding: 1rem 1.25rem; gap: .4rem; }
+    .work-grid--bento > .work-card:nth-child(6n+2) .work-card-title,
+    .work-grid--bento > .work-card:nth-child(6n+3) .work-card-title { font-size: 1.25rem; }
+    .work-grid--bento > .work-card:nth-child(6n+2):last-child .work-card-title { font-size: 1.5rem; }
+
+    /* more projects -> smaller type */
+    .work-grid--sz-s .work-card-title, .work-grid--sz-xs .work-card-title { font-size: 1.2rem; }
+    .work-grid--sz-s > .work-card:nth-child(6n+1) .work-card-title,
+    .work-grid--sz-xs > .work-card:nth-child(6n+1) .work-card-title { font-size: 1.6rem; }
+    .work-grid--sz-xs .work-chip { font-size: .68rem; padding: .2rem .6rem; }
+    .work-grid--sz-xs .work-card-cta { font-size: .82rem; }
 }
 @media (max-width: 859px) and (min-width: 560px) {
-    .work-grid--all, .work-grid--n2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .work-grid--bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .work-grid--bento > .work-card:first-child { grid-column: 1 / -1; }
 }
 
 /* ---------- popups (projects + services share these) ---------- */
@@ -172,10 +202,24 @@
 .modal-close:hover { background: rgba(0, 0, 0, .75); }
 
 .project-modal { padding: 0; max-width: 620px; }
-.pm-hero { aspect-ratio: 16 / 8; overflow: hidden; background: #0B0F14; }
-.pm-hero img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.pm-stage { display: grid; place-items: center; background: #0B0F14; padding: 2.6rem 1rem 1rem; }
+.pm-main { display: block; max-width: 100%; max-height: 46vh; width: auto; height: auto; object-fit: contain; border-radius: var(--radius-sm); }
+.pm-thumbs { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; padding: 0 1rem 1rem; background: #0B0F14; }
+.pm-thumb {
+    padding: 0; cursor: pointer; line-height: 0; background: rgba(255, 255, 255, .06);
+    border: 2px solid transparent; border-radius: 6px; overflow: hidden; opacity: .7;
+    transition: opacity .2s ease, border-color .2s ease, transform .2s ease;
+}
+.pm-thumb img { display: block; height: 76px; width: auto; max-width: 130px; object-fit: contain; }   /* ~2cm tall, never cropped */
+.pm-thumbs--s .pm-thumb img { height: 60px; max-width: 100px; }
+.pm-thumbs--xs .pm-thumb img { height: 46px; max-width: 80px; }
+.pm-thumb:hover { opacity: 1; transform: translateY(-2px); }
+.pm-thumb.is-active { opacity: 1; border-color: var(--accent-forest); }
+.pm-thumb:focus-visible { outline: 2px solid var(--accent-forest); outline-offset: 2px; }
+.project-modal:not(:has(.pm-stage)) .pm-body { padding-top: 2.6rem; }
+.modal-media { display: grid; place-items: center; margin: -.5rem -.5rem 1.25rem; padding: 1rem; background: var(--bg-surface-alt); border-radius: var(--radius-md); }
+.modal-media img { display: block; max-width: 100%; max-height: 36vh; width: auto; height: auto; object-fit: contain; border-radius: var(--radius-sm); }
 .pm-body { padding: 1.4rem 1.75rem 1.75rem; }
-.project-modal:not(:has(.pm-hero)) .pm-body { padding-top: 2.6rem; }
 .pm-meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .75rem; }
 .pm-body h3 { font-size: 1.7rem; line-height: 1.2; margin-bottom: .4rem; }
 .pm-tagline { color: var(--accent-forest); font-weight: 500; margin-bottom: .75rem; }
@@ -189,8 +233,6 @@
 .tech-pill .tech-ico { width: 22px; height: 22px; border-radius: 6px; }
 .tech-pill .tech-ico img { width: 13px; height: 13px; }
 .tech-pill-more { padding-left: .8rem; color: var(--ink-600); font-family: var(--font-mono); font-size: .74rem; }
-.pm-shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; margin-bottom: 1.25rem; }
-.pm-shots img { width: 100%; height: 84px; object-fit: cover; object-position: top center; border-radius: var(--radius-sm); border: 1px solid var(--border-medium); display: block; }
 .pm-actions { display: flex; flex-wrap: wrap; gap: .6rem; padding-top: 1.1rem; border-top: 1px solid var(--border-subtle); }
 
 /* ---------- stack: first 8 shown, rest on request ---------- */
@@ -207,3 +249,48 @@
 .stack-chips.show-all .is-extra { animation: fadeInUp .3s ease both; }
 
 body.modal-open { overflow: hidden; }
+
+
+/* ==========================================================================
+   Contact + Request pages: one calm, centred column, no side panels
+   ========================================================================== */
+.talk-wrap { max-width: 640px; }
+.talk-head { text-align: center; margin-bottom: 2.25rem; }
+.talk-head .eyebrow-label { justify-content: center; }
+.talk-title { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.1; font-weight: 600; margin: .5rem 0 .75rem; }
+.talk-title em { font-style: normal; color: var(--accent-forest); }
+.talk-sub { color: var(--ink-600); font-size: 1.05rem; max-width: 46ch; margin: 0 auto; }
+
+.talk-form { display: flex; flex-direction: column; gap: 1.15rem; }
+.talk-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.15rem; }
+@media (min-width: 560px) { .talk-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.talk-field { display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
+.talk-field label, .talk-label { font-size: .85rem; font-weight: 500; color: var(--ink-600); }
+.talk-err { font-size: .8rem; color: var(--accent-amber); }
+.talk-form .form-input { padding: .85rem 1rem; }
+.talk-form .form-textarea { min-height: 140px; }
+.talk-submit { width: 100%; padding: .95rem 1.5rem; font-size: .95rem; margin-top: .25rem; }
+.talk-alt { text-align: center; font-size: .9rem; color: var(--ink-600); }
+.talk-alt a { color: var(--accent-forest); text-decoration: underline; text-underline-offset: 3px; }
+
+/* project type as tap-able pills */
+.pill-group { display: flex; flex-wrap: wrap; gap: .5rem; }
+.pill-radio { position: relative; cursor: pointer; }
+.pill-radio input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.pill-radio span {
+    display: inline-block; padding: .5rem 1rem; border-radius: var(--radius-pill); font-size: .88rem;
+    border: 1px solid var(--border-medium); background: var(--bg-surface-alt); color: var(--ink-800);
+    transition: border-color .15s ease, background-color .15s ease, color .15s ease;
+}
+.pill-radio:hover span { border-color: var(--accent-forest-border); }
+.pill-radio input:checked + span { background: var(--accent-forest-subtle); border-color: var(--accent-forest); color: var(--accent-forest); font-weight: 600; }
+.pill-radio input:focus-visible + span { outline: 2px solid var(--accent-forest); outline-offset: 2px; }
+
+/* optional extras tucked away */
+.talk-more { border: 1px dashed var(--border-medium); border-radius: var(--radius-md); padding: .8rem 1rem; }
+.talk-more summary { cursor: pointer; font-size: .9rem; color: var(--ink-600); list-style: none; }
+.talk-more summary::-webkit-details-marker { display: none; }
+.talk-more summary::before { content: '+'; display: inline-block; width: 1.1rem; color: var(--accent-forest); font-weight: 700; }
+.talk-more[open] summary::before { content: '\2212'; }
+.talk-more summary small { color: var(--ink-400); }
+.talk-more-body { display: flex; flex-direction: column; gap: 1.15rem; padding-top: 1rem; }

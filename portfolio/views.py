@@ -4,8 +4,20 @@ from django.urls import reverse
 from .models import Project, ProjectCategory, Technology, Service
 from profiles.models import Profile, Experience, Education, Certification
 
-# How many projects the one-page home shows before "View all projects".
-HOME_PROJECT_LIMIT = 4
+# Most projects the home page shows (cards get smaller as the count grows).
+# Everything beyond this is one click away on the archive page.
+HOME_PROJECT_LIMIT = 10
+
+
+def grid_size(count):
+    """Card-size tier: the more projects, the smaller the boxes."""
+    if count <= 4:
+        return 'l'
+    if count <= 6:
+        return 'm'
+    if count <= 8:
+        return 's'
+    return 'xs'
 
 
 def _projects_qs():
@@ -25,10 +37,8 @@ def home(request):
     """
     profile = Profile.objects.first()
 
-    featured = _projects_qs().filter(is_featured=True).order_by('display_order', '-created_at')[:HOME_PROJECT_LIMIT]
-    featured = list(featured)
-    if not featured:
-        featured = list(_projects_qs().order_by('display_order', '-created_at')[:HOME_PROJECT_LIMIT])
+    # Featured projects first, then the rest, up to the limit.
+    featured = list(_projects_qs().order_by('-is_featured', 'display_order', '-created_at')[:HOME_PROJECT_LIMIT])
 
     total_projects = Project.objects.filter(is_published=True).count()
 
@@ -38,6 +48,7 @@ def home(request):
     context = {
         'profile': profile,
         'featured_projects': featured,
+        'grid_size': grid_size(len(featured)),
         'total_projects': total_projects,
         'has_more_projects': total_projects > len(featured),
         'technologies': technologies,
@@ -67,6 +78,7 @@ def project_list(request):
 
     context = {
         'projects': projects,
+        'grid_size': 's',
         'categories': ProjectCategory.objects.filter(active=True),
         'selected_category': selected_category,
     }
