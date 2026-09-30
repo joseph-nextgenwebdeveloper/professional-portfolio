@@ -1,18 +1,40 @@
 import logging
-from django.core.mail import send_mail
+import threading
+
 from django.conf import settings
+from django.core.mail import send_mail
 
 logger = logging.getLogger(__name__)
 
 
+def notify_async(subject, body):
+    """
+    Email the site owner WITHOUT ever blocking or breaking the request.
+
+    The submission is already saved to the database before this is called.
+    Sending happens in a background thread with a short SMTP timeout, so a
+    blocked/slow mail server (or wrong credentials) can no longer turn a
+    form submit into a 500 / worker timeout.
+    """
+    recipient = getattr(settings, 'PORTFOLIO_NOTIFICATION_EMAIL', None) or getattr(settings, 'EMAIL_HOST_USER', None)
+    sender = getattr(settings, 'DEFAULT_FROM_EMAIL', None) or 'noreply@josephkiarie.dev'
+    if not recipient:
+        return
+
+    def _send():
+        try:
+            send_mail(subject, body, sender, [recipient], fail_silently=False)
+        except Exception as exc:  # noqa: BLE001 - must never propagate
+            logger.warning("Notification email failed: %s", exc)
+
+    threading.Thread(target=_send, daemon=True).start()
+
+
 def send_project_request_email(client_request):
-    """
-    Sends an email notification when a new client project request is submitted.
-    Saved to database FIRST. A failed email never loses the submission.
-    """
-    subject = f"New Project Request: {client_request.project_title or client_request.get_project_type_display()} — {client_request.name}"
-    
-    body = f"""
+    """Email notification for a new project request (saved to DB first)."""
+    try:
+        subject = f"New Project Request: {client_request.project_title or client_request.get_project_type_display()} — {client_request.name}"
+        body = f"""
 NEW CLIENT PROJECT REQUEST
 
 From:
@@ -35,18 +57,6 @@ Project Details & Requirements:
 Submitted at: {client_request.submitted_at}
 View full submission in Django Admin.
 """
-    
-    recipient_email = getattr(settings, 'PORTFOLIO_NOTIFICATION_EMAIL', None) or getattr(settings, 'EMAIL_HOST_USER', None)
-    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None) or 'noreply@josephkiarie.dev'
-    
-    if recipient_email:
-        try:
-            send_mail(
-                subject,
-                body,
-                from_email,
-                [recipient_email],
-                fail_silently=True,
-            )
-        except Exception as e:
-            logger.warning(f"Could not dispatch project request notification email: {e}")
+        notify_async(subject, body)
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("Could not build project request email: %s", exc)

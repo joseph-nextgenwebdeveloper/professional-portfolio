@@ -1,0 +1,21 @@
+{% comment %}
+Usage: {% include 'partials/project_card.html' with project=project %}
+Image-only card: full-bleed picture, soft fade at the bottom, floating title,
+max 3 technologies and a "View Details" cue. Everything else lives in the popup.
+{% endcomment %}
+<a href="{% url 'portfolio:project_detail' project.slug %}" class="work-card" data-modal-open="project-{{ project.slug }}" aria-haspopup="dialog">
+    <div class="work-card-media">
+        {% if project.featured_image %}
+            <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async">
+        {% else %}
+            <div class="work-card-fallback" aria-hidden="true"><span>{{ project.title|slice:":2" }}</span></div>
+        {% endif %}
+    </div>
+    <div class="work-card-body">
+        <h3 class="work-card-title">{{ project.title }}</h3>
+        <div class="work-card-tags">
+            {% for tech in project.technologies.all|slice:":3" %}<span class="work-chip">{{ tech.name }}</span>{% endfor %}
+        </div>
+        <span class="work-card-cta">View Details <span aria-hidden="true">&rarr;</span></span>
+    </div>
+</a>

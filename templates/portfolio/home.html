@@ -6,18 +6,17 @@
 {% block content %}
 
 <!-- =========================================================================
-     1. HERO SECTION
+     1. HERO
      ========================================================================= -->
-<section class="hero-section">
+<section class="hero-section" id="hero">
     <div class="container hero-grid">
-        <!-- Left: Persona & Statement -->
         <div class="anim-fade-up">
             <div class="hero-status-strip">
                 <span class="status-dot"></span>
                 <span>{{ profile.availability_status|default:"Available for client projects & technical consulting" }}</span>
             </div>
 
-            <p style="font-family: var(--font-mono); font-size: .85rem; color: var(--ink-600); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .35rem;">Hi, my name is</p>
+            <p class="hero-hello">Hi, my name is</p>
             <h1 class="hero-heading">{{ profile.name|default:"Joseph Kiarie" }}</h1>
 
             <h2 class="hero-statement">
@@ -25,20 +24,16 @@
             </h2>
 
             <p class="hero-subhead">
-                A full-stack software engineer and BBIT student at JKUAT based in Nairobi. I build reliable Django web backends, responsive Flutter mobile applications, and resilient PostgreSQL/Supabase database systems.
+                A full-stack software engineer and BBIT student at JKUAT based in Nairobi. I build reliable Django backends, responsive Flutter apps, and PostgreSQL databases.
             </p>
 
             <div class="hero-cta-group">
-                <a href="{% url 'requests:request_project' %}" class="btn btn-forest" id="hero-btn-request">
-                    Request a Project &rarr;
-                </a>
-                <a href="#projects" class="btn btn-outline" id="hero-btn-work">
-                    View Selected Work &darr;
-                </a>
+                <a href="{% url 'requests:request_project' %}" class="btn btn-forest" id="hero-btn-request">Request a Project &rarr;</a>
+                <a href="#projects" class="btn btn-outline" id="hero-btn-work">View Selected Work &darr;</a>
             </div>
+            <p class="hero-response">{{ profile.response_time_statement|default:"I typically respond within 24 business hours." }}</p>
         </div>
 
-        <!-- Right: Ringed photo + floating chips + condensed spec card -->
         <div class="hero-visual-col anim-fade-up-delay-2">
             <div class="hero-photo-frame">
                 <div class="hero-photo-ring" aria-hidden="true"></div>
@@ -53,38 +48,69 @@
                 <span class="hero-chip-float chip-tr chip-2">Django</span>
                 <span class="hero-chip-float chip-br chip-3">Flutter</span>
             </div>
+        </div>
+    </div>
+</section>
 
-            <div class="hero-spec-card">
-                <div class="hero-profile-meta">
-                    <h3>{{ profile.name|default:"Joseph Kiarie" }}</h3>
-                    <p>{{ profile.headline|default:"Full-Stack Developer & Systems Architect" }}</p>
+<!-- =========================================================================
+     2. MARQUEE - first 10 technologies from the database (Admin > Technologies)
+     ========================================================================= -->
+<section class="marquee-band" aria-label="Key technologies">
+    <div class="marquee-track">
+        <div class="marquee-group">
+            {% for tech in marquee_technologies %}<span class="marquee-item">{% include 'partials/tech_icon.html' with tech=tech %}{{ tech.name }}<span class="marquee-sep">&bull;</span></span>{% empty %}<span class="marquee-item">Django<span class="marquee-sep">&bull;</span></span><span class="marquee-item">Flutter<span class="marquee-sep">&bull;</span></span><span class="marquee-item">PostgreSQL<span class="marquee-sep">&bull;</span></span>{% endfor %}
+        </div>
+        <div class="marquee-group" aria-hidden="true">
+            {% for tech in marquee_technologies %}<span class="marquee-item">{% include 'partials/tech_icon.html' with tech=tech %}{{ tech.name }}<span class="marquee-sep">&bull;</span></span>{% empty %}<span class="marquee-item">Django<span class="marquee-sep">&bull;</span></span><span class="marquee-item">Flutter<span class="marquee-sep">&bull;</span></span><span class="marquee-item">PostgreSQL<span class="marquee-sep">&bull;</span></span>{% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     3. ABOUT (used to be its own page)
+     ========================================================================= -->
+<section class="section-spacing" id="about">
+    <div class="container">
+        <div class="section-header-block">
+            <span class="eyebrow-label">01 / About</span>
+            <h2 class="section-title">Who I Am</h2>
+            <div class="section-divider-line"></div>
+        </div>
+
+        <div class="about-photo-narrative">
+            <div class="about-photo-frame">
+                {% if profile.secondary_photo %}
+                    <img src="{{ profile.secondary_photo.url }}" alt="{{ profile.name|default:'Joseph Kiarie' }}" loading="lazy">
+                {% elif profile.photo %}
+                    <img src="{{ profile.photo.url }}" alt="{{ profile.name|default:'Joseph Kiarie' }}" loading="lazy">
+                {% endif %}
+                <span class="status-dot-mark" aria-hidden="true"></span>
+            </div>
+
+            <div>
+                <div class="narrative-body">
+                    {% if profile.long_bio %}
+                        {{ profile.long_bio|linebreaks }}
+                    {% else %}
+                        <p>I study Business Information Technology at JKUAT while engineering real software systems. That gives me a double lens: I understand business operations, supply chains and accounting workflows as well as I understand database design and APIs.</p>
+                        <p>In local businesses, software rarely fails because the UI wasn't shiny enough. It fails because inventory math ignored concurrent orders, staff roles weren't restricted, or offline sync corrupted data. That is why I build from the database outward.</p>
+                    {% endif %}
                 </div>
 
-                <div class="hero-specs-table">
-                    <div class="spec-row">
-                        <span class="spec-label">Primary Specialism</span>
-                        <span class="spec-val">Management Portals & Mobile Apps</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Academic Base</span>
-                        <span class="spec-val">JKUAT (BBIT, Ongoing)</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Expected Response</span>
-                        <span class="spec-val">{{ profile.response_time_statement|default:"Within 24 business hours" }}</span>
-                    </div>
-                    <div class="spec-row">
-                        <span class="spec-label">Production Database</span>
-                        <span class="spec-val">PostgreSQL / Supabase</span>
-                    </div>
+                <div class="about-facts">
+                    <span class="about-fact"><b>Based in</b> {{ profile.location|default:"Nairobi, Kenya" }}</span>
+                    <span class="about-fact"><b>Studying</b> BBIT, JKUAT</span>
+                    <span class="about-fact"><b>Focus</b> Web systems &amp; mobile apps</span>
                 </div>
 
-                <div class="hero-stack-pills">
-                    <span class="badge-tag badge-teal">Django REST</span>
-                    <span class="badge-tag badge-copper">Flutter</span>
-                    <span class="badge-tag badge-navy">PostgreSQL</span>
-                    <span class="badge-tag badge-teal">M-Pesa Daraja</span>
-                    <span class="badge-tag badge-copper">JWT Auth</span>
+                <div class="about-actions">
+                    <a href="{% url 'requests:request_project' %}" class="btn btn-forest btn-sm">Request a Project &rarr;</a>
+                    {% if profile.cv_file %}<a href="{{ profile.cv_file.url }}" download class="btn btn-outline btn-sm">Download CV &darr;</a>{% endif %}
+                </div>
+
+                <div class="about-highlight-box">
+                    <h4>Core Philosophy</h4>
+                    <p>&ldquo;Build for the field, not for a slide deck. A system that works on entry-level Android phones and 3G data is worth ten over-engineered prototypes that crash under load.&rdquo;</p>
                 </div>
             </div>
         </div>
@@ -92,217 +118,142 @@
 </section>
 
 <!-- =========================================================================
-     2. TECHNOLOGY MARQUEE
+     4. WHERE I'VE WORKED - rail of tabs; a panel loads when you tap one
      ========================================================================= -->
-<section class="marquee-band" aria-label="Key Technologies Ticker">
-    <div class="marquee-track">
-        <div class="marquee-group">
-            <span class="marquee-item">Django 6 &amp; Python<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Django REST Framework<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Flutter &amp; Dart<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">PostgreSQL / Supabase<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Safaricom Daraja M-Pesa<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">JWT Authentication<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Linux &amp; Cloud Deployment<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Postman API Collections<span class="marquee-sep">&bull;</span></span>
-        </div>
-        <div class="marquee-group" aria-hidden="true">
-            <span class="marquee-item">Django 6 &amp; Python<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Django REST Framework<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Flutter &amp; Dart<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">PostgreSQL / Supabase<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Safaricom Daraja M-Pesa<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">JWT Authentication<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Linux &amp; Cloud Deployment<span class="marquee-sep">&bull;</span></span>
-            <span class="marquee-item">Postman API Collections<span class="marquee-sep">&bull;</span></span>
-        </div>
-    </div>
-</section>
-
-<!-- =========================================================================
-     3. WHERE I'VE BUILT — CSS-only tabs over Experience + Education
-     ========================================================================= -->
-<section class="section-spacing" id="experience">
+<section class="section-spacing section-band-alt" id="experience">
     <div class="container">
         <div class="section-header-block">
-            <span class="eyebrow-label">01 / Selected Experience</span>
-            <h2 class="section-title">Where I&rsquo;ve Built</h2>
-            <p class="section-desc">Engineering attachment experience coupled with formal degree training in Business Information Technology.</p>
+            <span class="eyebrow-label">02 / Experience</span>
+            <h2 class="section-title">Where I&rsquo;ve Worked &amp; Studied</h2>
+            <p class="section-desc">Tap a name to open it.</p>
             <div class="section-divider-line"></div>
         </div>
 
-        <div class="timeline-list">
-            {% for exp in experiences %}
-                <article class="timeline-item">
-                    <div class="timeline-item-header">
-                        <div>
-                            <h3 class="timeline-role-title">{{ exp.role }}</h3>
-                            <div class="timeline-org">{{ exp.organisation }}{% if exp.location %} &bull; {{ exp.location }}{% endif %}</div>
-                        </div>
-                        <span class="timeline-period">{{ exp.start_date }} &mdash; {{ exp.end_date|default:"Present" }}</span>
-                    </div>
-                    {% if exp.description %}<p class="timeline-desc">{{ exp.description }}</p>{% endif %}
-                    {% if exp.bullets.all %}
-                        <ul class="timeline-bullets">
-                            {% for b in exp.bullets.all %}<li>{{ b.text }}</li>{% endfor %}
-                        </ul>
-                    {% endif %}
-                </article>
-            {% empty %}
-                <article class="timeline-item">
-                    <span class="timeline-period">Coming Soon</span>
-                    <h3 class="timeline-role-title" style="margin-top: .75rem;">Experience history is managed in Django Admin.</h3>
-                </article>
-            {% endfor %}
+        {% if experiences or educations or certifications %}
+        <div class="career" data-tabs>
+            <div class="career-rail" role="tablist" aria-orientation="vertical" aria-label="Experience and education">
+                {% for exp in experiences %}
+                <button type="button" role="tab" class="career-tab" id="tab-exp-{{ exp.pk }}" data-panel="panel-exp-{{ exp.pk }}" aria-selected="false">
+                    <span class="career-node" aria-hidden="true"></span>
+                    <span class="career-tab-text"><strong>{{ exp.organisation }}</strong><small>{{ exp.start_date }} &ndash; {% if exp.current %}Present{% else %}{{ exp.end_date|default:"Present" }}{% endif %}</small></span>
+                </button>
+                {% endfor %}
+                {% for edu in educations %}
+                <button type="button" role="tab" class="career-tab" id="tab-edu-{{ edu.pk }}" data-panel="panel-edu-{{ edu.pk }}" aria-selected="false">
+                    <span class="career-node is-edu" aria-hidden="true"></span>
+                    <span class="career-tab-text"><strong>{{ edu.institution }}</strong><small>Education &middot; {{ edu.start_date }} &ndash; {{ edu.end_date|default:"Ongoing" }}</small></span>
+                </button>
+                {% endfor %}
+                {% if certifications %}
+                <button type="button" role="tab" class="career-tab" id="tab-certs" data-panel="panel-certs" aria-selected="false">
+                    <span class="career-node is-edu" aria-hidden="true"></span>
+                    <span class="career-tab-text"><strong>Certifications</strong><small>{{ certifications|length }} earned</small></span>
+                </button>
+                {% endif %}
+            </div>
 
-            {% for edu in educations %}
-                <article class="timeline-item">
-                    <div class="timeline-item-header">
+            <div class="career-panels">
+                {% for exp in experiences %}
+                <article class="career-panel" id="panel-exp-{{ exp.pk }}" role="tabpanel" aria-labelledby="tab-exp-{{ exp.pk }}">
+                    <header class="career-panel-head">
                         <div>
-                            <h3 class="timeline-role-title">{{ edu.qualification }}</h3>
-                            <div class="timeline-org">{{ edu.institution }}</div>
+                            <h3>{{ exp.role }}</h3>
+                            <p class="career-org">@ {{ exp.organisation }}{% if exp.location %} &middot; {{ exp.location }}{% endif %}</p>
                         </div>
-                        <span class="timeline-period">{{ edu.start_date }} &mdash; {{ edu.end_date|default:"Ongoing" }}</span>
-                    </div>
-                    {% if edu.notes %}<p class="timeline-desc">{{ edu.notes }}</p>{% endif %}
+                        <span class="career-period">{{ exp.start_date }} &ndash; {% if exp.current %}Present{% else %}{{ exp.end_date|default:"Present" }}{% endif %}</span>
+                    </header>
+                    {% if exp.description %}<p class="career-desc">{{ exp.description }}</p>{% endif %}
+                    {% with bullets=exp.bullets.all %}
+                    {% if bullets %}
+                    <ul class="career-bullets">
+                        {% for b in bullets|slice:":4" %}<li>{{ b.text }}</li>{% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
                 </article>
-            {% endfor %}
+                {% endfor %}
+
+                {% for edu in educations %}
+                <article class="career-panel" id="panel-edu-{{ edu.pk }}" role="tabpanel" aria-labelledby="tab-edu-{{ edu.pk }}">
+                    <header class="career-panel-head">
+                        <div>
+                            <h3>{{ edu.qualification }}</h3>
+                            <p class="career-org">@ {{ edu.institution }}</p>
+                        </div>
+                        <span class="career-period">{{ edu.start_date }} &ndash; {{ edu.end_date|default:"Ongoing" }}</span>
+                    </header>
+                    {% if edu.notes %}<p class="career-desc">{{ edu.notes }}</p>{% endif %}
+                </article>
+                {% endfor %}
+
+                {% if certifications %}
+                <article class="career-panel" id="panel-certs" role="tabpanel" aria-labelledby="tab-certs">
+                    <header class="career-panel-head">
+                        <div>
+                            <h3>Certifications</h3>
+                            <p class="career-org">Courses &amp; credentials</p>
+                        </div>
+                    </header>
+                    <ul class="career-bullets">
+                        {% for cert in certifications %}<li>{% if cert.url %}<a href="{{ cert.url }}" target="_blank" rel="noopener noreferrer">{{ cert.title }}</a>{% else %}{{ cert.title }}{% endif %} &mdash; {{ cert.issuer }}{% if cert.date %} ({{ cert.date }}){% endif %}</li>{% endfor %}
+                    </ul>
+                </article>
+                {% endif %}
+            </div>
         </div>
+        {% else %}
+        <div class="form-card" style="text-align: center; padding: 2.5rem;">
+            <p>Experience is managed in Django Admin.</p>
+        </div>
+        {% endif %}
     </div>
 </section>
 
 <!-- =========================================================================
-     4. FEATURED PROJECTS — bento grid
+     5. PROJECTS - image cards, details in a popup
      ========================================================================= -->
-<section class="section-spacing section-band-alt" id="projects">
+<section class="section-spacing" id="projects">
     <div class="container">
         <div class="section-header-block">
             <div class="section-header-split">
                 <div>
-                    <span class="eyebrow-label">02 / Selected Work</span>
-                    <h2 class="section-title">Systems Engineered for Operational Reality</h2>
+                    <span class="eyebrow-label">03 / Selected Work</span>
+                    <h2 class="section-title">Systems Built for Real Operations</h2>
                 </div>
-                <a href="{% url 'portfolio:project_list' %}" class="btn btn-outline btn-sm">
-                    View All Projects &rarr;
-                </a>
+                {% if has_more_projects %}
+                <a href="{% url 'portfolio:project_list' %}" class="btn btn-outline btn-sm">All {{ total_projects }} projects &rarr;</a>
+                {% endif %}
             </div>
-            <p class="section-desc">
-                Case studies detailing operational problems, architecture decisions, and actual software implementation. No fake testimonials or exaggerated statistics.
-            </p>
             <div class="section-divider-line"></div>
         </div>
 
-        <div class="projects-showcase-container">
+        {% if featured_projects %}
+        <div class="work-grid work-grid--n{{ featured_projects|length }}">
             {% for project in featured_projects %}
-                {% if forloop.first %}
-                    <!-- Primary case study: full detail, single unified card (image + info together) -->
-                    <article class="project-card-primary anim-fade-up">
-                        <div class="project-card-details">
-                            <div class="project-meta-strip">
-                                <span class="badge-tag badge-forest">{{ project.category.name|default:"System" }}</span>
-                                <span class="badge-tag">{{ project.year|default:"2024" }}</span>
-                                <span class="badge-tag badge-amber">{{ project.status }}</span>
-                            </div>
-                            <a href="{% url 'portfolio:project_detail' project.slug %}" class="project-title-link">
-                                <h3>{{ project.title }}</h3>
-                            </a>
-                            <p class="project-tagline">{{ project.tagline }}</p>
-
-                            {% if project.problem_statement %}
-                                <div class="project-brief-section">
-                                    <span class="brief-label">Problem Addressed</span>
-                                    <p class="brief-text">{{ project.problem_statement|truncatewords:40 }}</p>
-                                </div>
-                            {% endif %}
-
-                            <div class="project-tech-list">
-                                {% for tech in project.technologies.all %}
-                                    <span class="badge-tag">{{ tech.name }}</span>
-                                {% endfor %}
-                            </div>
-
-                            <div class="project-actions-row">
-                                <a href="{% url 'portfolio:project_detail' project.slug %}" class="btn btn-primary btn-sm">Read Full Case Study &rarr;</a>
-                                {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Live System &nearr;</a>{% endif %}
-                                {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Repository &nearr;</a>{% endif %}
-                                <a href="{% url 'requests:request_project_with_ref' project.slug %}" class="btn btn-forest btn-sm">Request Similar System &rarr;</a>
-                            </div>
-                        </div>
-
-                        <div class="project-visual-frame">
-                            {% if project.featured_image %}
-                                <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" loading="lazy">
-                            {% else %}
-                                <div class="visual-fallback-header">
-                                    <span>SYSTEM ARCHITECTURE</span>
-                                    <span class="visual-system-stamp">{{ project.status|upper }}</span>
-                                </div>
-                                <div class="visual-fallback-graphic">
-                                    <div class="graphic-monogram">{{ project.title|slice:":18" }}</div>
-                                    <p class="graphic-spec">
-                                        {% for tech in project.technologies.all|slice:":3" %}{{ tech.name }}{% if not forloop.last %} &bull; {% endif %}{% endfor %}
-                                    </p>
-                                </div>
-                                <div class="visual-fallback-footer">
-                                    <span>ENGINEERED BY JOSEPH KIARIE</span>
-                                    <span>NAIROBI, KENYA</span>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </article>
-                {% endif %}
+                {% include 'partials/project_card.html' with project=project %}
             {% endfor %}
-
-            {% if featured_projects|length > 1 %}
-                <div class="bento-grid">
-                    {% for project in featured_projects %}
-                        {% if not forloop.first %}
-                            <a href="{% url 'portfolio:project_detail' project.slug %}" class="bento-card anim-fade-up-delay-{{ forloop.counter }}">
-                                <div class="bento-card-art art-{{ forloop.counter }}">
-                                    {% if project.featured_image %}
-                                        <img src="{{ project.featured_image.url }}" alt="{{ project.title }}" loading="lazy">
-                                    {% endif %}
-                                </div>
-                                <div class="bento-card-overlay">
-                                    <div class="bento-meta-row">
-                                        <span class="badge-tag badge-forest">{{ project.category.name|default:"System" }}</span>
-                                        <span class="badge-tag">{{ project.year|default:"2024" }}</span>
-                                    </div>
-                                    <h3>{{ project.title }}</h3>
-                                    <p class="bento-tagline">{{ project.tagline }}</p>
-                                    <div class="bento-tags">
-                                        {% for tech in project.technologies.all|slice:":4" %}
-                                            <span class="badge-tag">{{ tech.name }}</span>
-                                        {% endfor %}
-                                    </div>
-                                    <span class="bento-link">View Details &rarr;</span>
-                                </div>
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            {% if not featured_projects %}
-                <div class="form-card" style="text-align: center; padding: 2.5rem;">
-                    <p>Projects are currently being populated. Check back shortly.</p>
-                </div>
-            {% endif %}
         </div>
+        {% else %}
+        <div class="form-card" style="text-align: center; padding: 2.5rem;">
+            <p>Projects are being added. Check back shortly.</p>
+        </div>
+        {% endif %}
     </div>
 </section>
 
+{% for project in featured_projects %}
+    {% include 'partials/project_modal.html' with project=project %}
+{% endfor %}
+
 <!-- =========================================================================
-     5. WHAT I BUILD (SERVICES) — compact card + image, full detail in a popup
+     6. WHAT I BUILD (SERVICES) - compact card, full detail in a popup
      ========================================================================= -->
-<section class="section-spacing" id="services">
+<section class="section-spacing section-band-alt" id="services">
     <div class="container">
         <div class="section-header-block">
-            <span class="eyebrow-label">03 / What I Build</span>
+            <span class="eyebrow-label">04 / What I Build</span>
             <h2 class="section-title">Practical Software for Real Business Workflows</h2>
-            <p class="section-desc">
-                I do not build generic landing page clones. I architect practical systems that replace chaotic spreadsheets, streamline manual approvals, and connect field operations to management.
-            </p>
+            <p class="section-desc">Systems that replace chaotic spreadsheets, streamline manual approvals, and connect field operations to management.</p>
             <div class="section-divider-line"></div>
         </div>
 
@@ -330,12 +281,8 @@
                     </div>
                     <span class="service-card-num">0{{ forloop.counter }} // CAPABILITY</span>
                     <h3>{{ service.title }}</h3>
-                    {% if service.tagline %}
-                        <p class="service-tagline">{{ service.tagline }}</p>
-                    {% endif %}
-                    <button type="button" class="btn btn-outline btn-sm service-view-btn" data-target="service-modal-{{ forloop.counter }}">
-                        View Details &rarr;
-                    </button>
+                    {% if service.tagline %}<p class="service-tagline">{{ service.tagline }}</p>{% endif %}
+                    <button type="button" class="btn btn-outline btn-sm" data-modal-open="service-modal-{{ forloop.counter }}">View Details &rarr;</button>
                 </article>
             {% empty %}
                 <p>Services will appear here once configured in Django Admin.</p>
@@ -344,11 +291,10 @@
     </div>
 </section>
 
-<!-- Service detail popups (one per service, hidden until opened) -->
 {% for service in services %}
-<div class="service-modal-overlay" id="service-modal-{{ forloop.counter }}">
-    <div class="service-modal-card">
-        <button type="button" class="lightbox-close service-modal-close" aria-label="Close">&times;</button>
+<div class="modal-overlay" id="service-modal-{{ forloop.counter }}" role="dialog" aria-modal="true" aria-label="{{ service.title }}">
+    <div class="modal-card">
+        <button type="button" class="modal-close" aria-label="Close">&times;</button>
         <span class="service-card-num">0{{ forloop.counter }} // CAPABILITY</span>
         <h3>{{ service.title }}</h3>
         {% if service.tagline %}<p class="service-tagline">{{ service.tagline }}</p>{% endif %}
@@ -363,141 +309,47 @@
 {% endfor %}
 
 <!-- =========================================================================
-     6. SKILLS & CORE STACK
+     7. STACK - the one technology list (first 8 shown, rest on request)
      ========================================================================= -->
-<section class="section-spacing section-band-alt" id="stack">
+<section class="section-spacing" id="stack">
     <div class="container">
         <div class="section-header-block">
-            <div class="section-header-split">
-                <div>
-                    <span class="eyebrow-label">04 / Engineering Stack</span>
-                    <h2 class="section-title">Pragmatic, Production-Tested Technologies</h2>
-                </div>
-                <span class="badge-tag badge-forest">Focused &amp; Tested</span>
-            </div>
-            <p class="section-desc">
-                Curated stack selected for operational reliability, robust relational consistency, and predictable performance on mobile bandwidth in Kenya.
-            </p>
+            <span class="eyebrow-label">05 / Stack</span>
+            <h2 class="section-title">Tools I Build With</h2>
             <div class="section-divider-line"></div>
         </div>
 
-        <div class="tech-shelf-grid" id="stack-grid">
+        <div class="stack-chips" id="stack-grid">
             {% for tech in technologies %}
-                {% include 'partials/tech_shelf_card.html' with tech=tech %}
+            <div class="stack-chip{% if forloop.counter > 8 %} is-extra{% endif %}">{% include 'partials/tech_icon.html' with tech=tech %}<span>{{ tech.name }}</span></div>
             {% empty %}
-                <p>Stack configured in Django Admin.</p>
+            <p>Technologies are managed in Django Admin.</p>
             {% endfor %}
         </div>
+
+        {% if technologies|length > 8 %}
+        <button type="button" class="btn btn-outline btn-sm" id="stack-toggle" aria-expanded="false" aria-controls="stack-grid" data-total="{{ technologies|length }}">Show all {{ technologies|length }}</button>
+        {% endif %}
     </div>
 </section>
 
 <!-- =========================================================================
-     7. ABOUT SNAPSHOT — "Who I Am" photo layout
-     ========================================================================= -->
-<section class="section-spacing" id="about">
-    <div class="container">
-        <div class="section-header-block">
-            <span class="eyebrow-label">05 / About Snapshot</span>
-            <h2 class="section-title">Who I Am</h2>
-            <div class="section-divider-line"></div>
-        </div>
-
-        <div class="about-photo-narrative">
-            <div class="about-photo-frame">
-                {% if profile.secondary_photo %}
-                    <img src="{{ profile.secondary_photo.url }}" alt="{{ profile.name|default:'Joseph Kiarie' }}" loading="lazy">
-                {% elif profile.photo %}
-                    <img src="{{ profile.photo.url }}" alt="{{ profile.name|default:'Joseph Kiarie' }}" loading="lazy">
-                {% endif %}
-                <span class="status-dot-mark" aria-hidden="true"></span>
-            </div>
-
-            <div>
-                <div class="narrative-body">
-                    <p>
-                        I study Business Information Technology at JKUAT while engineering real software systems. My academic training gives me a double lens: I understand business operations, supply chains, and accounting workflows just as deeply as database normalization, query execution, and API endpoints.
-                    </p>
-                    <p>
-                        In local Kenyan businesses, software failures rarely happen because the UI wasn't shiny enough. They happen because inventory math didn't account for concurrent orders, staff roles weren't restricted, or offline mobile sync corrupted data. That is why I engineer systems from the database outward.
-                    </p>
-                </div>
-                <div style="margin: 1.5rem 0;">
-                    <a href="{% url 'profiles:about' %}" class="btn btn-outline btn-sm">
-                        Read Full Background &amp; Philosophy &rarr;
-                    </a>
-                </div>
-
-                <div class="about-highlight-box">
-                    <h4>Core Philosophy</h4>
-                    <p style="margin-bottom: 1rem;">
-                        &ldquo;Build for the field, not for a slide deck. A system that works predictably on entry-level Android devices and 3G data is worth ten over-engineered prototypes that crash under load.&rdquo;
-                    </p>
-                    <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-forest);">
-                        &mdash; Joseph Kiarie, Nairobi
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- =========================================================================
-     8. PROJECT CTA BAND
+     8. CTA
      ========================================================================= -->
 <section class="cta-band">
     <div class="cta-grid">
         <div>
             <span class="eyebrow-label" style="color: var(--accent-forest-border);">Let's Build It</span>
             <h2 class="cta-heading">Have a system or operational problem you need solved?</h2>
-            <p class="cta-subtext">
-                Whether you need to replace manual paper records with a staff management portal, engineer a custom Flutter mobile application, or integrate M-Pesa payments, let's discuss your requirements.
-            </p>
+            <p class="cta-subtext">Replace paper records with a staff portal, build a custom Flutter app, or integrate M-Pesa payments &mdash; let's talk requirements.</p>
         </div>
 
         <div class="cta-action-card">
-            <a href="{% url 'requests:request_project' %}" class="btn btn-forest" style="width: 100%; padding: 0.9rem 1.5rem; font-size: 0.95rem;">
-                Request a Project Proposal &rarr;
-            </a>
-            <a href="{% url 'contact:contact' %}" class="btn btn-outline-white" style="width: 100%;">
-                Send a Direct Message
-            </a>
-            <p>
-                {{ profile.response_time_statement|default:"I typically respond within 24 business hours." }}
-            </p>
+            <a href="{% url 'requests:request_project' %}" class="btn btn-forest" style="width: 100%; padding: 0.9rem 1.5rem; font-size: 0.95rem;">Request a Project Proposal &rarr;</a>
+            <a href="{% url 'contact:contact' %}" class="btn btn-outline-white" style="width: 100%;">Send a Direct Message</a>
+            <p>{{ profile.response_time_statement|default:"I typically respond within 24 business hours." }}</p>
         </div>
     </div>
 </section>
 
-{% endblock %}
-
-{% block extra_js %}
-<script>
-(function () {
-    function closeModal(overlay) {
-        overlay.classList.remove('is-open');
-        document.body.style.overflow = '';
-    }
-    document.querySelectorAll('.service-view-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            var overlay = document.getElementById(btn.dataset.target);
-            if (overlay) {
-                overlay.classList.add('is-open');
-                document.body.style.overflow = 'hidden';
-            }
-        });
-    });
-    document.querySelectorAll('.service-modal-overlay').forEach(function (overlay) {
-        overlay.addEventListener('click', function (e) {
-            if (e.target === overlay) closeModal(overlay);
-        });
-        var closeBtn = overlay.querySelector('.service-modal-close');
-        if (closeBtn) closeBtn.addEventListener('click', function () { closeModal(overlay); });
-    });
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.service-modal-overlay.is-open').forEach(closeModal);
-        }
-    });
-})();
-</script>
 {% endblock %}

@@ -3,5 +3,6 @@ from . import views
 
 app_name = 'profiles'
 urlpatterns = [
-    path('about/', views.about, name='about'),
+    
+    path('about/', views.AboutRedirect.as_view(), name='about'),
 ]

@@ -116,34 +116,6 @@ class SocialLink(models.Model):
         return f"{self.get_platform_display()} ({self.url})"
 
 
-class Skill(models.Model):
-    name = models.CharField(max_length=100)
-    category = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        help_text="e.g. Backend & Systems, Mobile Development, Databases & Storage, Tools & DevOps"
-    )
-    proficiency = models.CharField(
-        max_length=50,
-        blank=True,
-        null=True,
-        help_text="e.g. Advanced, Production, Core Stack"
-    )
-    display_order = models.IntegerField(default=0)
-    active = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ['display_order', 'name']
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def ordering(self):
-        return self.display_order
-
-
 class Experience(models.Model):
     organisation = models.CharField(max_length=200)
     role = models.CharField(max_length=200)

@@ -20,10 +20,12 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 
     <!-- Theme must be set before paint to avoid a flash of the wrong theme -->
     <script>
         (function () {
+            document.documentElement.classList.add('js');
             try {
                 var saved = localStorage.getItem('jk-theme');
                 var theme = saved === 'light' ? 'light' : 'dark'; /* dark is default */
@@ -36,7 +38,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body id="top">
 
     <!-- Fixed avatar, top-left, persists on every page -->
     <a href="{% url 'portfolio:home' %}" class="site-avatar-fixed" aria-label="{{ profile.name|default:'Joseph Kiarie' }} — Home">
@@ -64,12 +66,12 @@
         <div class="nav-wrapper">
             <nav aria-label="Main Navigation">
                 <ul class="nav-menu-desktop" id="desktop-nav">
-                    <li><a href="{% url 'portfolio:home' %}">Home</a></li>
-                    <li><a href="{% url 'profiles:about' %}">About</a></li>
-                    <li><a href="{% url 'portfolio:project_list' %}">Projects</a></li>
-                    <li><a href="{% url 'portfolio:home' %}#services">Services</a></li>
-                    <li><a href="{% url 'portfolio:home' %}#experience">Experience</a></li>
-                    <li><a href="{% url 'portfolio:home' %}#stack">Stack</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#top" data-spy="top">Home</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#about" data-spy="about">About</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#experience" data-spy="experience">Experience</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#projects" data-spy="projects">Projects</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#services" data-spy="services">Services</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#stack" data-spy="stack">Stack</a></li>
                     <li><a href="{% url 'contact:contact' %}">Contact</a></li>
                     <li><a href="{% url 'requests:request_project' %}" class="nav-cta-pill">Request a Project</a></li>
                 </ul>
@@ -93,11 +95,11 @@
 
         <div class="nav-mobile-drawer" id="mobile-drawer">
             <ul class="nav-mobile-list">
-                <li><a href="{% url 'portfolio:home' %}">Home</a></li>
-                <li><a href="{% url 'profiles:about' %}">About</a></li>
-                <li><a href="{% url 'portfolio:project_list' %}">Projects</a></li>
-                <li><a href="{% url 'portfolio:home' %}#services">Services</a></li>
+                <li><a href="{% url 'portfolio:home' %}#top">Home</a></li>
+                <li><a href="{% url 'portfolio:home' %}#about">About</a></li>
                 <li><a href="{% url 'portfolio:home' %}#experience">Experience</a></li>
+                <li><a href="{% url 'portfolio:home' %}#projects">Projects</a></li>
+                <li><a href="{% url 'portfolio:home' %}#services">Services</a></li>
                 <li><a href="{% url 'portfolio:home' %}#stack">Stack</a></li>
                 <li><a href="{% url 'contact:contact' %}">Contact</a></li>
                 <li style="padding-top: 0.5rem;">
@@ -148,9 +150,9 @@
                 <div class="footer-nav-col">
                     <h5>Navigation</h5>
                     <ul class="footer-links-list">
-                        <li><a href="{% url 'portfolio:home' %}">Home</a></li>
-                        <li><a href="{% url 'profiles:about' %}">About & Background</a></li>
-                        <li><a href="{% url 'portfolio:project_list' %}">Selected Projects</a></li>
+                        <li><a href="{% url 'portfolio:home' %}#top">Home</a></li>
+                        <li><a href="{% url 'portfolio:home' %}#about">About</a></li>
+                        <li><a href="{% url 'portfolio:home' %}#projects">Selected Projects</a></li>
                         <li><a href="{% url 'portfolio:home' %}#services">Services & What I Build</a></li>
                         <li><a href="{% url 'contact:contact' %}">Direct Contact</a></li>
                     </ul>
@@ -217,6 +219,7 @@
             }
         })();
     </script>
+    <script src="{% static 'js/site.js' %}" defer></script>
     {% block extra_js %}{% endblock %}
 </body>
 

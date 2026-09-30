@@ -3,7 +3,6 @@ from portfolio.models import Project, ProjectCategory, Technology, Service
 from profiles.models import (
     Profile,
     SocialLink,
-    Skill,
     Experience,
     ExperienceBullet,
     Education
@@ -228,23 +227,7 @@ class Command(BaseCommand):
             Service.objects.create(**s)
         self.stdout.write(self.style.SUCCESS("Seeded Services."))
 
-        # 7. Skills
-        Skill.objects.all().delete()
-        skills_data = [
-            ('Django & DRF', 'Backend & Architecture', 'Core Stack', 1),
-            ('Python', 'Backend & Architecture', 'Core Stack', 2),
-            ('PostgreSQL / Supabase', 'Database Engineering', 'Core Stack', 3),
-            ('Flutter & Dart', 'Mobile Engineering', 'Core Stack', 4),
-            ('REST API Design & Webhooks', 'Backend & Architecture', 'Production', 5),
-            ('M-Pesa Daraja Integration', 'Integrations', 'Production', 6),
-            ('Git / GitHub Workflows', 'DevOps & Tooling', 'Production', 7),
-            ('Linux & Server Deployments', 'DevOps & Tooling', 'Operational', 8),
-            ('Relational Data Modeling', 'Database Engineering', 'Production', 9),
-            ('Role-Based Access Control', 'Backend & Architecture', 'Production', 10),
-        ]
-        for name, cat, prof, order in skills_data:
-            Skill.objects.create(name=name, category=cat, proficiency=prof, display_order=order, active=True)
-        self.stdout.write(self.style.SUCCESS("Seeded Skills."))
+        # 7. (Skills were merged into Technologies - nothing to seed here.)
 
         # 8. Experience
         Experience.objects.all().delete()

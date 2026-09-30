@@ -180,11 +180,7 @@ STORAGES = {
     },
 }
 
-# Safety net: if a template ever references a {% static %} file that wasn't
-# present at collectstatic time, don't hard-crash the whole site with a 500 —
-# fall back to serving the unhashed path (which will just 404 as a broken
-# image/link) instead. This is what let one missing logo file take down
-# every page in production.
+
 WHITENOISE_MANIFEST_STRICT = False
 
 # Default primary key field type
@@ -203,6 +199,9 @@ EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
+# Never let a slow/blocked SMTP server hang a request (Render blocks outbound SMTP
+# on free instances; without a timeout the worker is killed after 30s -> HTTP 500).
+EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', 10))
 
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'noreply@josephkiarie.dev')
-PORTFOLIO_NOTIFICATION_EMAIL = os.environ.get('PORTFOLIO_NOTIFICATION_EMAIL', EMAIL_HOST_USER or 'kiariejosephdevworks@gmail.com')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'josephnkiarie054@gmail.com')
+PORTFOLIO_NOTIFICATION_EMAIL = os.environ.get('PORTFOLIO_NOTIFICATION_EMAIL', EMAIL_HOST_USER or 'joseph.nextgenweb.dev@gmail.com')

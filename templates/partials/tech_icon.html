@@ -1,0 +1,7 @@
+{% comment %}
+Usage: {% include 'partials/tech_icon.html' with tech=tech %}
+Renders a technology's icon. Order: uploaded logo -> icon fetched from the CDN
+(guessed from the name in Technology.icon_url) -> first-letter monogram.
+If the CDN image fails to load, the monogram takes over automatically.
+{% endcomment %}
+<span class="tech-ico{% if tech.has_uploaded_logo %} is-logo{% endif %}{% if not tech.icon_url %} is-fallback{% endif %}" aria-hidden="true">{% if tech.icon_url %}<img src="{{ tech.icon_url }}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('is-fallback');this.remove();">{% endif %}<b class="tech-ico-mono">{{ tech.initials }}</b></span>

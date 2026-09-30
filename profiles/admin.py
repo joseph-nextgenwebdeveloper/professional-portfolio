@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import (
     Profile,
     SocialLink,
-    Skill,
     Experience,
     ExperienceBullet,
     Education,
@@ -40,14 +39,6 @@ class SocialLinkAdmin(admin.ModelAdmin):
     list_editable = ('display_order', 'is_public')
     list_filter = ('platform', 'is_public')
     search_fields = ('platform', 'label', 'url')
-
-
-@admin.register(Skill)
-class SkillAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'proficiency', 'display_order', 'active')
-    list_filter = ('category', 'active')
-    list_editable = ('display_order', 'active')
-    search_fields = ('name', 'category')
 
 
 class ExperienceBulletInline(admin.TabularInline):

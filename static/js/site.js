@@ -1,0 +1,135 @@
+/* site.js - popups, experience tabs, stack toggle, nav scroll-spy.
+   Plain JS, no dependencies. The page still reads fine if this fails to load. */
+(function () {
+    'use strict';
+
+    /* ---------------- popups (projects + services) ---------------- */
+    var openOverlay = null;
+    var lastTrigger = null;
+
+    function openModal(overlay, trigger) {
+        if (openOverlay) closeModal(true);
+        openOverlay = overlay;
+        lastTrigger = trigger || null;
+        overlay.classList.add('is-open');
+        document.body.classList.add('modal-open');
+        var closeBtn = overlay.querySelector('.modal-close');
+        if (closeBtn) closeBtn.focus({ preventScroll: true });
+    }
+
+    function closeModal(silent) {
+        if (!openOverlay) return;
+        openOverlay.classList.remove('is-open');
+        document.body.classList.remove('modal-open');
+        var wasProject = openOverlay.id.indexOf('project-') === 0;
+        openOverlay = null;
+        if (lastTrigger && !silent) { try { lastTrigger.focus({ preventScroll: true }); } catch (e) {} }
+        lastTrigger = null;
+        if (wasProject && !silent && location.hash.indexOf('#project-') === 0 && history.replaceState) {
+            history.replaceState(null, '', location.pathname + location.search);
+        }
+    }
+
+    document.addEventListener('click', function (e) {
+        var trigger = e.target.closest('[data-modal-open]');
+        if (trigger) {
+            var overlay = document.getElementById(trigger.getAttribute('data-modal-open'));
+            if (overlay) { e.preventDefault(); openModal(overlay, trigger); }
+            return;
+        }
+        if (openOverlay && (e.target === openOverlay || e.target.closest('.modal-close'))) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /* /projects/<slug>/ redirects to /projects/#project-<slug> -> open that popup */
+    function openFromHash() {
+        var h = location.hash;
+        if (h.indexOf('#project-') !== 0) return;
+        var overlay = document.getElementById(h.slice(1));
+        if (overlay && overlay.classList.contains('modal-overlay')) openModal(overlay, null);
+    }
+    window.addEventListener('hashchange', openFromHash);
+    openFromHash();
+
+    /* ---------------- experience tabs ---------------- */
+    document.querySelectorAll('[data-tabs]').forEach(function (root) {
+        var rail = root.querySelector('.career-rail');
+        var tabs = Array.prototype.slice.call(root.querySelectorAll('.career-tab'));
+        var panels = Array.prototype.slice.call(root.querySelectorAll('.career-panel'));
+        if (!tabs.length) return;
+
+        function activate(tab, focus) {
+            var target = tab.getAttribute('data-panel');
+            tabs.forEach(function (t) {
+                var on = t === tab;
+                t.classList.toggle('is-active', on);
+                t.setAttribute('aria-selected', on ? 'true' : 'false');
+                t.tabIndex = on ? 0 : -1;
+            });
+            panels.forEach(function (p) { p.classList.toggle('is-active', p.id === target); });
+            if (focus) tab.focus({ preventScroll: true });
+            if (rail && rail.scrollWidth > rail.clientWidth + 2) {   /* phone: rail scrolls sideways */
+                rail.scrollTo({ left: tab.offsetLeft - 16, behavior: 'smooth' });
+            }
+        }
+
+        tabs.forEach(function (tab, i) {
+            tab.addEventListener('click', function () { activate(tab, false); });
+            tab.addEventListener('keydown', function (e) {
+                var step = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 :
+                           (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1 : 0;
+                if (!step) return;
+                e.preventDefault();
+                activate(tabs[(i + step + tabs.length) % tabs.length], true);
+            });
+        });
+        activate(tabs[0], false);
+    });
+
+    /* ---------------- stack: show first 8, reveal the rest on request ---------------- */
+    var stackBtn = document.getElementById('stack-toggle');
+    var stackGrid = document.getElementById('stack-grid');
+    if (stackBtn && stackGrid) {
+        stackBtn.addEventListener('click', function () {
+            var open = stackGrid.classList.toggle('show-all');
+            stackBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            stackBtn.textContent = open ? 'Show less' : 'Show all ' + stackBtn.getAttribute('data-total');
+        });
+    }
+
+    /* ---------------- nav: highlight the section you are reading ---------------- */
+    if ('IntersectionObserver' in window) {
+        var sections = [
+            ['hero', 'top'], ['about', 'about'], ['experience', 'experience'],
+            ['projects', 'projects'], ['services', 'services'], ['stack', 'stack']
+        ].map(function (pair) { return { el: document.getElementById(pair[0]), key: pair[1] }; })
+         .filter(function (s) { return s.el; });
+
+        if (sections.length > 2) {
+            var links = document.querySelectorAll('#desktop-nav a[data-spy]');
+            var setActive = function (key) {
+                links.forEach(function (a) { a.classList.toggle('active', a.getAttribute('data-spy') === key); });
+            };
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    for (var i = 0; i < sections.length; i++) {
+                        if (sections[i].el === entry.target) { setActive(sections[i].key); break; }
+                    }
+                });
+            }, { rootMargin: '-35% 0px -55% 0px' });
+            sections.forEach(function (s) { io.observe(s.el); });
+        }
+    }
+
+    /* ---------------- mobile menu: close after choosing a link ---------------- */
+    var drawer = document.getElementById('mobile-drawer');
+    if (drawer) {
+        drawer.addEventListener('click', function (e) {
+            if (e.target.closest('a')) drawer.classList.remove('is-open');
+        });
+    }
+})();

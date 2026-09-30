@@ -1,0 +1,46 @@
+{% comment %}
+Usage: {% include 'partials/project_modal.html' with project=project %}
+The popup: short, on purpose. Category/status/year, description, up to 6
+technologies (+N more), up to 3 small screenshots, links.
+{% endcomment %}
+<div class="modal-overlay" id="project-{{ project.slug }}" role="dialog" aria-modal="true" aria-labelledby="pm-title-{{ project.pk }}">
+    <div class="modal-card project-modal">
+        <button type="button" class="modal-close" aria-label="Close">&times;</button>
+        {% if project.featured_image %}
+        <div class="pm-hero"><img src="{{ project.featured_image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async"></div>
+        {% endif %}
+        <div class="pm-body">
+            <div class="pm-meta">
+                {% if project.category %}<span class="badge-tag badge-forest">{{ project.category.name }}</span>{% endif %}
+                <span class="badge-tag">{{ project.status }}</span>
+                {% if project.year %}<span class="badge-tag">{{ project.year }}</span>{% endif %}
+            </div>
+            <h3 id="pm-title-{{ project.pk }}">{{ project.title }}</h3>
+            {% if project.tagline %}<p class="pm-tagline">{{ project.tagline }}</p>{% endif %}
+            {% if project.solution %}<p class="pm-desc">{{ project.solution|truncatewords:50 }}</p>{% endif %}
+
+            {% with techs=project.technologies.all %}
+            {% if techs %}
+            <div class="pm-tech">
+                {% for tech in techs|slice:":6" %}<span class="tech-pill">{% include 'partials/tech_icon.html' with tech=tech %}{{ tech.name }}</span>{% endfor %}
+                {% if techs|length > 6 %}<span class="tech-pill tech-pill-more">+{{ techs|length|add:"-6" }} more</span>{% endif %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            {% with shots=project.images.all %}
+            {% if shots %}
+            <div class="pm-shots">
+                {% for shot in shots|slice:":3" %}<img src="{{ shot.image.url }}" alt="{{ shot.caption|default:project.title }}" loading="lazy" decoding="async">{% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="pm-actions">
+                {% if project.live_url %}<a href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Live &nearr;</a>{% endif %}
+                {% if project.repo_url %}<a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">Code &nearr;</a>{% endif %}
+                <a href="{% url 'requests:request_project_with_ref' project.slug %}" class="btn btn-forest btn-sm">Request something similar &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>

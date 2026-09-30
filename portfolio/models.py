@@ -1,5 +1,57 @@
+import re
+
 from django.db import models
 from django.utils.text import slugify
+
+# --------------------------------------------------------------------------
+# Icon resolution for Technology.
+# Every technology gets an icon automatically from the Simple Icons set
+# (served by jsDelivr) so nothing has to be uploaded by hand. Order of
+# precedence: uploaded `logo`  >  guessed from the technology name  >
+# `icon_name` (treated as a Simple Icons slug, e.g. "django")  >  monogram.
+# --------------------------------------------------------------------------
+SIMPLE_ICONS_CDN = "https://cdn.jsdelivr.net/npm/simple-icons@13/icons/{slug}.svg"
+
+# (phrase of words, simple-icons slug) - first match wins, so put the more
+# specific phrases first.
+ICON_PHRASES = (
+    (("rest", "framework"), "django"),
+    (("django",), "django"),
+    (("flutter",), "flutter"),
+    (("dart",), "dart"),
+    (("postgresql",), "postgresql"),
+    (("postgres",), "postgresql"),
+    (("supabase",), "supabase"),
+    (("python",), "python"),
+    (("javascript",), "javascript"),
+    (("typescript",), "typescript"),
+    (("html5",), "html5"),
+    (("html",), "html5"),
+    (("css3",), "css3"),
+    (("tailwind",), "tailwindcss"),
+    (("react",), "react"),
+    (("vue",), "vuedotjs"),
+    (("next",), "nextdotjs"),
+    (("node",), "nodedotjs"),
+    (("docker",), "docker"),
+    (("kubernetes",), "kubernetes"),
+    (("nginx",), "nginx"),
+    (("gunicorn",), "gunicorn"),
+    (("github",), "github"),
+    (("git",), "git"),
+    (("postman",), "postman"),
+    (("linux",), "linux"),
+    (("jwt",), "jsonwebtokens"),
+    (("redis",), "redis"),
+    (("mysql",), "mysql"),
+    (("sqlite",), "sqlite"),
+    (("graphql",), "graphql"),
+    (("firebase",), "firebase"),
+    (("figma",), "figma"),
+    (("cloudinary",), "cloudinary"),
+    (("render",), "render"),
+    (("bootstrap",), "bootstrap"),
+)
 
 
 class ProjectCategory(models.Model):
@@ -51,6 +103,39 @@ class Technology(models.Model):
 
     def __str__(self):
         return self.name
+
+    # ---- icon helpers (no database columns, so no migration needed) ----
+    @property
+    def icon_slug(self):
+        """Simple Icons slug for this technology, or '' if none is known."""
+        words = re.findall(r"[a-z0-9]+", (self.name or "").lower())
+        for phrase, slug in ICON_PHRASES:
+            if all(w in words for w in phrase):
+                return slug
+        # Name not recognised: fall back to whatever is typed in icon_name
+        # (older seed data has values like "api" that are not real slugs -
+        # those simply fail to load and the monogram shows instead).
+        return (self.icon_name or "").strip().lower()
+
+    @property
+    def icon_url(self):
+        """Best available icon URL: uploaded logo, else CDN icon, else ''."""
+        if self.logo:
+            try:
+                return self.logo.url
+            except Exception:
+                pass
+        slug = self.icon_slug
+        return SIMPLE_ICONS_CDN.format(slug=slug) if slug else ""
+
+    @property
+    def has_uploaded_logo(self):
+        return bool(self.logo)
+
+    @property
+    def initials(self):
+        words = re.findall(r"[A-Za-z0-9]+", self.name or "")
+        return (words[0][0] if words else "?").upper()
 
 
 class Service(models.Model):
