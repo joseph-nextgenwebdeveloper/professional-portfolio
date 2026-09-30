@@ -1,101 +1,156 @@
+
 import json
 import logging
 import os
-import threading
 import urllib.error
 import urllib.request
 
 from django.conf import settings
-from django.core.mail import EmailMessage
 
 logger = logging.getLogger(__name__)
 
+# Resend's API endpoint.
+# DO NOT replace this with your email address.
 RESEND_URL = "https://api.resend.com/emails"
 
 
 def _recipient():
+    """
+    Get the email address that should receive portfolio notifications.
+    """
     return (
-        getattr(settings, 'PORTFOLIO_NOTIFICATION_EMAIL', '')
-        or getattr(settings, 'EMAIL_HOST_USER', '')
-        or ''
+        getattr(settings, "PORTFOLIO_NOTIFICATION_EMAIL", "")
+        or getattr(settings, "EMAIL_HOST_USER", "")
+        or ""
     ).strip()
 
 
-def _send_via_resend(api_key, sender, recipient, subject, body, reply_to):
+def _send_via_resend(api_key, sender, recipient, subject, body, reply_to=None):
     """
-    Send through Resend's HTTPS API (port 443).
-    Render's free tier blocks SMTP ports (25/465/587) but not HTTPS.
-    Uses only the standard library on purpose: this project has an app called
-    "requests", which would shadow the PyPI "requests" package.
+    Send an email through Resend's HTTPS API.
+
+    HTTPS uses port 443, which avoids the SMTP networking problem that
+    occurred on Render.
     """
-    payload = {"from": sender, "to": [recipient], "subject": subject, "text": body}
+    payload = {
+        "from": sender,
+        "to": [recipient],
+        "subject": subject,
+        "text": body,
+    }
+
     if reply_to:
-        payload["reply_to"] = reply_to
-    req = urllib.request.Request(
+        payload["reply_to"] = [reply_to]
+
+    request = urllib.request.Request(
         RESEND_URL,
         data=json.dumps(payload).encode("utf-8"),
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "User-Agent": "portfolio-site/1.0",   # Resend's firewall rejects requests without one
+            "User-Agent": "portfolio-site/1.0",
         },
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=10) as resp:
-        logger.info("Resend accepted notification (HTTP %s)", resp.status)
 
+    try:
+        with urllib.request.urlopen(request, timeout=15) as response:
+            logger.info(
+                "Resend accepted notification email. HTTP status: %s",
+                response.status,
+            )
 
-def _send_via_smtp(sender, recipient, subject, body, reply_to):
-    """Fallback for hosts where SMTP is open (local machine, paid Render instance...)."""
-    msg = EmailMessage(subject, body, sender, [recipient], reply_to=[reply_to] if reply_to else None)
-    msg.send(fail_silently=False)
+    except urllib.error.HTTPError as exc:
+        try:
+            detail = exc.read().decode("utf-8", "replace")[:500]
+        except Exception:
+            detail = "Unable to read Resend error response."
+
+        logger.warning(
+            "Resend rejected notification email. HTTP %s: %s",
+            exc.code,
+            detail,
+        )
+
+    except urllib.error.URLError as exc:
+        logger.warning(
+            "Could not connect to Resend: %s",
+            exc,
+        )
+
+    except Exception as exc:
+        logger.warning(
+            "Unexpected Resend email error: %s",
+            exc,
+        )
 
 
 def notify_async(subject, body, reply_to=None):
     """
-    Email the site owner WITHOUT ever blocking or breaking the request.
+    Send a portfolio notification email.
 
-    The submission is already saved to the database before this is called, so
-    a failure here can never lose a message. Sending happens in a background
-    thread with short timeouts.
-
-    Transport: RESEND_API_KEY set -> Resend HTTPS API, otherwise Django SMTP.
-    Recipient: PORTFOLIO_NOTIFICATION_EMAIL (falls back to EMAIL_HOST_USER).
+    The form submission is saved to the database before this function
+    is called. Therefore, an email failure will not prevent the user's
+    submission from being saved.
     """
     recipient = _recipient()
+
     if not recipient:
-        logger.warning("Notification skipped: set PORTFOLIO_NOTIFICATION_EMAIL. (Message is saved in Django admin.)")
+        logger.warning(
+            "Notification skipped: set PORTFOLIO_NOTIFICATION_EMAIL. "
+            "(Message is saved in Django admin.)"
+        )
         return
 
-    api_key = os.environ.get('RESEND_API_KEY', '').strip()
-    if api_key:
-        sender = os.environ.get('RESEND_FROM_EMAIL', '').strip() or "Portfolio <onboarding@resend.dev>"
-    else:
-        sender = getattr(settings, 'DEFAULT_FROM_EMAIL', '') or getattr(settings, 'EMAIL_HOST_USER', '') or 'webmaster@localhost'
+    api_key = os.environ.get("RESEND_API_KEY", "").strip()
 
-    def _send():
-        try:
-            if api_key:
-                _send_via_resend(api_key, sender, recipient, subject, body, reply_to)
-            else:
-                _send_via_smtp(sender, recipient, subject, body, reply_to)
-        except urllib.error.HTTPError as exc:
-            detail = ""
-            try:
-                detail = exc.read().decode("utf-8", "replace")[:300]
-            except Exception:  # noqa: BLE001
-                pass
-            logger.warning("Notification email rejected by Resend (HTTP %s): %s", exc.code, detail)
-        except Exception as exc:  # noqa: BLE001 - must never propagate
-            logger.warning("Notification email failed: %s", exc)
+    if not api_key:
+        logger.warning(
+            "Notification skipped: RESEND_API_KEY is not configured."
+        )
+        return
 
-    threading.Thread(target=_send, daemon=True).start()
+    sender = (
+        os.environ.get("RESEND_FROM_EMAIL", "").strip()
+        or "Portfolio <onboarding@resend.dev>"
+    )
+
+    _send_via_resend(
+        api_key=api_key,
+        sender=sender,
+        recipient=recipient,
+        subject=subject,
+        body=body,
+        reply_to=reply_to,
+    )
 
 
 def send_project_request_email(client_request):
-    """Email notification for a new project request (saved to DB first)."""
+    """
+    Send an email notification when a new project request is submitted.
+    """
     try:
-        subject = f"New Project Request: {client_request.project_title or client_request.get_project_type_display() or 'General'} — {client_request.name}"
+        project_name = (
+            client_request.project_title
+            or client_request.get_project_type_display()
+            or "General"
+        )
+
+        reference_project = "None"
+
+        if client_request.requested_project:
+            reference_project = client_request.requested_project.title
+
+        budget_range = "Flexible / To be discussed"
+
+        if client_request.budget_range:
+            budget_range = client_request.get_budget_range_display()
+
+        subject = (
+            f"New Project Request: "
+            f"{project_name} — {client_request.name}"
+        )
+
         body = f"""
 NEW CLIENT PROJECT REQUEST
 
@@ -109,16 +164,28 @@ From:
 Project Scope:
 - Project Type: {client_request.get_project_type_display() or 'Not specified'}
 - Working Title: {client_request.project_title or 'Untitled'}
-- Reference Project: {client_request.requested_project.title if client_request.requested_project else 'None'}
-- Budget Range: {client_request.get_budget_range_display() if client_request.budget_range else 'Flexible / To be discussed'}
+- Reference Project: {reference_project}
+- Budget Range: {budget_range}
 - Timeline: {client_request.deadline or 'Flexible'}
 
 Project Details & Requirements:
 {client_request.details}
 
-Submitted at: {client_request.submitted_at}
-View full submission in Django Admin.
+Submitted at:
+{client_request.submitted_at}
+
+View the full submission in Django Admin.
 """
-        notify_async(subject, body, reply_to=client_request.email)
-    except Exception as exc:  # noqa: BLE001
-        logger.warning("Could not build project request email: %s", exc)
+
+        notify_async(
+            subject=subject,
+            body=body,
+            reply_to=client_request.email,
+        )
+
+    except Exception as exc:
+        logger.warning(
+            "Could not build project request email: %s",
+            exc,
+        )
+
