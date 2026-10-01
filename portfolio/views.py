@@ -1,5 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.views.decorators.http import require_http_methods
 
 from .models import Project, ProjectCategory, Technology, Service
 from profiles.models import Profile, Experience, Education, Certification
@@ -92,3 +94,9 @@ def project_detail(request, slug):
     """
     project = get_object_or_404(Project, slug=slug, is_published=True)
     return redirect(f"{reverse('portfolio:project_list')}#project-{project.slug}")
+
+
+@require_http_methods(["GET", "HEAD"])
+def health(request):
+    """Lightweight keep-alive endpoint for the external cron ping: no DB, no template, tiny body."""
+    return HttpResponse('{"status":"ok"}', content_type="application/json")
