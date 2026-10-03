@@ -1111,3 +1111,42 @@ section[id] { scroll-margin-top: 6.5rem; }
     .site-avatar-fixed { left: 12px; top: 14px; width: 40px; height: 40px; }
     .cta-band { margin: 0 .75rem; }
 }
+
+/* --------------------------------------------------------------------------
+   19. MOBILE FIXES: menu on the far right, tap-outside layer, hero order,
+       bottom quick-action bar
+   -------------------------------------------------------------------------- */
+.nav-backdrop { display: none; }
+.mobile-action-bar { display: none; }
+
+@media (max-width: 959px) {
+    /* pill sits at the far right (avatar stays top-left); drawer opens under it, full width */
+    .site-header { justify-content: flex-end; padding-right: .75rem; }
+    .nav-wrapper { margin-left: auto; }
+    .nav-mobile-drawer {
+        position: absolute; top: 100%; left: .75rem; right: .75rem;
+        max-width: none; margin: .5rem 0 0;
+        max-height: calc(100vh - 90px); overflow-y: auto;
+    }
+    .nav-backdrop { position: fixed; inset: 0; z-index: 999; background: rgba(0, 0, 0, .35); }
+    body.nav-open .nav-backdrop { display: block; }
+
+    /* hero: photo first, then "Hi, my name is" and the rest */
+    .hero-visual-col { order: -1; }
+    .hero-grid { gap: 2rem; }
+    .hero-photo-frame { width: min(280px, 68vw); }
+
+    /* quick actions pinned to the bottom */
+    .mobile-action-bar {
+        display: flex; gap: .6rem;
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 950;
+        padding: .6rem .75rem calc(.6rem + env(safe-area-inset-bottom, 0px));
+        background-color: var(--bg-canvas);
+        border-top: 1px solid var(--border-medium);
+        box-shadow: 0 -6px 20px rgba(0, 0, 0, .18);
+    }
+    .mobile-action-bar .btn { flex: 1; justify-content: center; text-align: center; padding: .75rem .5rem; font-size: .9rem; white-space: nowrap; }
+    .mobile-action-bar .btn-forest { flex: 1.4; }
+    body { padding-bottom: 72px; }
+    body.modal-open .mobile-action-bar, body.nav-open .mobile-action-bar { display: none; }
+}

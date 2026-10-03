@@ -136,11 +136,36 @@
         }
     }
 
-    /* ---------------- mobile menu: close after choosing a link ---------------- */
+    /* ---------------- mobile menu: open/close, tap outside to close ---------------- */
     var drawer = document.getElementById('mobile-drawer');
-    if (drawer) {
-        drawer.addEventListener('click', function (e) {
-            if (e.target.closest('a')) drawer.classList.remove('is-open');
+    var navBtn = document.getElementById('mobile-toggle-btn');
+    var backdrop = document.getElementById('nav-backdrop');
+
+    function setNav(open) {
+        if (!drawer || !navBtn) return;
+        drawer.classList.toggle('is-open', open);
+        document.body.classList.toggle('nav-open', open);
+        navBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    if (drawer && navBtn) {
+        navBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            setNav(!drawer.classList.contains('is-open'));
         });
+        /* choosing a link closes it */
+        drawer.addEventListener('click', function (e) {
+            if (e.target.closest('a')) setNav(false);
+        });
+        /* tapping anywhere outside the menu closes it */
+        if (backdrop) backdrop.addEventListener('click', function () { setNav(false); });
+        document.addEventListener('click', function (e) {
+            if (drawer.classList.contains('is-open') && !drawer.contains(e.target) && !navBtn.contains(e.target)) setNav(false);
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') setNav(false);
+        });
+        /* growing past the phone layout: make sure it is not left open */
+        window.addEventListener('resize', function () { if (window.innerWidth >= 960) setNav(false); });
     }
 })();

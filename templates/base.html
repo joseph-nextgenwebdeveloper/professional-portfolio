@@ -62,6 +62,9 @@
         {% endfor %}
     </div>
 
+    <!-- Tap-outside layer for the mobile menu -->
+    <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+
     <header class="site-header">
         <div class="nav-wrapper">
             <nav aria-label="Main Navigation">
@@ -174,17 +177,15 @@
         </div>
     </footer>
 
+    <!-- Mobile-only quick actions, always visible so visitors never need the menu -->
+    <div class="mobile-action-bar" id="mobile-action-bar">
+        <a href="{% url 'contact:contact' %}" class="btn btn-outline">Contact</a>
+        <a href="{% url 'requests:request_project' %}" class="btn btn-forest">Request a Project</a>
+    </div>
+
     <script>
         (function () {
-            // Mobile nav drawer
-            const toggleBtn = document.getElementById('mobile-toggle-btn');
-            const drawer = document.getElementById('mobile-drawer');
-            if (toggleBtn && drawer) {
-                toggleBtn.addEventListener('click', function () {
-                    const isOpen = drawer.classList.toggle('is-open');
-                    toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                });
-            }
+            // Mobile nav drawer: handled in static/js/site.js
 
             // Theme toggle (dark is default; choice persists in localStorage)
             const themeBtn = document.getElementById('theme-toggle-btn');
