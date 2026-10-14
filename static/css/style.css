@@ -78,43 +78,46 @@
    1b. TOKENS — LIGHT (toggled via [data-theme="light"] on <html>)
    -------------------------------------------------------------------------- */
 [data-theme="light"] {
-    --bg-canvas: #F7F5F0;
-    --bg-surface: rgba(20, 25, 35, 0.035);
-    --bg-surface-alt: rgba(20, 25, 35, 0.05);
-    --bg-navy-band: #0D1B2A;
+    --bg-canvas: #F3F5F9;
+    --bg-surface: #FFFFFF;
+    --bg-surface-alt: #EAEFF6;
+    --bg-navy-band: #0F1B2D;
     --bg-navy-card: #16283F;
 
-    --ink-900: #14181F;
-    --ink-800: #2B323C;
-    --ink-600: #5B6472;
-    --ink-400: #8B93A1;
-    --ink-white: #FAF8F5;
+    --ink-900: #0F172A;
+    --ink-800: #1E293B;
+    --ink-600: #475569;
+    --ink-400: #64748B;
+    --ink-white: #F8FAFC;
     --ink-white-muted: #A9B4C4;
 
-    --border-subtle: rgba(20, 25, 35, 0.08);
-    --border-medium: rgba(20, 25, 35, 0.14);
-    --border-dark: #14181F;
+    --border-subtle: rgba(15, 23, 42, 0.08);
+    --border-medium: rgba(15, 23, 42, 0.14);
+    --border-dark: #0F172A;
     --border-navy: rgba(255, 255, 255, 0.14);
 
-    --accent-forest: #148A67;
-    --accent-forest-hover: #0F6C50;
-    --accent-forest-subtle: rgba(20, 138, 103, 0.1);
-    --accent-forest-border: rgba(20, 138, 103, 0.35);
+    --accent-forest: #0F8060;
+    --accent-forest-hover: #0B664C;
+    --accent-forest-subtle: rgba(15, 128, 96, 0.09);
+    --accent-forest-border: rgba(15, 128, 96, 0.35);
 
-    --accent-amber: #C06B22;
-    --accent-amber-subtle: rgba(192, 107, 34, 0.1);
-    --accent-amber-border: rgba(192, 107, 34, 0.35);
+    --accent-amber: #B45F14;
+    --accent-amber-subtle: rgba(180, 95, 20, 0.09);
+    --accent-amber-border: rgba(180, 95, 20, 0.35);
 
-    --accent-blue: #2C5FD9;
-    --accent-blue-subtle: rgba(44, 95, 217, 0.1);
-    --accent-blue-border: rgba(44, 95, 217, 0.35);
+    --accent-copper: #C0702A;
+    --accent-blue: #2457D6;
+    --accent-blue-subtle: rgba(36, 87, 214, 0.09);
+    --accent-blue-border: rgba(36, 87, 214, 0.35);
 
-    --accent-crimson: #C23A48;
-    --accent-crimson-subtle: rgba(194, 58, 72, 0.1);
-    --accent-crimson-border: rgba(194, 58, 72, 0.35);
+    --accent-crimson: #C0334A;
+    --accent-crimson-subtle: rgba(192, 51, 74, 0.09);
+    --accent-crimson-border: rgba(192, 51, 74, 0.35);
 
-    --shadow-subtle: 0 1px 3px rgba(20, 25, 35, 0.05), 0 6px 18px rgba(20, 25, 35, 0.05);
-    --shadow-lift: 0 16px 40px rgba(20, 25, 35, 0.1);
+    --accent-violet: #6D5BE0;
+
+    --shadow-subtle: 0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 14px rgba(15, 23, 42, 0.06);
+    --shadow-lift: 0 14px 36px rgba(15, 23, 42, 0.12);
 }
 
 /* --------------------------------------------------------------------------
@@ -132,8 +135,8 @@ body::before {
 }
 
 [data-theme="light"] body::before {
-    opacity: .35;
-    background-image: radial-gradient(rgba(20, 25, 35, .5) .6px, transparent .6px);
+    opacity: .12;
+    background-image: radial-gradient(rgba(15, 23, 42, .6) .6px, transparent .6px);
 }
 
 .ambient-orb {
@@ -162,7 +165,7 @@ body::before {
 }
 
 [data-theme="light"] .ambient-orb {
-    opacity: .14;
+    opacity: .10;
 }
 
 /* --------------------------------------------------------------------------

@@ -1,0 +1,9 @@
+{% comment %}
+Usage: {% include 'partials/tool_tile.html' with tech=tech %}
+One marquee tile: the logo fills the whole square, the name sits underneath.
+Order: uploaded logo -> CDN icon -> big first-letter monogram.
+{% endcomment %}
+<figure class="tool-tile">
+    <div class="tool-tile-img{% if tech.has_uploaded_logo %} is-logo{% endif %}{% if not tech.icon_url %} is-fallback{% endif %}">{% if tech.icon_url %}<img src="{{ tech.icon_url }}" alt="{{ tech.name }}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('is-fallback');this.remove();">{% endif %}<b class="tool-tile-mono" aria-hidden="true">{{ tech.initials }}</b></div>
+    <figcaption>{{ tech.name }}</figcaption>
+</figure>

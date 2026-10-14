@@ -1,4 +1,4 @@
-/* site.js - popups, experience tabs, stack toggle, nav scroll-spy.
+/* site.js - popups, experience tabs, contact/request switch, WhatsApp send, nav scroll-spy.
    Plain JS, no dependencies. The page still reads fine if this fails to load. */
 (function () {
     'use strict';
@@ -100,14 +100,90 @@
         activate(tabs[0], false);
     });
 
-    /* ---------------- stack: show first 8, reveal the rest on request ---------------- */
-    var stackBtn = document.getElementById('stack-toggle');
-    var stackGrid = document.getElementById('stack-grid');
-    if (stackBtn && stackGrid) {
-        stackBtn.addEventListener('click', function () {
-            var open = stackGrid.classList.toggle('show-all');
-            stackBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-            stackBtn.textContent = open ? 'Show less' : 'Show all ' + stackBtn.getAttribute('data-total');
+    /* ---------------- connect: switch between Contact and Request a Project ---------------- */
+    var connect = document.querySelector('[data-connect]');
+    if (connect) {
+        var cTabs = Array.prototype.slice.call(connect.querySelectorAll('[data-connect-tab]'));
+        var cPanels = {
+            contact: document.getElementById('connect-panel-contact'),
+            request: document.getElementById('connect-panel-request')
+        };
+
+        var showConnect = function (which) {
+            if (!cPanels[which]) return;
+            cTabs.forEach(function (t) {
+                var on = t.getAttribute('data-connect-tab') === which;
+                t.classList.toggle('is-active', on);
+                t.setAttribute('aria-selected', on ? 'true' : 'false');
+            });
+            Object.keys(cPanels).forEach(function (k) { cPanels[k].classList.toggle('is-active', k === which); });
+        };
+
+        var goConnect = function (which, smooth) {
+            showConnect(which);
+            connect.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+        };
+
+        cTabs.forEach(function (t) {
+            t.addEventListener('click', function () { showConnect(t.getAttribute('data-connect-tab')); });
+        });
+
+        /* any link to #connect-contact / #connect-request (hero, nav, footer, bottom bar) */
+        document.addEventListener('click', function (e) {
+            var a = e.target.closest('a[href*="#connect-"]');
+            if (!a) return;
+            var url;
+            try { url = new URL(a.getAttribute('href'), location.href); } catch (err) { return; }
+            if (url.pathname !== location.pathname) return;          /* other page: normal navigation */
+            e.preventDefault();
+            var which = url.hash.replace('#connect-', '');
+            goConnect(which, true);
+            if (history.replaceState) history.replaceState(null, '', url.hash);
+        });
+
+        var fromHash = function () {
+            if (location.hash.indexOf('#connect-') === 0) goConnect(location.hash.replace('#connect-', ''), false);
+        };
+        window.addEventListener('hashchange', fromHash);
+        fromHash();
+
+        /* the server re-rendered this page with form errors: bring them into view */
+        if (connect.getAttribute('data-has-errors')) goConnect(connect.getAttribute('data-connect'), false);
+
+        /* ---------- send the same form on WhatsApp instead ---------- */
+        var waNumber = (connect.getAttribute('data-whatsapp') || '').replace(/\D/g, '');
+        connect.querySelectorAll('[data-wa-send]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var form = btn.closest('form');
+                if (!form || !waNumber) return;
+                var val = function (name) {
+                    var el = form.elements[name];
+                    return el && el.value ? String(el.value).trim() : '';
+                };
+                var kind = form.getAttribute('data-wa-form');
+                var lines = [];
+
+                if (kind === 'contact') {
+                    if (!val('message')) { form.elements['message'].focus(); return; }
+                    lines.push('Hi Joseph, my name is ' + (val('name') || '(no name)') + '.');
+                    if (val('subject')) lines.push('Topic: ' + val('subject'));
+                    lines.push('', val('message'));
+                    if (val('email')) lines.push('', 'Email: ' + val('email'));
+                } else {
+                    if (!val('details')) { form.elements['details'].focus(); return; }
+                    var picked = form.querySelector('input[name="project_type"]:checked');
+                    var type = picked && picked.parentNode ? picked.parentNode.textContent.trim() : '';
+                    lines.push('Hi Joseph, I would like to request a project.');
+                    lines.push('Name: ' + (val('name') || '-'));
+                    if (val('email')) lines.push('Email: ' + val('email'));
+                    if (type) lines.push('Need: ' + type);
+                    var budget = form.elements['budget_range'];
+                    if (budget && budget.value) lines.push('Budget: ' + budget.options[budget.selectedIndex].text);
+                    if (val('deadline')) lines.push('Timeline: ' + val('deadline'));
+                    lines.push('', val('details'));
+                }
+                window.open('https://wa.me/' + waNumber + '?text=' + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+            });
         });
     }
 
@@ -115,7 +191,8 @@
     if ('IntersectionObserver' in window) {
         var sections = [
             ['hero', 'top'], ['about', 'about'], ['experience', 'experience'],
-            ['projects', 'projects'], ['services', 'services'], ['stack', 'stack']
+            ['projects', 'projects'], ['services', 'services'], ['stack', 'stack'],
+            ['connect', 'connect']
         ].map(function (pair) { return { el: document.getElementById(pair[0]), key: pair[1] }; })
          .filter(function (s) { return s.el; });
 

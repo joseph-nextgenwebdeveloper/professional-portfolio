@@ -1,5 +1,6 @@
 import logging
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib import messages
 from .forms import ContactMessageForm
 from profiles.models import Profile
@@ -29,7 +30,13 @@ def contact(request):
             )
 
             messages.success(request, 'Your message has been received! I will get back to you shortly.')
+            if request.POST.get('from_home'):
+                return redirect(reverse('portfolio:home') + '#connect-contact')
             return redirect('contact:contact')
+        if request.POST.get('from_home'):
+            # errors show inside the home page's contact form
+            from portfolio.views import home
+            return home(request, contact_form=form, active_tab='contact')
     else:
         form = ContactMessageForm()
         

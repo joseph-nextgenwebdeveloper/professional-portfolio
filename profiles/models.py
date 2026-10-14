@@ -1,5 +1,21 @@
+from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
+
+
+def cv_storage():
+    """
+    PDFs/Word files must be stored on Cloudinary as RAW files. The default
+    MediaCloudinaryStorage uploads everything as an *image* resource, which is
+    why the CV link returned `401 deny or ACL failure` and would not download.
+    Locally (no Cloudinary) this simply uses the normal default storage.
+    """
+    backend = settings.STORAGES.get('default', {}).get('BACKEND', '')
+    if 'cloudinary' in backend:
+        from cloudinary_storage.storage import RawMediaCloudinaryStorage
+        return RawMediaCloudinaryStorage()
+    from django.core.files.storage import default_storage
+    return default_storage
 
 
 class Profile(models.Model):
@@ -34,7 +50,7 @@ class Profile(models.Model):
         help_text="Clear turnaround expectation for prospective clients"
     )
     
-    cv_file = models.FileField(upload_to='cv/', blank=True, null=True)
+    cv_file = models.FileField(upload_to='cv/', storage=cv_storage, blank=True, null=True)
     
     github_url = models.URLField(blank=True, null=True)
     linkedin_url = models.URLField(blank=True, null=True)

@@ -1,3 +1,6 @@
+import os
+import re
+
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
@@ -5,6 +8,8 @@ from django.views.decorators.http import require_http_methods
 
 from .models import Project, ProjectCategory, Technology, Service
 from profiles.models import Profile, Experience, Education, Certification
+from contact.forms import ContactMessageForm
+from requests.forms import ClientProjectRequestForm
 
 # Most projects the home page shows (cards get smaller as the count grows).
 # Everything beyond this is one click away on the archive page.
@@ -31,11 +36,32 @@ def _projects_qs():
     )
 
 
-def home(request):
+def whatsapp_number(profile):
+    """
+    Digits-only international number for wa.me links (e.g. 2547XXXXXXXX).
+    Uses the WHATSAPP_NUMBER env var, else the phone saved on the Profile.
+    A leading 0 or a bare 9-digit Kenyan number is converted to 254...
+    """
+    raw = os.environ.get('WHATSAPP_NUMBER', '') or (getattr(profile, 'phone', '') or '')
+    digits = re.sub(r'\D', '', raw)
+    if digits.startswith('00'):
+        digits = digits[2:]
+    if digits.startswith('0'):
+        digits = '254' + digits[1:]
+    elif len(digits) == 9 and digits[0] in '17':
+        digits = '254' + digits
+    return digits
+
+
+def home(request, contact_form=None, request_form=None, active_tab=None):
     """
     The whole portfolio on one page, in this order:
-    Hero -> Marquee -> About -> Experience -> Projects -> Services -> Stack -> CTA.
+    Hero -> Marquee -> About -> Experience -> Projects -> Services -> Stack -> Contact / Request.
     Project details open in a popup, so there is no separate detail page.
+
+    contact_form / request_form / active_tab are passed in by the contact and
+    request views when a form submitted from this page has errors, so the
+    errors show in place instead of sending the visitor to another page.
     """
     profile = Profile.objects.first()
 
@@ -59,6 +85,10 @@ def home(request):
         'experiences': Experience.objects.prefetch_related('bullets').order_by('display_order', '-id'),
         'educations': Education.objects.order_by('display_order', '-id'),
         'certifications': Certification.objects.order_by('display_order', '-id'),
+        'contact_form': contact_form or ContactMessageForm(),
+        'request_form': request_form or ClientProjectRequestForm(),
+        'connect_active': active_tab or 'contact',
+        'whatsapp_number': whatsapp_number(profile),
     }
     return render(request, 'portfolio/home.html', context)
 

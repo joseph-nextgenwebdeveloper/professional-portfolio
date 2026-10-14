@@ -3,6 +3,8 @@
 
 {% block title %}{{ profile.name|default:"Joseph Kiarie" }} — Full-Stack Developer & Systems Architect{% endblock %}
 
+{% block flash %}{% endblock %}
+
 {% block content %}
 
 <!-- =========================================================================
@@ -28,7 +30,7 @@
             </p>
 
             <div class="hero-cta-group">
-                <a href="{% url 'requests:request_project' %}" class="btn btn-forest" id="hero-btn-request">Request a Project &rarr;</a>
+                <a href="#connect-request" class="btn btn-forest" id="hero-btn-request">Request a Project &rarr;</a>
                 <a href="#projects" class="btn btn-outline" id="hero-btn-work">View Selected Work &darr;</a>
             </div>
             <p class="hero-response">{{ profile.response_time_statement|default:"I typically respond within 24 business hours." }}</p>
@@ -104,8 +106,8 @@
                 </div>
 
                 <div class="about-actions">
-                    <a href="{% url 'requests:request_project' %}" class="btn btn-forest btn-sm">Request a Project &rarr;</a>
-                    {% if profile.cv_file %}<a href="{{ profile.cv_file.url }}" download class="btn btn-outline btn-sm">Download CV &darr;</a>{% endif %}
+                    <a href="#connect-request" class="btn btn-forest btn-sm">Request a Project &rarr;</a>
+                    {% if profile.cv_file %}<a href="{% url 'profiles:cv' %}" class="btn btn-outline btn-sm">Download CV &darr;</a>{% endif %}
                 </div>
 
                 <div class="about-highlight-box">
@@ -138,16 +140,10 @@
                     <span class="career-tab-text"><strong>{{ exp.organisation }}</strong><small>{{ exp.start_date }} &ndash; {% if exp.current %}Present{% else %}{{ exp.end_date|default:"Present" }}{% endif %}</small></span>
                 </button>
                 {% endfor %}
-                {% for edu in educations %}
-                <button type="button" role="tab" class="career-tab" id="tab-edu-{{ edu.pk }}" data-panel="panel-edu-{{ edu.pk }}" aria-selected="false">
+                {% if educations or certifications %}
+                <button type="button" role="tab" class="career-tab" id="tab-edu" data-panel="panel-edu" aria-selected="false">
                     <span class="career-node is-edu" aria-hidden="true"></span>
-                    <span class="career-tab-text"><strong>{{ edu.institution }}</strong><small>Education &middot; {{ edu.start_date }} &ndash; {{ edu.end_date|default:"Ongoing" }}</small></span>
-                </button>
-                {% endfor %}
-                {% if certifications %}
-                <button type="button" role="tab" class="career-tab" id="tab-certs" data-panel="panel-certs" aria-selected="false">
-                    <span class="career-node is-edu" aria-hidden="true"></span>
-                    <span class="career-tab-text"><strong>Certifications</strong><small>{{ certifications|length }} earned</small></span>
+                    <span class="career-tab-text"><strong>Education &amp; Certifications</strong><small>{% if educations %}{{ educations|length }} education{% endif %}{% if educations and certifications %} &middot; {% endif %}{% if certifications %}{{ certifications|length }} certification{{ certifications|length|pluralize }}{% endif %}</small></span>
                 </button>
                 {% endif %}
             </div>
@@ -173,30 +169,37 @@
                 </article>
                 {% endfor %}
 
-                {% for edu in educations %}
-                <article class="career-panel" id="panel-edu-{{ edu.pk }}" role="tabpanel" aria-labelledby="tab-edu-{{ edu.pk }}">
+                {% if educations or certifications %}
+                <article class="career-panel" id="panel-edu" role="tabpanel" aria-labelledby="tab-edu">
                     <header class="career-panel-head">
                         <div>
-                            <h3>{{ edu.qualification }}</h3>
-                            <p class="career-org">@ {{ edu.institution }}</p>
+                            <h3>Education &amp; Certifications</h3>
+                            <p class="career-org">Where I studied &middot; what I&rsquo;ve earned</p>
                         </div>
-                        <span class="career-period">{{ edu.start_date }} &ndash; {{ edu.end_date|default:"Ongoing" }}</span>
                     </header>
-                    {% if edu.notes %}<p class="career-desc">{{ edu.notes }}</p>{% endif %}
-                </article>
-                {% endfor %}
 
-                {% if certifications %}
-                <article class="career-panel" id="panel-certs" role="tabpanel" aria-labelledby="tab-certs">
-                    <header class="career-panel-head">
-                        <div>
-                            <h3>Certifications</h3>
-                            <p class="career-org">Courses &amp; credentials</p>
+                    {% if educations %}
+                    <h4 class="career-subhead">Education</h4>
+                    <div class="career-edu-list">
+                        {% for edu in educations %}
+                        <div class="career-edu-item">
+                            <div class="career-edu-top">
+                                <strong>{{ edu.qualification }}</strong>
+                                <span class="career-period">{{ edu.start_date }} &ndash; {{ edu.end_date|default:"Ongoing" }}</span>
+                            </div>
+                            <p class="career-org">@ {{ edu.institution }}</p>
+                            {% if edu.notes %}<p class="career-desc">{{ edu.notes }}</p>{% endif %}
                         </div>
-                    </header>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if certifications %}
+                    <h4 class="career-subhead">Certifications</h4>
                     <ul class="career-bullets">
                         {% for cert in certifications %}<li>{% if cert.url %}<a href="{{ cert.url }}" target="_blank" rel="noopener noreferrer">{{ cert.title }}</a>{% else %}{{ cert.title }}{% endif %} &mdash; {{ cert.issuer }}{% if cert.date %} ({{ cert.date }}){% endif %}</li>{% endfor %}
                     </ul>
+                    {% endif %}
                 </article>
                 {% endif %}
             </div>
@@ -312,7 +315,7 @@
 {% endfor %}
 
 <!-- =========================================================================
-     7. STACK - the one technology list (first 8 shown, rest on request)
+     7. STACK - every technology as a big-tile marquee (image fills the tile, name below)
      ========================================================================= -->
 <section class="section-spacing" id="stack">
     <div class="container">
@@ -321,36 +324,150 @@
             <h2 class="section-title">Tools I Build With</h2>
             <div class="section-divider-line"></div>
         </div>
-
-        <div class="stack-chips" id="stack-grid">
-            {% for tech in technologies %}
-            <div class="stack-chip{% if forloop.counter > 8 %} is-extra{% endif %}">{% include 'partials/tech_icon.html' with tech=tech %}<span>{{ tech.name }}</span></div>
-            {% empty %}
-            <p>Technologies are managed in Django Admin.</p>
-            {% endfor %}
-        </div>
-
-        {% if technologies|length > 8 %}
-        <button type="button" class="btn btn-outline btn-sm" id="stack-toggle" aria-expanded="false" aria-controls="stack-grid" data-total="{{ technologies|length }}">Show all {{ technologies|length }}</button>
-        {% endif %}
     </div>
+
+    {% if technologies %}
+    <div class="tools-marquee" aria-label="Technologies I build with">
+        <div class="tools-track">
+            <div class="tools-group">
+                {% for tech in technologies %}{% include 'partials/tool_tile.html' with tech=tech %}{% endfor %}
+            </div>
+            <div class="tools-group" aria-hidden="true">
+                {% for tech in technologies %}{% include 'partials/tool_tile.html' with tech=tech %}{% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="container"><p>Technologies are managed in Django Admin.</p></div>
+    {% endif %}
 </section>
 
 <!-- =========================================================================
-     8. CTA
+     8. CONNECT - contact + project request, switch between them with two buttons
      ========================================================================= -->
-<section class="cta-band">
-    <div class="cta-grid">
-        <div>
-            <span class="eyebrow-label" style="color: var(--accent-forest-border);">Let's Build It</span>
-            <h2 class="cta-heading">Have a system or operational problem you need solved?</h2>
-            <p class="cta-subtext">Replace paper records with a staff portal, build a custom Flutter app, or integrate M-Pesa payments &mdash; let's talk requirements.</p>
+<section class="section-spacing section-band-alt" id="connect" data-connect="{{ connect_active }}" data-whatsapp="{{ whatsapp_number }}"{% if contact_form.errors or request_form.errors %} data-has-errors="1"{% endif %}>
+    <div class="container connect-wrap">
+        <div class="section-header-block connect-head">
+            <span class="eyebrow-label">06 / Let&rsquo;s Work Together</span>
+            <h2 class="section-title">Have a system or problem to solve?</h2>
+            <p class="section-desc">Send a quick message, or tell me about a project. {{ profile.response_time_statement|default:"I typically respond within 24 business hours." }}</p>
+            <div class="section-divider-line"></div>
         </div>
 
-        <div class="cta-action-card">
-            <a href="{% url 'requests:request_project' %}" class="btn btn-forest" style="width: 100%; padding: 0.9rem 1.5rem; font-size: 0.95rem;">Request a Project Proposal &rarr;</a>
-            <a href="{% url 'contact:contact' %}" class="btn btn-outline-white" style="width: 100%;">Send a Direct Message</a>
-            <p>{{ profile.response_time_statement|default:"I typically respond within 24 business hours." }}</p>
+        {% if messages %}
+        <div class="connect-flash">
+            {% for message in messages %}<div class="flash-alert flash-alert-{{ message.tags }}">{{ message }}</div>{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="connect-switch" role="tablist" aria-label="Contact or request a project">
+            <button type="button" role="tab" class="connect-btn{% if connect_active != 'request' %} is-active{% endif %}" id="connect-tab-contact" data-connect-tab="contact" aria-selected="{% if connect_active != 'request' %}true{% else %}false{% endif %}" aria-controls="connect-panel-contact">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2z"/></svg>
+                Contact
+            </button>
+            <button type="button" role="tab" class="connect-btn{% if connect_active == 'request' %} is-active{% endif %}" id="connect-tab-request" data-connect-tab="request" aria-selected="{% if connect_active == 'request' %}true{% else %}false{% endif %}" aria-controls="connect-panel-request">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 14h6M9 17h4"/></svg>
+                Request a Project
+            </button>
+        </div>
+
+        <!-- Panel: contact -->
+        <div class="connect-panel{% if connect_active != 'request' %} is-active{% endif %}" id="connect-panel-contact" role="tabpanel" aria-labelledby="connect-tab-contact">
+            <form method="post" action="{% url 'contact:contact' %}" novalidate class="talk-form" data-wa-form="contact">
+                {% csrf_token %}
+                <input type="hidden" name="from_home" value="1">
+                {% if contact_form.non_field_errors %}<div class="flash-alert flash-alert-error">{{ contact_form.non_field_errors }}</div>{% endif %}
+                <div class="talk-row">
+                    <div class="talk-field">
+                        <label for="{{ contact_form.name.id_for_label }}">Name</label>
+                        {{ contact_form.name }}
+                        {% if contact_form.name.errors %}<span class="talk-err">{{ contact_form.name.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="talk-field">
+                        <label for="{{ contact_form.email.id_for_label }}">Email</label>
+                        {{ contact_form.email }}
+                        {% if contact_form.email.errors %}<span class="talk-err">{{ contact_form.email.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+                <div class="talk-field">
+                    <label for="{{ contact_form.subject.id_for_label }}">What is this about?</label>
+                    {{ contact_form.subject }}
+                        {% if contact_form.subject.errors %}<span class="talk-err">{{ contact_form.subject.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="talk-field">
+                    <label for="{{ contact_form.message.id_for_label }}">Message</label>
+                    {{ contact_form.message }}
+                        {% if contact_form.message.errors %}<span class="talk-err">{{ contact_form.message.errors.0 }}</span>{% endif %}
+                </div>
+                <div class="talk-actions">
+                    <button type="submit" class="btn btn-forest talk-submit">Send message &rarr;</button>
+                    {% if whatsapp_number %}<button type="button" class="btn btn-outline talk-wa" data-wa-send>Send on WhatsApp</button>{% endif %}
+                </div>
+            </form>
+        </div>
+
+        <!-- Panel: project request -->
+        <div class="connect-panel{% if connect_active == 'request' %} is-active{% endif %}" id="connect-panel-request" role="tabpanel" aria-labelledby="connect-tab-request">
+            <form method="post" action="{% url 'requests:request_project' %}" novalidate class="talk-form" data-wa-form="request">
+                {% csrf_token %}
+                <input type="hidden" name="from_home" value="1">
+                {% if request_form.non_field_errors %}<div class="flash-alert flash-alert-error">{{ request_form.non_field_errors }}</div>{% endif %}
+                <div class="talk-row">
+                    <div class="talk-field">
+                        <label for="{{ request_form.name.id_for_label }}">Name</label>
+                        {{ request_form.name }}
+                        {% if request_form.name.errors %}<span class="talk-err">{{ request_form.name.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="talk-field">
+                        <label for="{{ request_form.email.id_for_label }}">Email</label>
+                        {{ request_form.email }}
+                        {% if request_form.email.errors %}<span class="talk-err">{{ request_form.email.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="talk-field">
+                    <span class="talk-label">What do you need?</span>
+                    <div class="pill-group" role="radiogroup" aria-label="What do you need?">
+                        {% for radio in request_form.project_type %}
+                        <label class="pill-radio">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="talk-field">
+                    <label for="{{ request_form.details.id_for_label }}">Tell me about it</label>
+                    {{ request_form.details }}
+                        {% if request_form.details.errors %}<span class="talk-err">{{ request_form.details.errors.0 }}</span>{% endif %}
+                </div>
+
+                <details class="talk-more">
+                    <summary>Add budget, timeline or phone <small>(optional)</small></summary>
+                    <div class="talk-more-body">
+                        <div class="talk-field">
+                            <label for="{{ request_form.budget_range.id_for_label }}">Budget</label>
+                            {{ request_form.budget_range }}
+                        {% if request_form.budget_range.errors %}<span class="talk-err">{{ request_form.budget_range.errors.0 }}</span>{% endif %}
+                        </div>
+                        <div class="talk-row">
+                            <div class="talk-field">
+                                <label for="{{ request_form.deadline.id_for_label }}">Timeline</label>
+                                {{ request_form.deadline }}
+                        {% if request_form.deadline.errors %}<span class="talk-err">{{ request_form.deadline.errors.0 }}</span>{% endif %}
+                            </div>
+                            <div class="talk-field">
+                                <label for="{{ request_form.phone.id_for_label }}">Phone / WhatsApp</label>
+                                {{ request_form.phone }}
+                        {% if request_form.phone.errors %}<span class="talk-err">{{ request_form.phone.errors.0 }}</span>{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <div class="talk-actions">
+                    <button type="submit" class="btn btn-forest talk-submit">Send request &rarr;</button>
+                    {% if whatsapp_number %}<button type="button" class="btn btn-outline talk-wa" data-wa-send>Send on WhatsApp</button>{% endif %}
+                </div>
+            </form>
         </div>
     </div>
 </section>

@@ -75,8 +75,8 @@
                     <li><a href="{% url 'portfolio:home' %}#projects" data-spy="projects">Projects</a></li>
                     <li><a href="{% url 'portfolio:home' %}#services" data-spy="services">Services</a></li>
                     <li><a href="{% url 'portfolio:home' %}#stack" data-spy="stack">Stack</a></li>
-                    <li><a href="{% url 'contact:contact' %}">Contact</a></li>
-                    <li><a href="{% url 'requests:request_project' %}" class="nav-cta-pill">Request a Project</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#connect-contact" data-spy="connect">Contact</a></li>
+                    <li><a href="{% url 'portfolio:home' %}#connect-request" class="nav-cta-pill">Request a Project</a></li>
                 </ul>
             </nav>
 
@@ -104,9 +104,9 @@
                 <li><a href="{% url 'portfolio:home' %}#projects">Projects</a></li>
                 <li><a href="{% url 'portfolio:home' %}#services">Services</a></li>
                 <li><a href="{% url 'portfolio:home' %}#stack">Stack</a></li>
-                <li><a href="{% url 'contact:contact' %}">Contact</a></li>
+                <li><a href="{% url 'portfolio:home' %}#connect-contact">Contact</a></li>
                 <li style="padding-top: 0.5rem;">
-                    <a href="{% url 'requests:request_project' %}" class="btn btn-forest"
+                    <a href="{% url 'portfolio:home' %}#connect-request" class="btn btn-forest"
                         style="width: 100%; text-align: center;">Request a Project &rarr;</a>
                 </li>
             </ul>
@@ -114,6 +114,7 @@
     </header>
 
     <main class="main-content">
+        {% block flash %}
         {% if messages %}
         <div class="container" style="padding-top: 1.5rem;">
             {% for message in messages %}
@@ -121,6 +122,7 @@
             {% endfor %}
         </div>
         {% endif %}
+        {% endblock %}
 
         {% block content %}{% endblock %}
     </main>
@@ -157,14 +159,14 @@
                         <li><a href="{% url 'portfolio:home' %}#about">About</a></li>
                         <li><a href="{% url 'portfolio:home' %}#projects">Selected Projects</a></li>
                         <li><a href="{% url 'portfolio:home' %}#services">Services & What I Build</a></li>
-                        <li><a href="{% url 'contact:contact' %}">Direct Contact</a></li>
+                        <li><a href="{% url 'portfolio:home' %}#connect-contact">Direct Contact</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-nav-col">
                     <h5>Inquiries & Work</h5>
                     <ul class="footer-links-list">
-                        <li><a href="{% url 'requests:request_project' %}">Request a Project</a></li>
+                        <li><a href="{% url 'portfolio:home' %}#connect-request">Request a Project</a></li>
                     </ul>
                 </div>
             </div>
@@ -179,8 +181,8 @@
 
     <!-- Mobile-only quick actions, always visible so visitors never need the menu -->
     <div class="mobile-action-bar" id="mobile-action-bar">
-        <a href="{% url 'contact:contact' %}" class="btn btn-outline">Contact</a>
-        <a href="{% url 'requests:request_project' %}" class="btn btn-forest">Request a Project</a>
+        <a href="{% url 'portfolio:home' %}#connect-contact" class="btn btn-outline">Contact</a>
+        <a href="{% url 'portfolio:home' %}#connect-request" class="btn btn-forest">Request a Project</a>
     </div>
 
     <script>
