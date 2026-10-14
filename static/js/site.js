@@ -177,8 +177,9 @@
                     lines.push('Name: ' + (val('name') || '-'));
                     if (val('email')) lines.push('Email: ' + val('email'));
                     if (type) lines.push('Need: ' + type);
-                    var budget = form.elements['budget_range'];
-                    if (budget && budget.value) lines.push('Budget: ' + budget.options[budget.selectedIndex].text);
+                    var budget = form.querySelector('input[name="budget_range"]:checked');
+                    var bt = budget && budget.value ? budget.parentNode.querySelector('strong') : null;
+                    if (bt) lines.push('Budget: ' + bt.textContent.trim());
                     if (val('deadline')) lines.push('Timeline: ' + val('deadline'));
                     lines.push('', val('details'));
                 }

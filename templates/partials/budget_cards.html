@@ -1,0 +1,10 @@
+{% load ui %}{% comment %}
+Usage: {% include 'partials/budget_cards.html' with field=form.budget_range %}
+Budget as small selectable cards instead of a dropdown. Still a normal radio group,
+so the same budget_range value is posted.
+{% endcomment %}
+<div class="budget-grid" role="radiogroup" aria-label="Budget">
+    {% for radio in field %}
+    <label class="budget-card">{{ radio.tag }}<span class="budget-body"><strong>{{ radio.choice_label|label_title }}</strong>{% with sub=radio.choice_label|label_sub %}{% if sub %}<small>{{ sub }}</small>{% endif %}{% endwith %}</span></label>
+    {% endfor %}
+</div>

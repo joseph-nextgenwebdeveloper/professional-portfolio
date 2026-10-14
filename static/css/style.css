@@ -438,8 +438,10 @@ section[id] { scroll-margin-top: 6.5rem; }
     font-family: var(--font-mono); font-size: .68rem; font-weight: 700; letter-spacing: .02em;
     box-shadow: var(--shadow-subtle);
 }
-.social-icon-btn:hover { background-color: var(--accent-forest); border-color: var(--accent-forest); color: #05130E; }
-.social-icon-btn svg { width: 17px; height: 17px; }
+.social-icon-btn { transition: transform .2s ease, border-color .2s ease; }
+.social-icon-btn:hover { transform: translateY(-3px); border-color: var(--ink-400); }
+.social-icon-btn svg { width: 18px; height: 18px; }
+.social-icon-btn .is-mono { color: var(--ink-900); }
 
 /* --------------------------------------------------------------------------
    5. BUTTONS & BADGES

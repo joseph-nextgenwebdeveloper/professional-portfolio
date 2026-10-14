@@ -7,10 +7,8 @@ class ClientProjectRequestForm(forms.ModelForm):
     budget_range = forms.ChoiceField(
         choices=ClientProjectRequest.BUDGET_CHOICES,
         required=False,
-        widget=forms.Select(attrs={
-            'class': 'form-input form-select',
-            'id': 'id_budget_range'
-        })
+        initial='',
+        widget=forms.RadioSelect,
     )
 
     def __init__(self, *args, **kwargs):

@@ -435,3 +435,71 @@ body.modal-open { overflow: hidden; }
 [data-theme="light"] .site-footer { background-color: #fff; }
 [data-theme="light"] .work-card { box-shadow: var(--shadow-subtle); }
 [data-theme="light"] .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); }
+
+
+/* ==========================================================================
+   Budget: selectable cards instead of a dropdown
+   ========================================================================== */
+.budget-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+@media (max-width: 420px) { .budget-grid { grid-template-columns: minmax(0, 1fr); } }
+.budget-card { position: relative; cursor: pointer; display: flex; }
+.budget-card input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.budget-body {
+    flex: 1; display: flex; flex-direction: column; gap: .15rem; padding: .65rem .8rem;
+    border-radius: var(--radius-sm); border: 1px solid var(--border-medium); background: var(--bg-surface);
+    transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.budget-body strong { font-size: .84rem; font-weight: 600; color: var(--ink-900); line-height: 1.3; }
+.budget-body small { font-size: .72rem; color: var(--ink-600); line-height: 1.35; }
+.budget-card:hover .budget-body { border-color: var(--accent-forest-border); }
+.budget-card input:checked + .budget-body { border-color: var(--accent-forest); background: var(--accent-forest-subtle); box-shadow: 0 0 0 1px var(--accent-forest); }
+.budget-card input:checked + .budget-body strong { color: var(--accent-forest); }
+.budget-card input:focus-visible + .budget-body { outline: 2px solid var(--accent-forest); outline-offset: 2px; }
+[data-theme="light"] .budget-body { background: #fff; }
+
+/* ==========================================================================
+   What I Build: tall, narrow cards, four across on desktop
+   ========================================================================== */
+@media (min-width: 1000px) { .services-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 640px) {
+    .service-card-compact { padding: 1rem 1rem 1.1rem; gap: .5rem; }
+    .service-compact-img { aspect-ratio: 4 / 3; max-height: none; }
+    .service-card-compact h3 { font-size: 1.05rem; margin-top: .15rem; }
+    .service-card-compact .service-tagline { -webkit-line-clamp: 3; min-height: 3.6em; }
+}
+
+/* ==========================================================================
+   Experience: the panel that slides in, dressed as a little "window"
+   ========================================================================== */
+.career-panel {
+    position: relative; overflow: hidden; padding-top: 3.4rem;
+    border-top-width: 1px; border-top-color: var(--border-medium);
+    background-image:
+        radial-gradient(circle at 100% 0%, var(--accent-forest-subtle), transparent 45%),
+        radial-gradient(var(--border-medium) 1px, transparent 1.2px);
+    background-size: auto, 22px 22px;
+    background-position: 0 0, 0 0;
+}
+/* title bar */
+.career-panel::before {
+    content: '~/career'; position: absolute; top: 0; left: 0; right: 0; height: 2.4rem;
+    display: flex; align-items: center; padding-left: 4.6rem;
+    font-family: var(--font-mono); font-size: .72rem; letter-spacing: .04em; color: var(--ink-400);
+    background: var(--bg-surface-alt); border-bottom: 1px solid var(--border-medium);
+}
+/* the three window dots */
+.career-panel::after {
+    content: ''; position: absolute; top: 1.05rem; left: 1.1rem; width: 9px; height: 9px; border-radius: 50%;
+    background: #FF5F57; box-shadow: 16px 0 0 #FEBC2E, 32px 0 0 #28C840;
+}
+.career-panel > * { position: relative; z-index: 1; }
+.career-panel.is-active { animation: panelSlide .45s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes panelSlide { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+@media (max-width: 859px) {
+    .career-panel { padding-top: 3.2rem; }
+    .career-panel.is-active { animation-name: fadeInUp; }
+}
+.career-subhead::before { content: '// '; color: var(--accent-copper); }
+[data-theme="light"] .career-panel { background-color: #fff; }
+[data-theme="light"] .career-panel::before { background: #F1F5F9; }
+@media (prefers-reduced-motion: reduce) { .career-panel.is-active { animation: none; } }

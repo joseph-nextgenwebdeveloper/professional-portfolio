@@ -444,8 +444,8 @@
                     <summary>Add budget, timeline or phone <small>(optional)</small></summary>
                     <div class="talk-more-body">
                         <div class="talk-field">
-                            <label for="{{ request_form.budget_range.id_for_label }}">Budget</label>
-                            {{ request_form.budget_range }}
+                            <span class="talk-label">Budget</span>
+                            {% include 'partials/budget_cards.html' with field=request_form.budget_range %}
                         {% if request_form.budget_range.errors %}<span class="talk-err">{{ request_form.budget_range.errors.0 }}</span>{% endif %}
                         </div>
                         <div class="talk-row">
